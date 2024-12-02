@@ -1,0 +1,102 @@
+@use '../../../styles/_variables'
+*
+    font-family: variables.$font-primary
+    padding: 0
+    margin: 0
+    list-style: none
+    box-sizing: border-box
+
+button
+    background-color: none
+    border: none
+
+.close-button
+    position: absolute
+    top: -25px
+    right: 0
+    height: 35px
+
+    background-color: transparent
+
+    .close-icon:hover
+        fill: rgb(255, 179, 0, 255)
+        cursor: pointer
+
+    &-container
+        position: relative
+        width: 90%
+        height: 40px
+
+        @media (min-width: variables.$breakpoint-sm)
+            width: 375px
+
+.open-button
+    border: none
+    background-color: variables.$background-primary
+    padding: 0
+
+    & > .language-flag
+        width: 40px
+        height: 40px
+        border-radius: 100%
+
+        &:hover
+            cursor: pointer
+            outline: 3px solid rgb(255, 179, 0, 255)
+
+.dropdown
+    &-container
+        position: relative
+
+    &-menu
+        position: fixed
+        top: 0
+        left: 0
+        transform: translateY(100%)
+        opacity: 0
+        transition: transform 0.5s ease, opacity 0.5s ease
+
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+
+        width: 100%
+        height: 100%
+
+        background-color: rgba(191, 192, 191, 0.7)
+
+        &.show
+            transform: translateY(0)
+            opacity: 1
+
+.language
+    &-option
+        width: 90%
+        border-radius: variables.$border-radius-primary
+        margin-bottom: 10px
+
+        @media (min-width: variables.$breakpoint-sm)
+            width: 375px
+
+    &-button
+        display: flex
+        width: 100%
+        height: 45px
+        border-radius: variables.$border-radius-primary
+
+        &:hover
+            background-color: variables.$background-accent
+            cursor: pointer
+
+        .language-flag
+            order: 1
+            width: 60px
+            border-radius: variables.$border-radius-primary 0 0 variables.$border-radius-primary
+        .language-name
+            display: flex
+            align-items: center
+            order: 2
+            text-transform: uppercase
+            font-weight: variables.$font-weight-mid
+            margin-left: variables.$spacing-lg

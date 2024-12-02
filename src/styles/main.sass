@@ -1,1 +1,58 @@
+@use "./variables"
 
+html,
+body
+    font-family: variables.$font-primary
+    height: 100%
+
+body
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    padding: variables.$spacing-md
+    background-color: variables.$background-primary
+
+    @media (min-width: variables.$breakpoint-md)
+        padding: variables.$spacing-sm variables.$spacing-lg variables.$spacing-sm variables.$spacing-lg
+
+header
+    text-align: center
+
+    @media (min-width: variables.$breakpoint-md)
+        text-align: start
+
+.header-title
+    font-weight: variables.$font-weight-heavy
+    font-size: variables.$font-size-md
+
+    @media (min-width: variables.$breakpoint-sm)
+        font-size: variables.$font-size-xm
+
+    @media (min-width: variables.$breakpoint-md)
+        font-size: variables.$font-size-lg
+
+    @media (min-width: variables.$breakpoint-lg)
+        font-size: variables.$font-size-xl
+
+footer
+    width: 100%
+    display: flex
+    justify-content: space-between
+    position: relative
+
+.logo
+    &-container
+        height: 100%
+
+    &-footer
+        width: 100px
+
+dt-language-selector
+        align-self: flex-end
+        padding-bottom: variables.$spacing-md
+
+main
+    height: 100%
+.content
+    height: 100%
+    outline: 1px solid red
