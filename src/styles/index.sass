@@ -1,22 +1,3 @@
-@use "./variables"
-@use "./header"
-@use "./main"
-@use "./footer"
-
-html,
-body
-    font-family: variables.$font-primary
-
-body
-    display: grid
-    grid-template-rows: auto 1fr auto
-    height: 100vh
-    padding: variables.$padding-md
-    background-color: variables.$background-primary
-
-    @media (min-width: variables.$breakpoint-md)
-        padding: variables.$padding-md 0 variables.$padding-md variables.$padding-lg
-
 // make a spinner custom element?
 // .spinner-icon
 //     position: absolute

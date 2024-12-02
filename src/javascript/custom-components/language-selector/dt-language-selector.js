@@ -2,7 +2,7 @@ import html from './dt-language-selector.html';
 import style from './dt-language-selector.component.sass';
 
 import { fetchImage } from '../../utils.js';
-import { languages, getActiveLanguage, setActiveLanguage } from '../../languages.js';
+import { languages, getActiveLanguage, setActiveLanguage, translate } from '../../modules/languages.js';
 
 const template = document.createElement('template');
 
@@ -19,18 +19,26 @@ class DtLanguageSelector extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        this.dialog = this.shadowRoot.querySelector('dialog');
-        this.languageUl = this.shadowRoot.querySelector('.language-ul');
-        this.languageSelectedButton = this.shadowRoot.querySelector('.language-selected-button');
+        this.dropdownContainer = this.shadowRoot.querySelector('.dropdown-container');
+        this.dropdownMenu = this.shadowRoot.querySelector('.dropdown-menu');
+        this.openButton = this.shadowRoot.querySelector('.open-button');
         this.closeButton = this.shadowRoot.querySelector('.close-button');
 
         this.renderDefaultLanguageButton();
         this.renderLanguageButtons();
 
-        this.languageSelectedButton.addEventListener('click', () => this.showDialog());
-        this.languageUl.addEventListener('click', (e) => this.setNewLanguage(e));
-        this.closeButton.addEventListener('click', () => { this.closeDialog() });
+        this.openButton.addEventListener('click', (e) => this.openDropdown());
+        this.dropdownMenu.addEventListener('click', (e) => this.setNewLanguage(e));
+        this.closeButton.addEventListener('click', () => { this.closeDropdown() });
 
+    }
+
+    openDropdown() {
+        this.dropdownMenu.classList.add('show');
+    }
+
+    closeDropdown() {
+        this.dropdownMenu.classList.remove('show')
     }
 
     renderLanguageButtons() {
@@ -52,40 +60,38 @@ class DtLanguageSelector extends HTMLElement {
 
             button.appendChild(span);
             li.appendChild(button);
-            this.languageUl.appendChild(li);
+            this.dropdownMenu.appendChild(li);
         });
     }
 
     renderDefaultLanguageButton() {
         const activeLanguage = getActiveLanguage();
-        fetchImage(activeLanguage.flag, this.languageSelectedButton, 'language-flag');
+        fetchImage(activeLanguage.flag, this.openButton, 'language-flag');
     }
 
-    showDialog() {
-        this.dialog.showModal();
-    }
-
-    closeDialog() {
-        this.dialog.close();
-    }
 
     setNewLanguage(e) {
         const clickedButton = e.target.closest('.language-button');
+        // console.log(clickedButton)
         if (clickedButton === null) { return }
 
         const newLanguage = Object.values(languages).find(language => language.name.toLowerCase() === clickedButton.classList[1].toLowerCase());
         if (newLanguage === getActiveLanguage()) {
-            this.dialog.close();
+            this.closeDropdown();
             return
         }
 
         setActiveLanguage(newLanguage);
         const activeLanguage = getActiveLanguage();
 
-        this.languageSelectedButton.innerHTML = '';
-        fetchImage(activeLanguage.flag, this.languageSelectedButton, 'language-flag');
+        this.openButton.innerHTML = '';
+        fetchImage(activeLanguage.flag, this.openButton, 'language-flag');
 
-        this.dialog.close();
+        console.log(activeLanguage)
+        console.log(activeLanguage.title, document.querySelector('.header-title'))
+        translate(activeLanguage.title, document.querySelector('.header-title'))
+
+        this.closeDropdown();
     }
 
 }

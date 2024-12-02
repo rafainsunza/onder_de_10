@@ -1,74 +1,102 @@
 @use '../../../styles/_variables'
 *
     font-family: variables.$font-primary
+    padding: 0
+    margin: 0
+    list-style: none
+    box-sizing: border-box
 
-.language
-    &-selector
+button
+    background-color: none
+    border: none
+
+.close-button
+    position: absolute
+    top: -25px
+    right: 0
+    height: 35px
+
+    background-color: transparent
+
+    .close-icon:hover
+        fill: rgb(255, 179, 0, 255)
+        cursor: pointer
+
+    &-container
         position: relative
-        width: 100%
-        padding: 50px 0 0 0
-        outline: none
-        border: none
-        background-color: transparent
+        width: 90%
+        height: 40px
 
         @media (min-width: variables.$breakpoint-sm)
-            width: 400px
+            width: 375px
 
-    &-ul
-        list-style: none
-        padding: 0
-        margin: 0
+.open-button
+    border: none
+    background-color: variables.$background-primary
+    padding: 0
 
-    &-selected-button
-        border: none
-        background-color: variables.$background-primary
-        padding: 0
-
-        & > .language-flag
-            width: 40px
-            border-radius: 100%
+    & > .language-flag
+        width: 40px
+        height: 40px
+        border-radius: 100%
 
         &:hover
             cursor: pointer
+            outline: 3px solid rgb(255, 179, 0, 255)
+
+.dropdown
+    &-container
+        position: relative
+
+    &-menu
+        position: fixed
+        top: 0
+        left: 0
+        transform: translateY(100%)
+        opacity: 0
+        transition: transform 0.5s ease, opacity 0.5s ease
+
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+
+        width: 100%
+        height: 100%
+
+        background-color: rgba(191, 192, 191, 0.7)
+
+        &.show
+            transform: translateY(0)
+            opacity: 1
+
+.language
+    &-option
+        width: 90%
+        border-radius: variables.$border-radius-primary
+        margin-bottom: 10px
+
+        @media (min-width: variables.$breakpoint-sm)
+            width: 375px
 
     &-button
         display: flex
-        gap: 30px
         width: 100%
-        min-width: 180px
-        max-width: 380px
-        padding: 0
-        margin-bottom: 10px
-        border: none
-        border-radius: 15px
-        background-color: white
+        height: 45px
+        border-radius: variables.$border-radius-primary
 
         &:hover
-            cursor: pointer
             background-color: variables.$background-accent
-
-    &-flag
-        order: 1
-        border-radius: 15px 0 0 15px
-        width: 60px
-        height: 40px
-
-    &-name
-        order: 2
-        align-self: center
-        text-align: start
-        font-weight: variables.$font-weight-mid
-        padding: 10px 15px 10px 0
-
-.close
-    &-button
-        position: absolute
-        right: 10px
-        top: 0
-        border: none
-        background-color: transparent
-        &:hover
             cursor: pointer
-    &-icon
-        &:hover
-            fill: rgb(255, 179, 0, 255)
+
+        .language-flag
+            order: 1
+            width: 60px
+            border-radius: variables.$border-radius-primary 0 0 variables.$border-radius-primary
+        .language-name
+            display: flex
+            align-items: center
+            order: 2
+            text-transform: uppercase
+            font-weight: variables.$font-weight-mid
+            margin-left: variables.$spacing-lg
