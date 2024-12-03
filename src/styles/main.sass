@@ -9,7 +9,7 @@ body
     display: flex
     flex-direction: column
     justify-content: space-between
-    padding: variables.$spacing-md
+    padding: variables.$spacing-md 2px
     background-color: variables.$background-primary
 
     @media (min-width: variables.$breakpoint-md)
@@ -24,6 +24,7 @@ header
 .header-title
     font-weight: variables.$font-weight-heavy
     font-size: variables.$font-size-md
+    color: variables.$text-primary
     letter-spacing: 5px
 
     animation: slide-in-from-right 1.5s ease-out
@@ -51,13 +52,15 @@ header
 main
     display: flex
     flex-direction: column
-    justify-content: space-around
+    justify-content: center
+    height: 100%
 
 footer
     width: 100%
     display: flex
     justify-content: space-between
     position: relative
+    padding: 0 variables.$spacing-md
 
 .logo
     &-container
@@ -70,8 +73,5 @@ dt-language-selector
         align-self: flex-end
         padding-bottom: variables.$spacing-md
 
-main
-    height: 100%
-.content
-    height: 100%
-    outline: 1px solid red
+dt-player-count-picker
+        height: 100%

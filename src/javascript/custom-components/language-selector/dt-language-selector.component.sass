@@ -81,9 +81,12 @@ button
 
     &-button
         display: flex
+        align-items: center
         width: 100%
         height: 45px
         border-radius: variables.$border-radius-primary
+        color: variables.$text-primary
+        font-size: variables.$font-size-xs
 
         &:hover
             background-color: variables.$background-accent
@@ -92,11 +95,13 @@ button
         .language-flag
             order: 1
             width: 60px
+            height: 100%
             border-radius: variables.$border-radius-primary 0 0 variables.$border-radius-primary
+
         .language-name
             display: flex
             align-items: center
             order: 2
             text-transform: uppercase
-            font-weight: variables.$font-weight-mid
+            font-weight: variables.$font-weight-normal
             margin-left: variables.$spacing-lg
