@@ -24,6 +24,20 @@ header
 .header-title
     font-weight: variables.$font-weight-heavy
     font-size: variables.$font-size-md
+    letter-spacing: 5px
+
+    animation: slide-in-from-right 1.5s ease-out
+    opacity: 1
+    display: inline-block
+
+    @keyframes slide-in-from-right
+        0%
+            transform: translateX(100%)
+            opacity: 0
+
+        100%
+            transform: translateX(0)
+            opacity: 1
 
     @media (min-width: variables.$breakpoint-sm)
         font-size: variables.$font-size-xm

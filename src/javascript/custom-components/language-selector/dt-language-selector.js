@@ -52,7 +52,6 @@ class DtLanguageSelector extends HTMLElement {
             li.classList.add('language-option');
 
             button.classList.add('language-button', `${language.name}`);
-            button.setAttribute('aria-label', `Select ${language.name}`);
             fetchImage(language.flag, button, 'language-flag');
 
             span.classList.add('language-name');
@@ -72,7 +71,6 @@ class DtLanguageSelector extends HTMLElement {
 
     setNewLanguage(e) {
         const clickedButton = e.target.closest('.language-button');
-        // console.log(clickedButton)
         if (clickedButton === null) { return }
 
         const newLanguage = Object.values(languages).find(language => language.name.toLowerCase() === clickedButton.classList[1].toLowerCase());
@@ -87,10 +85,7 @@ class DtLanguageSelector extends HTMLElement {
         this.openButton.innerHTML = '';
         fetchImage(activeLanguage.flag, this.openButton, 'language-flag');
 
-        console.log(activeLanguage)
-        console.log(activeLanguage.title, document.querySelector('.header-title'))
         translate(activeLanguage.title, document.querySelector('.header-title'))
-
         this.closeDropdown();
     }
 
