@@ -9,7 +9,7 @@ body
     display: flex
     flex-direction: column
     justify-content: space-between
-    padding: variables.$spacing-md
+    padding: variables.$spacing-md 2px
     background-color: variables.$background-primary
 
     @media (min-width: variables.$breakpoint-md)
@@ -24,6 +24,21 @@ header
 .header-title
     font-weight: variables.$font-weight-heavy
     font-size: variables.$font-size-md
+    color: variables.$text-primary
+    letter-spacing: 5px
+
+    animation: slide-in-from-right 1.5s ease-out
+    opacity: 1
+    display: inline-block
+
+    @keyframes slide-in-from-right
+        0%
+            transform: translateX(100%)
+            opacity: 0
+
+        100%
+            transform: translateX(0)
+            opacity: 1
 
     @media (min-width: variables.$breakpoint-sm)
         font-size: variables.$font-size-xm
@@ -34,11 +49,18 @@ header
     @media (min-width: variables.$breakpoint-lg)
         font-size: variables.$font-size-xl
 
+main
+    display: flex
+    flex-direction: column
+    justify-content: center
+    height: 100%
+
 footer
     width: 100%
     display: flex
     justify-content: space-between
     position: relative
+    padding: 0 variables.$spacing-md
 
 .logo
     &-container
@@ -51,8 +73,5 @@ dt-language-selector
         align-self: flex-end
         padding-bottom: variables.$spacing-md
 
-main
-    height: 100%
-.content
-    height: 100%
-    outline: 1px solid red
+dt-player-count-picker
+        height: 100%

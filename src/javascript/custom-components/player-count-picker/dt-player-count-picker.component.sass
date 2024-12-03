@@ -1,1 +1,112 @@
+@use '../../../styles/_variables'
 
+*
+    font-family: variables.$font-primary
+    padding: 0
+    margin: 0
+    list-style: none
+    box-sizing: border-box
+    border: none
+
+button
+    background-color: transparent
+    &:hover
+        cursor: pointer
+
+.button-container
+    width: 100%
+    padding: variables.$spacing-sm
+    display: flex
+    justify-content: space-between
+
+.next-button  svg,
+.previous-button  svg
+    fill: variables.$text-primary
+
+.next-button:hover svg,
+.previous-button:hover svg
+    fill: rgba(255, 200, 0, 255)
+
+.next-button,
+.previous-button
+    @media (min-width: variables.$breakpoint-md)
+        display: none
+
+.cards
+    display: grid
+    grid-auto-flow: column
+    grid-auto-columns: 50%
+    overflow-x: auto
+    scroll-snap-type: inline mandatory
+    scrollbar-width: none
+
+    @media (min-width: variables.$breakpoint-sm)
+        grid-auto-columns: calc(33.3%)
+
+    @media (min-width: variables.$breakpoint-sm-md)
+        grid-auto-columns: calc(25%)
+
+    @media (min-width: variables.$breakpoint-md)
+        grid-auto-columns: calc(20%)
+
+    @media (min-width: variables.$breakpoint-lg)
+        width: 924px
+
+.card
+    width: 100%
+    aspect-ratio: 2 / 3
+
+    &-button
+        width: 100%
+        padding: 7.5% 5%
+        display: flex
+        scroll-snap-align: start
+        border: 3px solid transparent
+        border-radius: 7.5%
+        &:hover
+            border: 3px solid rgb(236, 49, 143)
+
+    &-slider
+        height: 100%
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-around
+
+    &-title
+        font-weight: variables.$font-weight-light
+        font-size: 18px
+        margin: variables.$spacing-md 0
+
+        @media (min-width: variables.$breakpoint-sm)
+            font-size: variables.$font-size-sm
+
+.hidden
+    visibility: hidden
+    pointer-events: none
+
+//  ---------------- ANIMATIONS -------------- //
+.card-button
+    opacity: 0
+    transform: translateX(-100%)
+    animation: slide-in 0.75s ease-out forwards
+
+    &:nth-child(1)
+        animation-delay: 0.4s
+
+    &:nth-child(2)
+        animation-delay: 0.6s
+
+    &:nth-child(3)
+        animation-delay: 0.8s
+
+    &:nth-child(4)
+        animation-delay: 1s
+
+    &:nth-child(5)
+        animation-delay: 1.2s
+
+@keyframes slide-in
+    to
+        opacity: 1
+        transform: translateX(0)
