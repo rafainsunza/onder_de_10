@@ -19,7 +19,7 @@ button
     background-color: transparent
 
     .close-icon:hover
-        fill: rgb(255, 179, 0, 255)
+        fill: variables.$language-menu-button-hover
         cursor: pointer
 
     &-container
@@ -32,7 +32,7 @@ button
 
 .open-button
     border: none
-    background-color: variables.$background-primary
+    background-color: transparent
     padding: 0
 
     & > .language-flag
@@ -42,7 +42,7 @@ button
 
         &:hover
             cursor: pointer
-            outline: 3px solid rgb(255, 179, 0, 255)
+            outline: 3px solid variables.$language-menu-button-hover
 
 .dropdown
     &-container
@@ -64,7 +64,7 @@ button
         width: 100%
         height: 100%
 
-        background-color: rgba(191, 192, 191, 0.7)
+        background-color: variables.$language-menu-backdrop
 
         &.show
             transform: translateY(0)
@@ -73,8 +73,8 @@ button
 .language
     &-option
         width: 90%
-        border-radius: variables.$border-radius-primary
-        margin-bottom: 10px
+        border-radius: variables.$button-border-radius
+        margin-bottom: variables.$spacing-sm-md
 
         @media (min-width: variables.$breakpoint-sm)
             width: 375px
@@ -84,24 +84,25 @@ button
         align-items: center
         width: 100%
         height: 45px
-        border-radius: variables.$border-radius-primary
+        border-radius: variables.$button-border-radius
         color: variables.$text-primary
         font-size: variables.$font-size-xs
 
         &:hover
-            background-color: variables.$background-accent
+            background-color: variables.$language-menu-button-hover
             cursor: pointer
 
         .language-flag
             order: 1
             width: 60px
             height: 100%
-            border-radius: variables.$border-radius-primary 0 0 variables.$border-radius-primary
+            border-radius: variables.$button-border-radius 0 0 variables.$button-border-radius
 
         .language-name
             display: flex
             align-items: center
             order: 2
             text-transform: uppercase
+            letter-spacing: 1.5px
             font-weight: variables.$font-weight-normal
-            margin-left: variables.$spacing-lg
+            margin-left: variables.$language-name-margin

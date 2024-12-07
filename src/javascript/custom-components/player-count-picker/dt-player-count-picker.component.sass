@@ -15,22 +15,34 @@ button
 
 .button-container
     width: 100%
-    padding: variables.$spacing-sm
     display: flex
-    justify-content: space-between
+    justify-content: space-around
 
 .next-button  svg,
 .previous-button  svg
-    fill: variables.$text-primary
+    fill: variables.$card-button-fill
 
 .next-button:hover svg,
 .previous-button:hover svg
-    fill: rgba(255, 200, 0, 255)
+    fill: variables.$card-button-fill-hover
 
 .next-button,
 .previous-button
+    background-color: transparent
     @media (min-width: variables.$breakpoint-md)
         display: none
+
+.indicator
+    height: 5px
+    width: 20%
+    border-radius: variables.$button-border-radius
+    background-color: variables.$indicator
+
+    &-container
+        width: 50%
+        display: flex
+        justify-content: space-around
+        align-items: center
 
 .cards
     display: grid
@@ -58,13 +70,14 @@ button
 
     &-button
         width: 100%
-        padding: 7.5% 5%
+        padding: variables.$card-padding
         display: flex
         scroll-snap-align: start
         border: 3px solid transparent
-        border-radius: 7.5%
+        border-radius: variables.$card-border-radius
+
         &:hover
-            border: 3px solid rgb(236, 49, 143)
+            border: 3px solid variables.$card-border-hover
 
     &-slider
         height: 100%
@@ -84,6 +97,12 @@ button
 .hidden
     visibility: hidden
     pointer-events: none
+
+.displaynone
+    display: none
+
+.active
+    background-color: variables.$indicator-selected
 
 //  ---------------- ANIMATIONS -------------- //
 .card-button
