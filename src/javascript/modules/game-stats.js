@@ -9,6 +9,8 @@ function setPlayerCount(count) {
             score: 0
         };
     }
+
+    console.log(players)
 }
 
 function resetPlayerCount() {

@@ -15,22 +15,44 @@ button
 
 .button-container
     width: 100%
-    padding: variables.$spacing-sm
     display: flex
-    justify-content: space-between
+    justify-content: space-around
 
 .next-button  svg,
 .previous-button  svg
-    fill: variables.$text-primary
+    fill: variables.$nav-button-fill
 
 .next-button:hover svg,
 .previous-button:hover svg
-    fill: rgba(255, 200, 0, 255)
+    fill: variables.$nav-button-fill-hover
 
 .next-button,
 .previous-button
+    background-color: transparent
     @media (min-width: variables.$breakpoint-md)
         display: none
+
+.indicator
+    height: 5px
+    width: 20%
+    border-radius: variables.$button-border-radius
+    background-color: variables.$indicator
+
+    @media (min-width: variables.$breakpoint-md)
+        display: none
+
+    &-4
+        @media (min-width: variables.$breakpoint-sm)
+            display: none
+    &-3
+        @media (min-width: variables.$breakpoint-sm-md)
+            display: none
+
+    &-container
+        width: 50%
+        display: flex
+        justify-content: space-around
+        align-items: center
 
 .cards
     display: grid
@@ -58,13 +80,14 @@ button
 
     &-button
         width: 100%
-        padding: 7.5% 5%
+        padding: variables.$card-padding
         display: flex
         scroll-snap-align: start
         border: 3px solid transparent
-        border-radius: 7.5%
+        border-radius: variables.$card-border-radius
+
         &:hover
-            border: 3px solid rgb(236, 49, 143)
+            border: 3px solid variables.$card-border-hover
 
     &-slider
         height: 100%
@@ -77,6 +100,7 @@ button
         font-weight: variables.$font-weight-light
         font-size: 18px
         margin: variables.$spacing-md 0
+        text-align: center
 
         @media (min-width: variables.$breakpoint-sm)
             font-size: variables.$font-size-sm
@@ -85,7 +109,28 @@ button
     visibility: hidden
     pointer-events: none
 
+.displaynone
+    display: none
+
+.active
+    background-color: variables.$indicator-selected
+
 //  ---------------- ANIMATIONS -------------- //
+
+@keyframes slide-in
+    to
+        opacity: 1
+        transform: translateX(0)
+
+@keyframes slide-out
+    from
+        opacity: 1
+        transform: translateX(0)
+
+    to
+        opacity: 0
+        transform: translateX(100%)
+
 .card-button
     opacity: 0
     transform: translateX(-100%)
@@ -106,7 +151,10 @@ button
     &:nth-child(5)
         animation-delay: 1.2s
 
-@keyframes slide-in
-    to
-        opacity: 1
-        transform: translateX(0)
+.card-title
+    opacity: 0
+    transform: translateX(-100%)
+    animation: slide-in 1.7s ease-out forwards
+
+.slide-out
+    animation: slide-out 0.5s ease-in forwards
