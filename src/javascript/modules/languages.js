@@ -62,8 +62,8 @@ function setActiveLanguage(newLanguage) {
     activeLanguage = newLanguage;
 }
 
-function translate(text, element) {
-    element.innerText = text
+function translate(newText, element) {
+    element.innerText = newText;
 }
 
 

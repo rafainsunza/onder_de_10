@@ -14,7 +14,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _dt_language_selector_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dt-language-selector.html */ "./src/javascript/custom-components/language-selector/dt-language-selector.html");
 /* harmony import */ var _dt_language_selector_component_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dt-language-selector.component.sass */ "./src/javascript/custom-components/language-selector/dt-language-selector.component.sass");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils.js */ "./src/javascript/utils.js");
+/* harmony import */ var _modules_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../modules/utils.js */ "./src/javascript/modules/utils.js");
 /* harmony import */ var _modules_languages_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../modules/languages.js */ "./src/javascript/modules/languages.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
@@ -86,7 +86,7 @@ var DtLanguageSelector = /*#__PURE__*/function (_HTMLElement) {
         var span = document.createElement('span');
         li.classList.add('language-option');
         button.classList.add('language-button', "".concat(language.name));
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(language.flag, button, 'language-flag');
+        (0,_modules_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(language.flag, button, 'language-flag');
         span.classList.add('language-name');
         span.innerText = language.name;
         button.appendChild(span);
@@ -98,7 +98,7 @@ var DtLanguageSelector = /*#__PURE__*/function (_HTMLElement) {
     key: "renderDefaultLanguageButton",
     value: function renderDefaultLanguageButton() {
       var activeLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_3__.getActiveLanguage)();
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(activeLanguage.flag, this.openButton, 'language-flag');
+      (0,_modules_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(activeLanguage.flag, this.openButton, 'language-flag');
     }
   }, {
     key: "setNewLanguage",
@@ -116,9 +116,14 @@ var DtLanguageSelector = /*#__PURE__*/function (_HTMLElement) {
       }
       (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_3__.setActiveLanguage)(newLanguage);
       var activeLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_3__.getActiveLanguage)();
+      var event = new CustomEvent('language-changed', {
+        detail: activeLanguage,
+        bubbles: true,
+        composed: true
+      });
+      document.dispatchEvent(event);
       this.openButton.innerHTML = '';
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(activeLanguage.flag, this.openButton, 'language-flag');
-      (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_3__.translate)(activeLanguage.title, document.querySelector('.header-title'));
+      (0,_modules_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(activeLanguage.flag, this.openButton, 'language-flag');
       this.closeDropdown();
     }
   }]);
@@ -140,8 +145,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _dt_player_count_picker_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dt-player-count-picker.html */ "./src/javascript/custom-components/player-count-picker/dt-player-count-picker.html");
 /* harmony import */ var _dt_player_count_picker_component_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dt-player-count-picker.component.sass */ "./src/javascript/custom-components/player-count-picker/dt-player-count-picker.component.sass");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils.js */ "./src/javascript/utils.js");
+/* harmony import */ var _modules_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../modules/utils.js */ "./src/javascript/modules/utils.js");
 /* harmony import */ var _modules_languages_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../modules/languages.js */ "./src/javascript/modules/languages.js");
+/* harmony import */ var _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../modules/game-stats.js */ "./src/javascript/modules/game-stats.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -168,6 +174,7 @@ function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? O
 
 
 
+
 var template = document.createElement('template');
 template.innerHTML = "\n    <style>\n        ".concat(_dt_player_count_picker_component_sass__WEBPACK_IMPORTED_MODULE_1__["default"], "\n    </style>\n    ").concat(_dt_player_count_picker_html__WEBPACK_IMPORTED_MODULE_0__["default"], "\n");
 var DtPlayerCountPicker = /*#__PURE__*/function (_HTMLElement) {
@@ -184,31 +191,52 @@ var DtPlayerCountPicker = /*#__PURE__*/function (_HTMLElement) {
     _this.nextButton = _this.shadowRoot.querySelector('.next-button');
     _this.previousButton = _this.shadowRoot.querySelector('.previous-button');
     _this.indicatorContainer = _this.shadowRoot.querySelector('.indicator-container');
+    _this.cardTitle = _this.shadowRoot.querySelector('.card-title');
     _this.renderCards();
     var firstCard = _this.cards.querySelector('.card-button:first-child');
     var lastCard = _this.cards.querySelector('.card-button:last-child');
     _this.toggleNavButtons(lastCard, _this.nextButton);
     _this.toggleNavButtons(firstCard, _this.previousButton);
-    _this.updateIndicatorsAndVisibility();
+    _this.updateActiveIndicator();
+    document.addEventListener('language-changed', function (e) {
+      (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_3__.translate)(e.detail.player_count, _this.cardTitle);
+    });
     _this.nextButton.addEventListener('click', function (e) {
       return _this.scrollCards(e);
     });
     _this.previousButton.addEventListener('click', function (e) {
       return _this.scrollCards(e);
     });
+    _this.cards.addEventListener('click', function (e) {
+      _this.handlePlayerCountSelection(e);
+    });
     return _this;
   }
   _inherits(DtPlayerCountPicker, _HTMLElement);
   return _createClass(DtPlayerCountPicker, [{
+    key: "handlePlayerCountSelection",
+    value: function handlePlayerCountSelection(e) {
+      var _this2 = this;
+      (0,_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_4__.resetPlayerCount)();
+      var clickedButton = e.target.closest('.card-button');
+      var buttonIdString = clickedButton.id;
+      var chosenPlayerCount = Number(buttonIdString[buttonIdString.length - 1]);
+      (0,_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_4__.setPlayerCount)(chosenPlayerCount);
+      this.shadowRoot.querySelector('.card-slider').classList.add('slide-out');
+      setTimeout(function () {
+        _this2.remove();
+      }, 500);
+    }
+  }, {
     key: "renderCards",
     value: function renderCards() {
-      var _this2 = this;
+      var _this3 = this;
       this.cardsUrls.forEach(function (url, index) {
         var button = document.createElement('button');
         button.classList.add('card-button');
         button.id = "card-".concat(index + 2);
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(url, button, 'card');
-        _this2.cards.appendChild(button);
+        (0,_modules_utils_js__WEBPACK_IMPORTED_MODULE_2__.fetchImage)(url, button, 'card');
+        _this3.cards.appendChild(button);
       });
     }
   }, {
@@ -250,9 +278,9 @@ var DtPlayerCountPicker = /*#__PURE__*/function (_HTMLElement) {
       observer.observe(card);
     }
   }, {
-    key: "updateIndicatorsAndVisibility",
-    value: function updateIndicatorsAndVisibility() {
-      var _this3 = this;
+    key: "updateActiveIndicator",
+    value: function updateActiveIndicator() {
+      var _this4 = this;
       var cards = this.cards.querySelectorAll('.card-button');
       var visibleCards = new Set();
       var observer = new IntersectionObserver(function (entries) {
@@ -263,9 +291,9 @@ var DtPlayerCountPicker = /*#__PURE__*/function (_HTMLElement) {
             visibleCards["delete"](entry.target);
           }
         });
-        var indicators = _this3.indicatorContainer.querySelectorAll('.indicator');
+        var indicators = _this4.indicatorContainer.querySelectorAll('.indicator');
         var cardsArr = Array.from(cards);
-        _this3.setActiveIndicator(cardsArr, indicators, visibleCards.size, visibleCards);
+        _this4.setActiveIndicator(cardsArr, indicators, visibleCards.size, visibleCards);
       }, {
         root: this.cards,
         rootMargin: '0px',
@@ -328,6 +356,40 @@ var DtPlayerCountPicker = /*#__PURE__*/function (_HTMLElement) {
   }]);
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
 customElements.define('dt-player-count-picker', DtPlayerCountPicker);
+
+
+/***/ }),
+
+/***/ "./src/javascript/modules/game-stats.js":
+/*!**********************************************!*\
+  !*** ./src/javascript/modules/game-stats.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   players: () => (/* binding */ players),
+/* harmony export */   resetPlayerCount: () => (/* binding */ resetPlayerCount),
+/* harmony export */   setPlayerCount: () => (/* binding */ setPlayerCount)
+/* harmony export */ });
+var players = {};
+function setPlayerCount(count) {
+  for (var i = 1; i <= count; i++) {
+    var playerKey = "player_".concat(i);
+    players[playerKey] = {
+      name: null,
+      score: 0
+    };
+  }
+  console.log(players);
+}
+function resetPlayerCount() {
+  for (var key in players) {
+    if (players.hasOwnProperty(key)) {
+      delete players[key];
+    }
+  }
+}
 
 
 /***/ }),
@@ -404,17 +466,17 @@ function getActiveLanguage() {
 function setActiveLanguage(newLanguage) {
   activeLanguage = newLanguage;
 }
-function translate(text, element) {
-  element.innerText = text;
+function translate(newText, element) {
+  element.innerText = newText;
 }
 
 
 /***/ }),
 
-/***/ "./src/javascript/utils.js":
-/*!*********************************!*\
-  !*** ./src/javascript/utils.js ***!
-  \*********************************/
+/***/ "./src/javascript/modules/utils.js":
+/*!*****************************************!*\
+  !*** ./src/javascript/modules/utils.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -926,7 +988,7 @@ button:hover {
 
 .next-button:hover svg,
 .previous-button:hover svg {
-  fill: rgb(44, 46, 53);
+  fill: rgb(255, 200, 0);
 }
 
 .next-button,
@@ -1023,6 +1085,7 @@ button:hover {
   font-weight: 100;
   font-size: 18px;
   margin: 20px 0;
+  text-align: center;
 }
 @media (min-width: 420px) {
   .card-title {
@@ -1040,9 +1103,25 @@ button:hover {
 }
 
 .active {
-  background-color: rgb(44, 46, 53);
+  background-color: rgb(255, 200, 0);
 }
 
+@keyframes slide-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
 .card-button {
   opacity: 0;
   transform: translateX(-100%);
@@ -1064,12 +1143,15 @@ button:hover {
   animation-delay: 1.2s;
 }
 
-@keyframes slide-in {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/player-count-picker/dt-player-count-picker.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,6BAAA;AAAJ;AACI;EACI,eAAA;AACR;;AACA;EACI,WAAA;EACA,aAAA;EACA,6BAAA;AAEJ;;AAAA;;EAEI,wBCpBS;ADuBb;;AADA;;EAEI,qBCpBI;ADwBR;;AAFA;;EAEI,6BAAA;AAKJ;AAJI;EAHJ;;IAIQ,aAAA;EAQN;AACF;;AAPA;EACI,WAAA;EACA,UAAA;EACA,mBCImB;EDHnB,oCCpCS;AD8Cb;AARI;EANJ;IAOQ,aAAA;EAWN;AACF;AATQ;EADJ;IAEQ,aAAA;EAYV;AACF;AAXQ;EADJ;IAEQ,aAAA;EAcV;AACF;AAbI;EACI,UAAA;EACA,aAAA;EACA,6BAAA;EACA,mBAAA;AAeR;;AAbA;EACI,aAAA;EACA,sBAAA;EACA,sBAAA;EACA,gBAAA;EACA,kCAAA;EACA,qBAAA;AAgBJ;AAdI;EARJ;IASQ,wBAAA;EAiBN;AACF;AAhBI;EAXJ;IAYQ,sBAAA;EAmBN;AACF;AAlBI;EAdJ;IAeQ,sBAAA;EAqBN;AACF;AApBI;EAjBJ;IAkBQ,YAAA;EAuBN;AACF;;AAtBA;EACI,WAAA;EACA,iBAAA;AAyBJ;AAvBI;EACI,WAAA;EACA,gBC7BO;ED8BP,aAAA;EACA,wBAAA;EACA,6BAAA;EACA,mBChCa;ADyDrB;AAvBQ;EACI,mCAAA;AAyBZ;AAvBI;EACI,YAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,6BAAA;AAyBR;AAvBI;EACI,gBChFY;EDiFZ,eAAA;EACA,cAAA;AAyBR;AAvBQ;EALJ;IAMQ,eC3FG;EDqHb;AACF;;AAzBA;EACI,kBAAA;EACA,oBAAA;AA4BJ;;AA1BA;EACI,aAAA;AA6BJ;;AA3BA;EACI,iCC5GI;AD0IR;;AA3BA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AA8BJ;AA5BI;EACI,qBAAA;AA8BR;AA5BI;EACI,qBAAA;AA8BR;AA5BI;EACI,qBAAA;AA8BR;AA5BI;EACI,mBAAA;AA8BR;AA5BI;EACI,qBAAA;AA8BR;;AA5BA;EACI;IACI,UAAA;IACA,wBAAA;EA+BN;AACF","sourceRoot":""}]);
+.card-title {
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: slide-in 1.7s ease-out forwards;
+}
+
+.slide-out {
+  animation: slide-out 0.5s ease-in forwards;
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/player-count-picker/dt-player-count-picker.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,6BAAA;AAAJ;AACI;EACI,eAAA;AACR;;AACA;EACI,WAAA;EACA,aAAA;EACA,6BAAA;AAEJ;;AAAA;;EAEI,wBCpBS;ADuBb;;AADA;;EAEI,sBCnBK;ADuBT;;AAFA;;EAEI,6BAAA;AAKJ;AAJI;EAHJ;;IAIQ,aAAA;EAQN;AACF;;AAPA;EACI,WAAA;EACA,UAAA;EACA,mBCImB;EDHnB,oCCpCS;AD8Cb;AARI;EANJ;IAOQ,aAAA;EAWN;AACF;AATQ;EADJ;IAEQ,aAAA;EAYV;AACF;AAXQ;EADJ;IAEQ,aAAA;EAcV;AACF;AAbI;EACI,UAAA;EACA,aAAA;EACA,6BAAA;EACA,mBAAA;AAeR;;AAbA;EACI,aAAA;EACA,sBAAA;EACA,sBAAA;EACA,gBAAA;EACA,kCAAA;EACA,qBAAA;AAgBJ;AAdI;EARJ;IASQ,wBAAA;EAiBN;AACF;AAhBI;EAXJ;IAYQ,sBAAA;EAmBN;AACF;AAlBI;EAdJ;IAeQ,sBAAA;EAqBN;AACF;AApBI;EAjBJ;IAkBQ,YAAA;EAuBN;AACF;;AAtBA;EACI,WAAA;EACA,iBAAA;AAyBJ;AAvBI;EACI,WAAA;EACA,gBC7BO;ED8BP,aAAA;EACA,wBAAA;EACA,6BAAA;EACA,mBChCa;ADyDrB;AAvBQ;EACI,mCAAA;AAyBZ;AAvBI;EACI,YAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,6BAAA;AAyBR;AAvBI;EACI,gBChFY;EDiFZ,eAAA;EACA,cAAA;EACA,kBAAA;AAyBR;AAvBQ;EANJ;IAOQ,eC5FG;EDsHb;AACF;;AAzBA;EACI,kBAAA;EACA,oBAAA;AA4BJ;;AA1BA;EACI,aAAA;AA6BJ;;AA3BA;EACI,kCC5GK;AD0IT;;AA1BA;EACI;IACI,UAAA;IACA,wBAAA;EA6BN;AACF;AA5BA;EACI;IACI,UAAA;IACA,wBAAA;EA8BN;EA5BE;IACI,UAAA;IACA,2BAAA;EA8BN;AACF;AA7BA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AA+BJ;AA7BI;EACI,qBAAA;AA+BR;AA7BI;EACI,qBAAA;AA+BR;AA7BI;EACI,qBAAA;AA+BR;AA7BI;EACI,mBAAA;AA+BR;AA7BI;EACI,qBAAA;AA+BR;;AA7BA;EACI,UAAA;EACA,4BAAA;EACA,0CAAA;AAgCJ;;AA9BA;EACI,0CAAA;AAiCJ","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -1740,19 +1822,24 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _javascript_utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./javascript/utils.js */ "./src/javascript/utils.js");
-/* harmony import */ var _javascript_custom_components_language_selector_dt_language_selector_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./javascript/custom-components/language-selector/dt-language-selector.js */ "./src/javascript/custom-components/language-selector/dt-language-selector.js");
-/* harmony import */ var _javascript_custom_components_player_count_picker_dt_player_count_picker_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./javascript/custom-components/player-count-picker/dt-player-count-picker.js */ "./src/javascript/custom-components/player-count-picker/dt-player-count-picker.js");
-/* harmony import */ var _styles_reset_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./styles/reset.css */ "./src/styles/reset.css");
-/* harmony import */ var _styles_main_sass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles/main.sass */ "./src/styles/main.sass");
+/* harmony import */ var _styles_reset_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/reset.css */ "./src/styles/reset.css");
+/* harmony import */ var _styles_main_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.sass */ "./src/styles/main.sass");
+/* harmony import */ var _javascript_custom_components_language_selector_dt_language_selector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./javascript/custom-components/language-selector/dt-language-selector.js */ "./src/javascript/custom-components/language-selector/dt-language-selector.js");
+/* harmony import */ var _javascript_custom_components_player_count_picker_dt_player_count_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./javascript/custom-components/player-count-picker/dt-player-count-picker.js */ "./src/javascript/custom-components/player-count-picker/dt-player-count-picker.js");
+/* harmony import */ var _javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./javascript/modules/utils.js */ "./src/javascript/modules/utils.js");
+/* harmony import */ var _javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./javascript/modules/languages.js */ "./src/javascript/modules/languages.js");
 
 
 
 
 
-(0,_javascript_utils_js__WEBPACK_IMPORTED_MODULE_0__.fetchImage)('assets/onder_de_10_logo.png', document.querySelector('.logo-link'), 'logo-footer');
+
+(0,_javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_4__.fetchImage)('assets/onder_de_10_logo.png', document.querySelector('.logo-link'), 'logo-footer');
+document.addEventListener('language-changed', function (e) {
+  (0,_javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_5__.translate)(e.detail.title, document.querySelector('.header-title'));
+});
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.2170e18a8c160af0c07f.js.map
+//# sourceMappingURL=bundle.dac238edbcffd595e11a.js.map

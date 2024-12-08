@@ -1,7 +1,7 @@
 import html from './dt-language-selector.html';
 import style from './dt-language-selector.component.sass';
 
-import { fetchImage } from '../../utils.js';
+import { fetchImage } from '../../modules/utils.js';
 import { languages, getActiveLanguage, setActiveLanguage, translate } from '../../modules/languages.js';
 
 const template = document.createElement('template');
@@ -82,10 +82,16 @@ class DtLanguageSelector extends HTMLElement {
         setActiveLanguage(newLanguage);
         const activeLanguage = getActiveLanguage();
 
+        const event = new CustomEvent('language-changed', {
+            detail: activeLanguage,
+            bubbles: true,
+            composed: true
+        });
+        document.dispatchEvent(event);
+
         this.openButton.innerHTML = '';
         fetchImage(activeLanguage.flag, this.openButton, 'language-flag');
 
-        translate(activeLanguage.title, document.querySelector('.header-title'))
         this.closeDropdown();
     }
 

@@ -20,11 +20,11 @@ button
 
 .next-button  svg,
 .previous-button  svg
-    fill: variables.$card-button-fill
+    fill: variables.$nav-button-fill
 
 .next-button:hover svg,
 .previous-button:hover svg
-    fill: variables.$card-button-fill-hover
+    fill: variables.$nav-button-fill-hover
 
 .next-button,
 .previous-button
@@ -100,6 +100,7 @@ button
         font-weight: variables.$font-weight-light
         font-size: 18px
         margin: variables.$spacing-md 0
+        text-align: center
 
         @media (min-width: variables.$breakpoint-sm)
             font-size: variables.$font-size-sm
@@ -115,6 +116,21 @@ button
     background-color: variables.$indicator-selected
 
 //  ---------------- ANIMATIONS -------------- //
+
+@keyframes slide-in
+    to
+        opacity: 1
+        transform: translateX(0)
+
+@keyframes slide-out
+    from
+        opacity: 1
+        transform: translateX(0)
+
+    to
+        opacity: 0
+        transform: translateX(100%)
+
 .card-button
     opacity: 0
     transform: translateX(-100%)
@@ -135,7 +151,10 @@ button
     &:nth-child(5)
         animation-delay: 1.2s
 
-@keyframes slide-in
-    to
-        opacity: 1
-        transform: translateX(0)
+.card-title
+    opacity: 0
+    transform: translateX(-100%)
+    animation: slide-in 1.7s ease-out forwards
+
+.slide-out
+    animation: slide-out 0.5s ease-in forwards

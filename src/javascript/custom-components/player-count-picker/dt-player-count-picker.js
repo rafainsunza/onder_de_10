@@ -1,8 +1,9 @@
 import html from './dt-player-count-picker.html';
 import style from './dt-player-count-picker.component.sass';
 
-import { fetchImage } from '../../utils.js';
+import { fetchImage } from '../../modules/utils.js';
 import { languages, getActiveLanguage, setActiveLanguage, translate } from '../../modules/languages.js';
+import { resetPlayerCount, setPlayerCount } from '../../modules/game-stats.js';
 
 const template = document.createElement('template');
 
@@ -32,17 +33,33 @@ class DtPlayerCountPicker extends HTMLElement {
         this.nextButton = this.shadowRoot.querySelector('.next-button');
         this.previousButton = this.shadowRoot.querySelector('.previous-button');
         this.indicatorContainer = this.shadowRoot.querySelector('.indicator-container');
+        this.cardTitle = this.shadowRoot.querySelector('.card-title');
 
         this.renderCards();
-
         const firstCard = this.cards.querySelector('.card-button:first-child');
         const lastCard = this.cards.querySelector('.card-button:last-child');
+
         this.toggleNavButtons(lastCard, this.nextButton);
         this.toggleNavButtons(firstCard, this.previousButton);
-        this.updateIndicatorsAndVisibility();
+        this.updateActiveIndicator();
 
+        document.addEventListener('language-changed', (e) => { translate(e.detail.player_count, this.cardTitle) });
         this.nextButton.addEventListener('click', (e) => this.scrollCards(e));
         this.previousButton.addEventListener('click', (e) => this.scrollCards(e));
+        this.cards.addEventListener('click', (e) => { this.handlePlayerCountSelection(e) });
+    }
+
+    handlePlayerCountSelection(e) {
+        resetPlayerCount();
+        const clickedButton = e.target.closest('.card-button');
+        const buttonIdString = clickedButton.id
+        const chosenPlayerCount = Number(buttonIdString[buttonIdString.length - 1]);
+        setPlayerCount(chosenPlayerCount);
+
+        this.shadowRoot.querySelector('.card-slider').classList.add('slide-out');
+        setTimeout(() => {
+            this.remove();
+        }, 500);
     }
 
     renderCards() {
@@ -97,7 +114,7 @@ class DtPlayerCountPicker extends HTMLElement {
         observer.observe(card)
     }
 
-    updateIndicatorsAndVisibility() {
+    updateActiveIndicator() {
         const cards = this.cards.querySelectorAll('.card-button')
         const visibleCards = new Set();
 
