@@ -34,7 +34,6 @@ class DtPlayerCountPicker extends HTMLElement {
         this.indicatorContainer = this.shadowRoot.querySelector('.indicator-container');
 
         this.renderCards();
-        this.debounce(() => this.toggleIndicators(), 300);
 
         const firstCard = this.cards.querySelector('.card-button:first-child');
         const lastCard = this.cards.querySelector('.card-button:last-child');
@@ -44,53 +43,6 @@ class DtPlayerCountPicker extends HTMLElement {
 
         this.nextButton.addEventListener('click', (e) => this.scrollCards(e));
         this.previousButton.addEventListener('click', (e) => this.scrollCards(e));
-        window.addEventListener('resize', () => this.debounce(() => this.toggleIndicators(), 300));
-    }
-
-
-    debounce(callback, delay) {
-        let resizeTimeout;
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(callback, delay);
-    }
-
-    toggleIndicators() {
-        setTimeout(() => {
-            const pageWidth = window.innerWidth;
-            const cardWidth = this.cards.querySelector('.card-button').offsetWidth;
-            const visibleCards = Math.floor(pageWidth / cardWidth);
-            const totalCards = this.cards.querySelectorAll('.card-button').length;
-            const indicatorsNeeded = (totalCards - visibleCards) + 1;
-
-            const indicators = Array.from(this.indicatorContainer.querySelectorAll('.indicator'));
-            const indicator_1 = indicators.find(indicator => indicator.classList.contains('indicator-1'));
-            const indicator_2 = indicators.find(indicator => indicator.classList.contains('indicator-2'));
-            const indicator_3 = indicators.find(indicator => indicator.classList.contains('indicator-3'));
-            const indicator_4 = indicators.find(indicator => indicator.classList.contains('indicator-4'));
-
-            switch (indicatorsNeeded) {
-                case 1:
-                    indicators.forEach((indicator) => indicator.classList.add('displaynone'));
-                    break;
-                case 2:
-                    indicator_1.classList.remove('displaynone');
-                    indicator_2.classList.remove('displaynone');
-                    indicator_3.classList.add('displaynone');
-                    indicator_4.classList.add('displaynone');
-                    break;
-                case 3:
-                    indicator_1.classList.remove('displaynone');
-                    indicator_2.classList.remove('displaynone');
-                    indicator_3.classList.remove('displaynone');
-                    indicator_4.classList.add('displaynone');
-                    break;
-                case 4:
-                    indicators.forEach((indicator) => indicator.classList.remove('displaynone'));
-                    break;
-            }
-
-        }, 400);
-
     }
 
     renderCards() {
@@ -159,9 +111,6 @@ class DtPlayerCountPicker extends HTMLElement {
                     }
                 });
 
-                const visibleCardCount = visibleCards.size;
-                const totalCardCount = cards.length;
-                const totalPages = (totalCardCount - visibleCardCount) + 1;
                 const indicators = this.indicatorContainer.querySelectorAll('.indicator');
                 const cardsArr = Array.from(cards);
 
@@ -181,9 +130,10 @@ class DtPlayerCountPicker extends HTMLElement {
 
     setActiveIndicator(cardsArr, indicators, visibleCardSize, visibleCards) {
         const combinations = [];
-        let activePage;
 
-        indicators.forEach((indicator) => indicator.classList.remove('active'))
+        indicators.forEach((indicator) => {
+            indicator.classList.remove('active');
+        });
 
         switch (visibleCardSize) {
             case 2:
@@ -207,6 +157,7 @@ class DtPlayerCountPicker extends HTMLElement {
                     combinations.push(combo);
                 });
                 break;
+
         }
 
         if (combinations.length === 0) {
@@ -219,10 +170,6 @@ class DtPlayerCountPicker extends HTMLElement {
             const comboSet = new Set(combo);
             return [...visibleCardsSet].every(card => comboSet.has(card)) && [...comboSet].every(card => visibleCardsSet.has(card));
         });
-
-        if (matchingIndex !== -1) {
-            activePage = matchingIndex;
-        }
 
         indicators[matchingIndex].classList.add('active');
     }

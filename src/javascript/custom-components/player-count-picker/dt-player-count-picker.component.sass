@@ -38,6 +38,16 @@ button
     border-radius: variables.$button-border-radius
     background-color: variables.$indicator
 
+    @media (min-width: variables.$breakpoint-md)
+        display: none
+
+    &-4
+        @media (min-width: variables.$breakpoint-sm)
+            display: none
+    &-3
+        @media (min-width: variables.$breakpoint-sm-md)
+            display: none
+
     &-container
         width: 50%
         display: flex
