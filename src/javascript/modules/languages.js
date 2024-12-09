@@ -7,7 +7,8 @@ const languages = {
         name_input: 'Voer de naam in van:',
         placeholder: 'Speler',
         score_input: 'Voer score in voor:',
-        score_submit: 'voeg toe'
+        score_submit: 'voeg toe',
+        step_back: 'terug'
     },
     german: {
         name: "Deutsch",
@@ -17,7 +18,8 @@ const languages = {
         name_input: 'Geben Sie den Namen ein von:',
         placeholder: 'Spieler',
         score_input: 'Geben Sie die Punktzahl ein für:',
-        score_submit: 'hinzufügen'
+        score_submit: 'hinzufügen',
+        step_back: 'zurück'
     },
     spanish: {
         name: "Español",
@@ -27,7 +29,8 @@ const languages = {
         name_input: 'Ingrese el nombre de:',
         placeholder: 'Jugador',
         score_input: 'Ingrese la puntuación para:',
-        score_submit: 'agregar'
+        score_submit: 'agregar',
+        step_back: 'atrás'
 
     },
     english: {
@@ -38,17 +41,19 @@ const languages = {
         name_input: 'Enter the name of:',
         placeholder: 'Player',
         score_input: 'Enter score for:',
-        score_submit: 'add'
+        score_submit: 'add',
+        step_back: 'back'
     },
     french: {
         name: "Français",
         flag: 'https://flagcdn.com/h40/fr.png',
         title: 'TABLEAU DE SCORE',
         player_count: 'SÉLECTIONNEZ LE NOMBRE DE JOUEURS:',
-        name_input: 'Entrez le nom de :',
+        name_input: 'Entrez le nom de:',
         placeholder: 'Joueur',
         score_input: 'Entrez le score pour :',
-        score_submit: 'ajouter'
+        score_submit: 'ajouter',
+        step_back: 'retour'
     }
 };
 
