@@ -1,0 +1,106 @@
+@use '../../../styles/_variables'
+
+*
+    font-family: variables.$font-primary
+    padding: 0
+    margin: 0
+    list-style: none
+    box-sizing: border-box
+    border: none
+
+.name-input
+    height: 35px
+    width: 300px
+    border-radius: variables.$button-border-radius
+    margin-bottom: 10px
+    padding: 0 variables.$spacing-sm
+    border: 3px solid variables.$pink
+    background-color: variables.$dark-grey
+    font-size: 20px
+    color: variables.$black
+    text-align: center
+    caret-color: variables.$pink
+
+    @media (min-width: variables.$breakpoint-lg)
+        font-size: variables.$font-size-sm
+
+    &:focus
+        outline: none
+    &::placeholder
+        color: black
+        font-weight: variables.$font-weight-light
+
+    &-container
+        display: flex
+        flex-direction: column
+        align-items: center
+        width: 80%
+        color: variables.$black
+
+    &-title
+        font-size: 20px
+        font-weight: variables.$font-weight-mid
+        text-align: center
+        margin-bottom: variables.$spacing-md
+
+        @media (min-width: variables.$breakpoint-lg)
+            font-size: variables.$font-size-sm
+
+    &-confirm
+        height: 30px
+        border-radius: variables.$button-border-radius
+        width: 130px
+        font-size: variables.$font-size-xs
+        font-weight: 300
+        color: variables.$black
+        background-color: variables.$pink
+        align-self: center
+
+        &:hover
+            box-shadow: variables.$shadow-default
+
+        &:hover
+            cursor: pointer
+
+.input-wrapper
+    position: relative
+    width: 300px
+    display: flex
+    flex-direction: column
+
+.warning
+    border: 3.5px solid variables.$warning-color
+
+    &-icon
+        position: absolute
+        top: 7px
+        left: 50px
+        fill: variables.$warning-color
+        height: 20px
+
+.hidden
+    display: none
+
+//  ---------------- ANIMATIONS -------------- //
+
+@keyframes slide-in
+    to
+        opacity: 1
+        transform: translateX(0)
+
+@keyframes slide-out
+    from
+        opacity: 1
+        transform: translateX(0)
+
+    to
+        opacity: 0
+        transform: translateX(100%)
+
+.name-input-container
+    opacity: 0
+    transform: translateX(-100%)
+    animation: slide-in 0.75s ease-out forwards
+
+.slide-out
+    animation: slide-out 0.5s ease-in forwards

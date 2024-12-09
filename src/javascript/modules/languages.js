@@ -45,7 +45,7 @@ const languages = {
         flag: 'https://flagcdn.com/h40/fr.png',
         title: 'TABLEAU DE SCORE',
         player_count: 'SÉLECTIONNEZ LE NOMBRE DE JOUEURS:',
-        name_input: 'Entrez le nom de :',
+        name_input: 'Entrez le nom de:',
         placeholder: 'Joueur',
         score_input: 'Entrez le score pour :',
         score_submit: 'ajouter'

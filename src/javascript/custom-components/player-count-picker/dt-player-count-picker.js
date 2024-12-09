@@ -2,7 +2,7 @@ import html from './dt-player-count-picker.html';
 import style from './dt-player-count-picker.component.sass';
 
 import { fetchImage } from '../../modules/utils.js';
-import { languages, getActiveLanguage, setActiveLanguage, translate } from '../../modules/languages.js';
+import { translate } from '../../modules/languages.js';
 import { resetPlayerCount, setPlayerCount } from '../../modules/game-stats.js';
 
 const template = document.createElement('template');
@@ -52,12 +52,21 @@ class DtPlayerCountPicker extends HTMLElement {
     handlePlayerCountSelection(e) {
         resetPlayerCount();
         const clickedButton = e.target.closest('.card-button');
+        if (clickedButton === null) { return }
+
         const buttonIdString = clickedButton.id
         const chosenPlayerCount = Number(buttonIdString[buttonIdString.length - 1]);
         setPlayerCount(chosenPlayerCount);
 
         this.shadowRoot.querySelector('.card-slider').classList.add('slide-out');
         setTimeout(() => {
+            const playerNameInput = document.createElement('dt-player-name-input');
+
+            if (document.querySelector('main').querySelector('dt-player-name-input') === null) {
+                document.querySelector('main').appendChild(playerNameInput);
+
+            };
+
             this.remove();
         }, 500);
     }

@@ -219,11 +219,19 @@ var DtPlayerCountPicker = /*#__PURE__*/function (_HTMLElement) {
       var _this2 = this;
       (0,_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_4__.resetPlayerCount)();
       var clickedButton = e.target.closest('.card-button');
+      if (clickedButton === null) {
+        return;
+      }
       var buttonIdString = clickedButton.id;
       var chosenPlayerCount = Number(buttonIdString[buttonIdString.length - 1]);
       (0,_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_4__.setPlayerCount)(chosenPlayerCount);
       this.shadowRoot.querySelector('.card-slider').classList.add('slide-out');
       setTimeout(function () {
+        var playerNameInput = document.createElement('dt-player-name-input');
+        if (document.querySelector('main').querySelector('dt-player-name-input') === null) {
+          document.querySelector('main').appendChild(playerNameInput);
+        }
+        ;
         _this2.remove();
       }, 500);
     }
@@ -360,6 +368,199 @@ customElements.define('dt-player-count-picker', DtPlayerCountPicker);
 
 /***/ }),
 
+/***/ "./src/javascript/custom-components/player-name-input/dt-player-name-input.js":
+/*!************************************************************************************!*\
+  !*** ./src/javascript/custom-components/player-name-input/dt-player-name-input.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DtPlayerNameInput: () => (/* binding */ DtPlayerNameInput)
+/* harmony export */ });
+/* harmony import */ var _dt_player_name_input_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dt-player-name-input.html */ "./src/javascript/custom-components/player-name-input/dt-player-name-input.html");
+/* harmony import */ var _dt_player_name_input_component_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dt-player-name-input.component.sass */ "./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass");
+/* harmony import */ var _modules_languages_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../modules/languages.js */ "./src/javascript/modules/languages.js");
+/* harmony import */ var _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! .././../modules/game-stats.js */ "./src/javascript/modules/game-stats.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _wrapNativeSuper(t) { var r = "function" == typeof Map ? new Map() : void 0; return _wrapNativeSuper = function _wrapNativeSuper(t) { if (null === t || !_isNativeFunction(t)) return t; if ("function" != typeof t) throw new TypeError("Super expression must either be null or a function"); if (void 0 !== r) { if (r.has(t)) return r.get(t); r.set(t, Wrapper); } function Wrapper() { return _construct(t, arguments, _getPrototypeOf(this).constructor); } return Wrapper.prototype = Object.create(t.prototype, { constructor: { value: Wrapper, enumerable: !1, writable: !0, configurable: !0 } }), _setPrototypeOf(Wrapper, t); }, _wrapNativeSuper(t); }
+function _construct(t, e, r) { if (_isNativeReflectConstruct()) return Reflect.construct.apply(null, arguments); var o = [null]; o.push.apply(o, e); var p = new (t.bind.apply(t, o))(); return r && _setPrototypeOf(p, r.prototype), p; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _isNativeFunction(t) { try { return -1 !== Function.toString.call(t).indexOf("[native code]"); } catch (n) { return "function" == typeof t; } }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+
+
+
+
+var template = document.createElement('template');
+template.innerHTML = "\n    <style>\n        ".concat(_dt_player_name_input_component_sass__WEBPACK_IMPORTED_MODULE_1__["default"], "\n    </style>\n    ").concat(_dt_player_name_input_html__WEBPACK_IMPORTED_MODULE_0__["default"], "\n");
+var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
+  function DtPlayerNameInput() {
+    var _this;
+    _classCallCheck(this, DtPlayerNameInput);
+    _this = _callSuper(this, DtPlayerNameInput);
+    _this.attachShadow({
+      mode: 'open'
+    });
+    _this.shadowRoot.appendChild(template.content.cloneNode(true));
+    _this.inputContainer = _this.shadowRoot.querySelector('.name-input-container');
+    _this.input = _this.shadowRoot.querySelector('.name-input');
+    _this.inputTitle = _this.shadowRoot.querySelector('.name-input-title');
+    _this.submitButton = _this.shadowRoot.querySelector('.name-input-confirm');
+    _this.warningIcon = _this.shadowRoot.querySelector('.warning-icon');
+    // this.backButton = document.querySelector('.back-button');
+
+    var activeLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.getActiveLanguage)();
+    (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(activeLanguage.score_submit, _this.submitButton);
+    (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(activeLanguage.name_input, _this.inputTitle);
+    _this.input.placeholder = activeLanguage.placeholder;
+
+    // this.backButton.classList.remove('hidden');
+    _this.playerCount = 0;
+    _this.startNameInput();
+    _this.input.addEventListener('input', function () {
+      return _this.resetWarning();
+    });
+    _this.input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        _this.submitButton.click();
+      }
+    });
+    _this.submitButton.addEventListener('click', function () {
+      return _this.handleNameInput();
+    });
+    document.addEventListener('language-changed', function (e) {
+      (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.score_submit, _this.submitButton);
+      (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.name_input, _this.inputTitle);
+      _this.input.placeholder = e.detail.placeholder;
+      _this.setPlaceholder();
+    });
+    document.addEventListener('step-back', function (e) {
+      return _this.handleBackClick(e);
+    });
+    return _this;
+  }
+  _inherits(DtPlayerNameInput, _HTMLElement);
+  return _createClass(DtPlayerNameInput, [{
+    key: "handleBackClick",
+    value: function handleBackClick(e) {
+      var existingPicker = document.querySelector('dt-player-count-picker');
+      if (existingPicker === null) {
+        var newPicker = document.createElement('dt-player-count-picker');
+        document.querySelector('main').appendChild(newPicker);
+        this.backButton.classList.add('hidden');
+        this.remove();
+      } else {
+        this.remove();
+      }
+    }
+  }, {
+    key: "resetWarning",
+    value: function resetWarning() {
+      this.input.classList.remove('warning');
+      this.warningIcon.classList.add('hidden');
+    }
+  }, {
+    key: "startNameInput",
+    value: function startNameInput() {
+      this.playerCount = 1;
+      this.setPlaceholder();
+    }
+  }, {
+    key: "handleNameInput",
+    value: function handleNameInput() {
+      var _this2 = this;
+      var nameInput = this.input.value.trim();
+      if (nameInput === '') {
+        this.input.classList.add('warning');
+        this.warningIcon.classList.remove('hidden');
+        return;
+      }
+      nameInput = this.input.value.split(' ').map(function (name) {
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+      }).join(' ');
+      _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players["player_".concat(this.playerCount)].name = nameInput;
+      this.playerCount++;
+      if (this.playerCount <= Object.keys(_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players).length) {
+        this.input.value = "";
+        this.input.placeholder = this.input.placeholder.slice(0, -2);
+        this.setPlaceholder();
+      } else {
+        this.inputContainer.classList.add('slide-out');
+        setTimeout(function () {
+          // const playerNameInput = document.createElement('dt-player-name-input');
+          // if (document.querySelector('main').querySelector('dt-player-name-input') === null) {
+          // document.querySelector('main').appendChild(playerNameInput);
+
+          // };
+
+          _this2.remove();
+        }, 500);
+      }
+    }
+  }, {
+    key: "setPlaceholder",
+    value: function setPlaceholder() {
+      this.input.placeholder = "".concat(this.input.placeholder, " ").concat(this.playerCount);
+    }
+  }]);
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+customElements.define('dt-player-name-input', DtPlayerNameInput);
+
+
+// const obj = {
+//     item_1: { whatever: "" },
+//     item_2: { whatever: "" },
+//     item_3: { whatever: "" },
+//   };
+
+//   async function getInputForItem(itemKey) {
+//     const input = document.createElement('input');
+//     input.placeholder = `Enter something for ${itemKey}`;
+
+//     const submitButton = document.createElement('button');
+//     submitButton.textContent = 'Submit';
+
+//     document.body.append(input, submitButton);
+
+//     return new Promise((resolve) => {
+//       submitButton.addEventListener('click', () => {
+//         obj[itemKey].whatever = input.value;
+
+//         console.log(`Updated ${itemKey}:`, obj[itemKey]);
+
+//         input.remove();
+//         submitButton.remove();
+
+//         resolve();
+//       });
+//     });
+//   }
+
+//   async function processItems() {
+//     for (const itemKey in obj) {
+//       if (obj.hasOwnProperty(itemKey)) {
+//         await getInputForItem(itemKey);
+//       }
+//     }
+
+//     console.log('All items processed:', obj);
+//   }
+
+//   processItems();
+
+/***/ }),
+
 /***/ "./src/javascript/modules/game-stats.js":
 /*!**********************************************!*\
   !*** ./src/javascript/modules/game-stats.js ***!
@@ -381,7 +582,6 @@ function setPlayerCount(count) {
       score: 0
     };
   }
-  console.log(players);
 }
 function resetPlayerCount() {
   for (var key in players) {
@@ -453,7 +653,7 @@ var languages = {
     flag: 'https://flagcdn.com/h40/fr.png',
     title: 'TABLEAU DE SCORE',
     player_count: 'SÉLECTIONNEZ LE NOMBRE DE JOUEURS:',
-    name_input: 'Entrez le nom de :',
+    name_input: 'Entrez le nom de:',
     placeholder: 'Joueur',
     score_input: 'Entrez le score pour :',
     score_submit: 'ajouter'
@@ -642,7 +842,12 @@ dt-language-selector {
 
 dt-player-count-picker {
   height: 100%;
-}`, "",{"version":3,"sources":["webpack://./src/styles/main.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;;EAEI,sCCoCW;EDnCX,YAAA;AADJ;;AAGA;EACI,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,iBC+Bc;ED9Bd,oCCXc;ADWlB;AAEI;EAPJ;IAQQ,4BAAA;EACN;AACF;;AAAA;EACI,kBAAA;AAGJ;AADI;EAHJ;IAIQ,iBAAA;EAIN;AACF;;AAHA;EACI,gBCFgB;EDGhB,eCXW;EDYX,sBCpBI;EDqBJ,mBAAA;EAEA,4CAAA;EACA,UAAA;EACA,qBAAA;AAKJ;AAHI;EACI;IACI,2BAAA;IACA,UAAA;EAKV;EAHM;IACI,wBAAA;IACA,UAAA;EAKV;AACF;AAJI;EAnBJ;IAoBQ,eC5BO;EDmCb;AACF;AANI;EAtBJ;IAuBQ,eC9BO;EDuCb;AACF;AARI;EAzBJ;IA0BQ,eChCO;ED2Cb;AACF;;AAVA;EACI,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,YAAA;AAaJ;;AAXA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,kBAAA;EACA,eAAA;AAcJ;;AAXI;EACI,YAAA;AAcR;AAZI;EACI,YAAA;AAcR;;AAZA;EACQ,oBAAA;EACA,oBC9CK;AD6Db;;AAbA;EACQ,YAAA;AAgBR","sourceRoot":""}]);
+}
+
+dt-player-name-input {
+  display: flex;
+  justify-content: center;
+}`, "",{"version":3,"sources":["webpack://./src/styles/main.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;;EAEI,sCCoCW;EDnCX,YAAA;AADJ;;AAGA;EACI,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,iBC+Bc;ED9Bd,oCCXc;ADWlB;AAEI;EAPJ;IAQQ,4BAAA;EACN;AACF;;AAAA;EACI,kBAAA;AAGJ;AADI;EAHJ;IAIQ,iBAAA;EAIN;AACF;;AAHA;EACI,gBCFgB;EDGhB,eCXW;EDYX,sBCpBI;EDqBJ,mBAAA;EAEA,4CAAA;EACA,UAAA;EACA,qBAAA;AAKJ;AAHI;EACI;IACI,2BAAA;IACA,UAAA;EAKV;EAHM;IACI,wBAAA;IACA,UAAA;EAKV;AACF;AAJI;EAnBJ;IAoBQ,eC5BO;EDmCb;AACF;AANI;EAtBJ;IAuBQ,eC9BO;EDuCb;AACF;AARI;EAzBJ;IA0BQ,eChCO;ED2Cb;AACF;;AAVA;EACI,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,YAAA;AAaJ;;AAXA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,kBAAA;EACA,eAAA;AAcJ;;AAXI;EACI,YAAA;AAcR;AAZI;EACI,YAAA;AAcR;;AAZA;EACQ,oBAAA;EACA,oBC9CK;AD6Db;;AAbA;EACQ,YAAA;AAgBR;;AAdA;EACQ,aAAA;EACA,uBAAA;AAiBR","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1158,6 +1363,147 @@ button:hover {
 
 /***/ }),
 
+/***/ "./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass":
+/*!************************************************************************************************!*\
+  !*** ./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass ***!
+  \************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `* {
+  font-family: "Effra Trial", sans-serif;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box;
+  border: none;
+}
+
+.name-input {
+  height: 35px;
+  width: 300px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  padding: 0 15px;
+  border: 3px solid rgb(236, 49, 143);
+  background-color: rgb(103, 108, 108);
+  font-size: 20px;
+  color: rgb(44, 46, 53);
+  text-align: center;
+  caret-color: rgb(236, 49, 143);
+}
+@media (min-width: 1024px) {
+  .name-input {
+    font-size: 24px;
+  }
+}
+.name-input:focus {
+  outline: none;
+}
+.name-input::placeholder {
+  color: black;
+  font-weight: 100;
+}
+.name-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  color: rgb(44, 46, 53);
+}
+.name-input-title {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+@media (min-width: 1024px) {
+  .name-input-title {
+    font-size: 24px;
+  }
+}
+.name-input-confirm {
+  height: 30px;
+  border-radius: 20px;
+  width: 130px;
+  font-size: 16px;
+  font-weight: 300;
+  color: rgb(44, 46, 53);
+  background-color: rgb(236, 49, 143);
+  align-self: center;
+}
+.name-input-confirm:hover {
+  box-shadow: 3px 3px 3px 0px rgb(153, 153, 153);
+}
+.name-input-confirm:hover {
+  cursor: pointer;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.warning {
+  border: 3.5px solid rgb(255, 170, 0);
+}
+.warning-icon {
+  position: absolute;
+  top: 7px;
+  left: 50px;
+  fill: rgb(255, 170, 0);
+  height: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes slide-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+.name-input-container {
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: slide-in 0.75s ease-out forwards;
+}
+
+.slide-out {
+  animation: slide-out 0.5s ease-in forwards;
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,YAAA;EACA,mBC4BmB;ED3BnB,mBAAA;EACA,eAAA;EACA,mCAAA;EACA,oCCbQ;EDcR,eAAA;EACA,sBCbI;EDcJ,kBAAA;EACA,8BCZG;ADYP;AAEI;EAbJ;IAcQ,eCXO;EDYb;AACF;AAAI;EACI,aAAA;AAER;AADI;EACI,YAAA;EACA,gBCXY;ADcpB;AADI;EACI,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,UAAA;EACA,sBC/BA;ADkCR;AADI;EACI,eAAA;EACA,gBCpBU;EDqBV,kBAAA;EACA,mBChBK;ADmBb;AADQ;EANJ;IAOQ,eCjCG;EDqCb;AACF;AAHI;EACI,YAAA;EACA,mBCTe;EDUf,YAAA;EACA,eCxCO;EDyCP,gBAAA;EACA,sBChDA;EDiDA,mCC9CD;ED+CC,kBAAA;AAKR;AAHQ;EACI,8CCCK;ADIjB;AAHQ;EACI,eAAA;AAKZ;;AAHA;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,sBAAA;AAMJ;;AAJA;EACI,oCAAA;AAOJ;AALI;EACI,kBAAA;EACA,QAAA;EACA,UAAA;EACA,sBCrEM;EDsEN,YAAA;AAOR;;AALA;EACI,aAAA;AAQJ;;AAJA;EACI;IACI,UAAA;IACA,wBAAA;EAON;AACF;AANA;EACI;IACI,UAAA;IACA,wBAAA;EAQN;EANE;IACI,UAAA;IACA,2BAAA;EAQN;AACF;AAPA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AASJ;;AAPA;EACI,0CAAA;AAUJ","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/runtime/api.js":
 /*!*****************************************************!*\
   !*** ./node_modules/css-loader/dist/runtime/api.js ***!
@@ -1363,6 +1709,40 @@ var code = `<div class="card-slider">
         />
       </svg>
     </button>
+  </div>
+</div>
+`;
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
+
+/***/ }),
+
+/***/ "./src/javascript/custom-components/player-name-input/dt-player-name-input.html":
+/*!**************************************************************************************!*\
+  !*** ./src/javascript/custom-components/player-name-input/dt-player-name-input.html ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+// Module
+var code = `<div class="name-input-container">
+  <h2 class="name-input-title">Voer de naam in van:</h2>
+  <div class="input-wrapper">
+    <svg
+      class="warning-icon hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+    >
+      <!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+      <path
+        d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
+      />
+    </svg>
+    <input type="text" class="name-input" placeholder="Speler" />
+    <button class="name-input-confirm">Voeg toe</button>
   </div>
 </div>
 `;
@@ -1826,20 +2206,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_main_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.sass */ "./src/styles/main.sass");
 /* harmony import */ var _javascript_custom_components_language_selector_dt_language_selector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./javascript/custom-components/language-selector/dt-language-selector.js */ "./src/javascript/custom-components/language-selector/dt-language-selector.js");
 /* harmony import */ var _javascript_custom_components_player_count_picker_dt_player_count_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./javascript/custom-components/player-count-picker/dt-player-count-picker.js */ "./src/javascript/custom-components/player-count-picker/dt-player-count-picker.js");
-/* harmony import */ var _javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./javascript/modules/utils.js */ "./src/javascript/modules/utils.js");
-/* harmony import */ var _javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./javascript/modules/languages.js */ "./src/javascript/modules/languages.js");
+/* harmony import */ var _javascript_custom_components_player_name_input_dt_player_name_input_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./javascript/custom-components/player-name-input/dt-player-name-input.js */ "./src/javascript/custom-components/player-name-input/dt-player-name-input.js");
+/* harmony import */ var _javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./javascript/modules/utils.js */ "./src/javascript/modules/utils.js");
+/* harmony import */ var _javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./javascript/modules/languages.js */ "./src/javascript/modules/languages.js");
 
 
 
 
 
 
-(0,_javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_4__.fetchImage)('assets/onder_de_10_logo.png', document.querySelector('.logo-link'), 'logo-footer');
+
+(0,_javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_5__.fetchImage)('assets/onder_de_10_logo.png', document.querySelector('.logo-link'), 'logo-footer');
 document.addEventListener('language-changed', function (e) {
-  (0,_javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_5__.translate)(e.detail.title, document.querySelector('.header-title'));
+  (0,_javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_6__.translate)(e.detail.title, document.querySelector('.header-title'));
 });
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.dac238edbcffd595e11a.js.map
+//# sourceMappingURL=bundle.489d5705aa6bcf3f66e6.js.map

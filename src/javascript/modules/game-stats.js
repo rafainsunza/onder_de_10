@@ -9,8 +9,6 @@ function setPlayerCount(count) {
             score: 0
         };
     }
-
-    console.log(players)
 }
 
 function resetPlayerCount() {
@@ -19,7 +17,6 @@ function resetPlayerCount() {
             delete players[key];
         }
     }
-
 }
 
 export { setPlayerCount, resetPlayerCount, players }
