@@ -1,18 +1,24 @@
-// .back-button
-//     font-family: variables.$font-primary
-//     font-weight: 300
-//     font-size: variables.$font-size-xs
-//     color: black
-//     border: none
-//     border-radius: variables.$button-border-radius
-//     background-color: variables.$yellow
-//     width: 130px
-//     height: 30px
-//     position: fixed
-//     bottom: 20%
-//     left: 50%
-//     transform: translateX(-50%)
+@use '../../../styles/_variables'
 
-//     &:hover
-//         cursor: pointer
-//         box-shadow: variables.$shadow-default
+*
+    font-family: variables.$font-primary
+    padding: 0
+    margin: 0
+    list-style: none
+    box-sizing: border-box
+    border: none
+
+.back-button
+    font-family: variables.$font-primary
+    font-weight: 300
+    font-size: variables.$font-size-xs
+    color: black
+    border: none
+    border-radius: variables.$button-border-radius
+    background-color: variables.$yellow
+    height: 30px
+    width: 135px
+
+    &:hover
+        cursor: pointer
+        box-shadow: variables.$shadow-default

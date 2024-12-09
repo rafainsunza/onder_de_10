@@ -49,12 +49,11 @@
     &-confirm
         height: 30px
         border-radius: variables.$button-border-radius
-        width: 130px
+        width: 45%
         font-size: variables.$font-size-xs
         font-weight: 300
         color: variables.$black
         background-color: variables.$pink
-        align-self: center
 
         &:hover
             box-shadow: variables.$shadow-default
@@ -67,6 +66,10 @@
     width: 300px
     display: flex
     flex-direction: column
+
+.button-container
+    display: flex
+    justify-content: space-between
 
 .warning
     border: 3.5px solid variables.$warning-color

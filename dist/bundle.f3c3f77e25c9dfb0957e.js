@@ -2,6 +2,85 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/javascript/custom-components/back-button/dt-back-button.js":
+/*!************************************************************************!*\
+  !*** ./src/javascript/custom-components/back-button/dt-back-button.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DtBackButton: () => (/* binding */ DtBackButton)
+/* harmony export */ });
+/* harmony import */ var _dt_back_button_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dt-back-button.html */ "./src/javascript/custom-components/back-button/dt-back-button.html");
+/* harmony import */ var _dt_back_button_component_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dt-back-button.component.sass */ "./src/javascript/custom-components/back-button/dt-back-button.component.sass");
+/* harmony import */ var _modules_languages_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../modules/languages.js */ "./src/javascript/modules/languages.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _wrapNativeSuper(t) { var r = "function" == typeof Map ? new Map() : void 0; return _wrapNativeSuper = function _wrapNativeSuper(t) { if (null === t || !_isNativeFunction(t)) return t; if ("function" != typeof t) throw new TypeError("Super expression must either be null or a function"); if (void 0 !== r) { if (r.has(t)) return r.get(t); r.set(t, Wrapper); } function Wrapper() { return _construct(t, arguments, _getPrototypeOf(this).constructor); } return Wrapper.prototype = Object.create(t.prototype, { constructor: { value: Wrapper, enumerable: !1, writable: !0, configurable: !0 } }), _setPrototypeOf(Wrapper, t); }, _wrapNativeSuper(t); }
+function _construct(t, e, r) { if (_isNativeReflectConstruct()) return Reflect.construct.apply(null, arguments); var o = [null]; o.push.apply(o, e); var p = new (t.bind.apply(t, o))(); return r && _setPrototypeOf(p, r.prototype), p; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _isNativeFunction(t) { try { return -1 !== Function.toString.call(t).indexOf("[native code]"); } catch (n) { return "function" == typeof t; } }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+
+
+
+var template = document.createElement('template');
+template.innerHTML = "\n    <style>\n        ".concat(_dt_back_button_component_sass__WEBPACK_IMPORTED_MODULE_1__["default"], "\n    </style>\n    ").concat(_dt_back_button_html__WEBPACK_IMPORTED_MODULE_0__["default"], "\n");
+var DtBackButton = /*#__PURE__*/function (_HTMLElement) {
+  function DtBackButton() {
+    var _this;
+    _classCallCheck(this, DtBackButton);
+    _this = _callSuper(this, DtBackButton);
+    _this.attachShadow({
+      mode: 'open'
+    });
+    _this.shadowRoot.appendChild(template.content.cloneNode(true));
+    _this.backButton = _this.shadowRoot.querySelector('.back-button');
+    var activeLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.getActiveLanguage)();
+    _this.backButton.textContent = activeLanguage.step_back;
+    _this.backButton.addEventListener('click', function () {
+      return _this.handleBackButtonClick();
+    });
+    document.addEventListener('language-changed', function (e) {
+      return _this.handleLanguageChange(e);
+    });
+    return _this;
+  }
+  _inherits(DtBackButton, _HTMLElement);
+  return _createClass(DtBackButton, [{
+    key: "handleLanguageChange",
+    value: function handleLanguageChange(e) {
+      (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.step_back, this.backButton);
+    }
+  }, {
+    key: "handleBackButtonClick",
+    value: function handleBackButtonClick() {
+      var customEvent = new CustomEvent('back-button-clicked', {
+        detail: {
+          message: 'Step back required'
+        },
+        bubbles: true,
+        composed: true
+      });
+      this.dispatchEvent(customEvent);
+    }
+  }]);
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+customElements.define('dt-back-button', DtBackButton);
+
+
+/***/ }),
+
 /***/ "./src/javascript/custom-components/language-selector/dt-language-selector.js":
 /*!************************************************************************************!*\
   !*** ./src/javascript/custom-components/language-selector/dt-language-selector.js ***!
@@ -418,14 +497,10 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
     _this.inputTitle = _this.shadowRoot.querySelector('.name-input-title');
     _this.submitButton = _this.shadowRoot.querySelector('.name-input-confirm');
     _this.warningIcon = _this.shadowRoot.querySelector('.warning-icon');
-    // this.backButton = document.querySelector('.back-button');
-
     var activeLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.getActiveLanguage)();
     (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(activeLanguage.score_submit, _this.submitButton);
     (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(activeLanguage.name_input, _this.inputTitle);
     _this.input.placeholder = activeLanguage.placeholder;
-
-    // this.backButton.classList.remove('hidden');
     _this.playerCount = 0;
     _this.startNameInput();
     _this.input.addEventListener('input', function () {
@@ -439,30 +514,27 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
     _this.submitButton.addEventListener('click', function () {
       return _this.handleNameInput();
     });
+    _this.addEventListener('back-button-clicked', function (e) {
+      return _this.handleBackButtonClick(e);
+    });
     document.addEventListener('language-changed', function (e) {
       (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.score_submit, _this.submitButton);
       (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.name_input, _this.inputTitle);
       _this.input.placeholder = e.detail.placeholder;
       _this.setPlaceholder();
     });
-    document.addEventListener('step-back', function (e) {
-      return _this.handleBackClick(e);
-    });
     return _this;
   }
   _inherits(DtPlayerNameInput, _HTMLElement);
   return _createClass(DtPlayerNameInput, [{
-    key: "handleBackClick",
-    value: function handleBackClick(e) {
+    key: "handleBackButtonClick",
+    value: function handleBackButtonClick(e) {
       var existingPicker = document.querySelector('dt-player-count-picker');
       if (existingPicker === null) {
         var newPicker = document.createElement('dt-player-count-picker');
         document.querySelector('main').appendChild(newPicker);
-        this.backButton.classList.add('hidden');
-        this.remove();
-      } else {
-        this.remove();
       }
+      this.remove();
     }
   }, {
     key: "resetWarning",
@@ -498,12 +570,11 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
       } else {
         this.inputContainer.classList.add('slide-out');
         setTimeout(function () {
-          // const playerNameInput = document.createElement('dt-player-name-input');
-          // if (document.querySelector('main').querySelector('dt-player-name-input') === null) {
-          // document.querySelector('main').appendChild(playerNameInput);
-
-          // };
-
+          var scoreDisplay = document.createElement('dt-score-display');
+          if (document.querySelector('main').querySelector('dt-score-display') === null) {
+            document.querySelector('main').appendChild(scoreDisplay);
+          }
+          ;
           _this2.remove();
         }, 500);
       }
@@ -518,46 +589,58 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
 customElements.define('dt-player-name-input', DtPlayerNameInput);
 
 
-// const obj = {
-//     item_1: { whatever: "" },
-//     item_2: { whatever: "" },
-//     item_3: { whatever: "" },
-//   };
+/***/ }),
 
-//   async function getInputForItem(itemKey) {
-//     const input = document.createElement('input');
-//     input.placeholder = `Enter something for ${itemKey}`;
+/***/ "./src/javascript/custom-components/score-display/dt-score-display.js":
+/*!****************************************************************************!*\
+  !*** ./src/javascript/custom-components/score-display/dt-score-display.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-//     const submitButton = document.createElement('button');
-//     submitButton.textContent = 'Submit';
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DtScoreDisplay: () => (/* binding */ DtScoreDisplay)
+/* harmony export */ });
+/* harmony import */ var _dt_score_display_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dt-score-display.html */ "./src/javascript/custom-components/score-display/dt-score-display.html");
+/* harmony import */ var _dt_score_display_component_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dt-score-display.component.sass */ "./src/javascript/custom-components/score-display/dt-score-display.component.sass");
+/* harmony import */ var _modules_languages_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../modules/languages.js */ "./src/javascript/modules/languages.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _wrapNativeSuper(t) { var r = "function" == typeof Map ? new Map() : void 0; return _wrapNativeSuper = function _wrapNativeSuper(t) { if (null === t || !_isNativeFunction(t)) return t; if ("function" != typeof t) throw new TypeError("Super expression must either be null or a function"); if (void 0 !== r) { if (r.has(t)) return r.get(t); r.set(t, Wrapper); } function Wrapper() { return _construct(t, arguments, _getPrototypeOf(this).constructor); } return Wrapper.prototype = Object.create(t.prototype, { constructor: { value: Wrapper, enumerable: !1, writable: !0, configurable: !0 } }), _setPrototypeOf(Wrapper, t); }, _wrapNativeSuper(t); }
+function _construct(t, e, r) { if (_isNativeReflectConstruct()) return Reflect.construct.apply(null, arguments); var o = [null]; o.push.apply(o, e); var p = new (t.bind.apply(t, o))(); return r && _setPrototypeOf(p, r.prototype), p; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _isNativeFunction(t) { try { return -1 !== Function.toString.call(t).indexOf("[native code]"); } catch (n) { return "function" == typeof t; } }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
 
-//     document.body.append(input, submitButton);
 
-//     return new Promise((resolve) => {
-//       submitButton.addEventListener('click', () => {
-//         obj[itemKey].whatever = input.value;
 
-//         console.log(`Updated ${itemKey}:`, obj[itemKey]);
+var template = document.createElement('template');
+template.innerHTML = "\n    <style>\n        ".concat(_dt_score_display_component_sass__WEBPACK_IMPORTED_MODULE_1__["default"], "\n    </style>\n    ").concat(_dt_score_display_html__WEBPACK_IMPORTED_MODULE_0__["default"], "\n");
+var DtScoreDisplay = /*#__PURE__*/function (_HTMLElement) {
+  function DtScoreDisplay() {
+    var _this;
+    _classCallCheck(this, DtScoreDisplay);
+    _this = _callSuper(this, DtScoreDisplay);
+    _this.attachShadow({
+      mode: 'open'
+    });
+    _this.shadowRoot.appendChild(template.content.cloneNode(true));
+    return _this;
+  }
+  _inherits(DtScoreDisplay, _HTMLElement);
+  return _createClass(DtScoreDisplay);
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+customElements.define('dt-score-display', DtScoreDisplay);
 
-//         input.remove();
-//         submitButton.remove();
-
-//         resolve();
-//       });
-//     });
-//   }
-
-//   async function processItems() {
-//     for (const itemKey in obj) {
-//       if (obj.hasOwnProperty(itemKey)) {
-//         await getInputForItem(itemKey);
-//       }
-//     }
-
-//     console.log('All items processed:', obj);
-//   }
-
-//   processItems();
 
 /***/ }),
 
@@ -616,7 +699,8 @@ var languages = {
     name_input: 'Voer de naam in van:',
     placeholder: 'Speler',
     score_input: 'Voer score in voor:',
-    score_submit: 'voeg toe'
+    score_submit: 'voeg toe',
+    step_back: 'terug'
   },
   german: {
     name: "Deutsch",
@@ -626,7 +710,8 @@ var languages = {
     name_input: 'Geben Sie den Namen ein von:',
     placeholder: 'Spieler',
     score_input: 'Geben Sie die Punktzahl ein für:',
-    score_submit: 'hinzufügen'
+    score_submit: 'hinzufügen',
+    step_back: 'zurück'
   },
   spanish: {
     name: "Español",
@@ -636,7 +721,8 @@ var languages = {
     name_input: 'Ingrese el nombre de:',
     placeholder: 'Jugador',
     score_input: 'Ingrese la puntuación para:',
-    score_submit: 'agregar'
+    score_submit: 'agregar',
+    step_back: 'atrás'
   },
   english: {
     name: "English",
@@ -646,7 +732,8 @@ var languages = {
     name_input: 'Enter the name of:',
     placeholder: 'Player',
     score_input: 'Enter score for:',
-    score_submit: 'add'
+    score_submit: 'add',
+    step_back: 'back'
   },
   french: {
     name: "Français",
@@ -656,7 +743,8 @@ var languages = {
     name_input: 'Entrez le nom de:',
     placeholder: 'Joueur',
     score_input: 'Entrez le score pour :',
-    score_submit: 'ajouter'
+    score_submit: 'ajouter',
+    step_back: 'retour'
   }
 };
 var activeLanguage = languages.dutch;
@@ -1005,6 +1093,55 @@ table {
 `, "",{"version":3,"sources":["webpack://./src/styles/reset.css"],"names":[],"mappings":"AAAA;;;EAGE,sBAAsB;AACxB;AACA;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAiFE,SAAS;EACT,UAAU;EACV,SAAS;EACT,eAAe;EACf,aAAa;EACb,wBAAwB;AAC1B;AACA,gDAAgD;AAChD;;;;;;;;;;;EAWE,cAAc;AAChB;AACA;EACE,cAAc;AAChB;AACA;;EAEE,gBAAgB;AAClB;AACA;;EAEE,YAAY;AACd;AACA;;;;EAIE,WAAW;EACX,aAAa;AACf;AACA;EACE,yBAAyB;EACzB,iBAAiB;AACnB","sourcesContent":["*,\r\n*::before,\r\n*::after {\r\n  box-sizing: border-box;\r\n}\r\nhtml,\r\nbody,\r\ndiv,\r\nspan,\r\napplet,\r\nobject,\r\niframe,\r\nh1,\r\nh2,\r\nh3,\r\nh4,\r\nh5,\r\nh6,\r\np,\r\nblockquote,\r\npre,\r\na,\r\nabbr,\r\nacronym,\r\naddress,\r\nbig,\r\ncite,\r\ncode,\r\ndel,\r\ndfn,\r\nem,\r\nimg,\r\nins,\r\nkbd,\r\nq,\r\ns,\r\nsamp,\r\nsmall,\r\nstrike,\r\nstrong,\r\nsub,\r\nsup,\r\ntt,\r\nvar,\r\nb,\r\nu,\r\ni,\r\ncenter,\r\ndl,\r\ndt,\r\ndd,\r\nol,\r\nul,\r\nli,\r\nfieldset,\r\nform,\r\nlabel,\r\nlegend,\r\ntable,\r\ncaption,\r\ntbody,\r\ntfoot,\r\nthead,\r\ntr,\r\nth,\r\ntd,\r\narticle,\r\naside,\r\ncanvas,\r\ndetails,\r\nembed,\r\nfigure,\r\nfigcaption,\r\nfooter,\r\nheader,\r\nhgroup,\r\nmenu,\r\nnav,\r\noutput,\r\nruby,\r\nsection,\r\nsummary,\r\ntime,\r\nmark,\r\naudio,\r\nvideo {\r\n  margin: 0;\r\n  padding: 0;\r\n  border: 0;\r\n  font-size: 100%;\r\n  font: inherit;\r\n  vertical-align: baseline;\r\n}\r\n/* HTML5 display-role reset for older browsers */\r\narticle,\r\naside,\r\ndetails,\r\nfigcaption,\r\nfigure,\r\nfooter,\r\nheader,\r\nhgroup,\r\nmenu,\r\nnav,\r\nsection {\r\n  display: block;\r\n}\r\nbody {\r\n  line-height: 1;\r\n}\r\nol,\r\nul {\r\n  list-style: none;\r\n}\r\nblockquote,\r\nq {\r\n  quotes: none;\r\n}\r\nblockquote:before,\r\nblockquote:after,\r\nq:before,\r\nq:after {\r\n  content: \"\";\r\n  content: none;\r\n}\r\ntable {\r\n  border-collapse: collapse;\r\n  border-spacing: 0;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./src/javascript/custom-components/back-button/dt-back-button.component.sass":
+/*!************************************************************************************!*\
+  !*** ./src/javascript/custom-components/back-button/dt-back-button.component.sass ***!
+  \************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `* {
+  font-family: "Effra Trial", sans-serif;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box;
+  border: none;
+}
+
+.back-button {
+  font-family: "Effra Trial", sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: black;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(255, 200, 0);
+  height: 30px;
+  width: 135px;
+}
+.back-button:hover {
+  cursor: pointer;
+  box-shadow: 3px 3px 3px 0px rgb(153, 153, 153);
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/back-button/dt-back-button.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,sCC6BW;ED5BX,gBAAA;EACA,eCDW;EDEX,YAAA;EACA,YAAA;EACA,mBCyBmB;EDxBnB,kCCVK;EDWL,YAAA;EACA,YAAA;AAAJ;AAEI;EACI,eAAA;EACA,8CCqCS;ADrCjB","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
 
 /***/ }),
@@ -1437,12 +1574,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 .name-input-confirm {
   height: 30px;
   border-radius: 20px;
-  width: 130px;
+  width: 45%;
   font-size: 16px;
   font-weight: 300;
   color: rgb(44, 46, 53);
   background-color: rgb(236, 49, 143);
-  align-self: center;
 }
 .name-input-confirm:hover {
   box-shadow: 3px 3px 3px 0px rgb(153, 153, 153);
@@ -1456,6 +1592,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
   width: 300px;
   display: flex;
   flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .warning {
@@ -1497,7 +1638,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 
 .slide-out {
   animation: slide-out 0.5s ease-in forwards;
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,YAAA;EACA,mBC4BmB;ED3BnB,mBAAA;EACA,eAAA;EACA,mCAAA;EACA,oCCbQ;EDcR,eAAA;EACA,sBCbI;EDcJ,kBAAA;EACA,8BCZG;ADYP;AAEI;EAbJ;IAcQ,eCXO;EDYb;AACF;AAAI;EACI,aAAA;AAER;AADI;EACI,YAAA;EACA,gBCXY;ADcpB;AADI;EACI,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,UAAA;EACA,sBC/BA;ADkCR;AADI;EACI,eAAA;EACA,gBCpBU;EDqBV,kBAAA;EACA,mBChBK;ADmBb;AADQ;EANJ;IAOQ,eCjCG;EDqCb;AACF;AAHI;EACI,YAAA;EACA,mBCTe;EDUf,YAAA;EACA,eCxCO;EDyCP,gBAAA;EACA,sBChDA;EDiDA,mCC9CD;ED+CC,kBAAA;AAKR;AAHQ;EACI,8CCCK;ADIjB;AAHQ;EACI,eAAA;AAKZ;;AAHA;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,sBAAA;AAMJ;;AAJA;EACI,oCAAA;AAOJ;AALI;EACI,kBAAA;EACA,QAAA;EACA,UAAA;EACA,sBCrEM;EDsEN,YAAA;AAOR;;AALA;EACI,aAAA;AAQJ;;AAJA;EACI;IACI,UAAA;IACA,wBAAA;EAON;AACF;AANA;EACI;IACI,UAAA;IACA,wBAAA;EAQN;EANE;IACI,UAAA;IACA,2BAAA;EAQN;AACF;AAPA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AASJ;;AAPA;EACI,0CAAA;AAUJ","sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,YAAA;EACA,mBC4BmB;ED3BnB,mBAAA;EACA,eAAA;EACA,mCAAA;EACA,oCCbQ;EDcR,eAAA;EACA,sBCbI;EDcJ,kBAAA;EACA,8BCZG;ADYP;AAEI;EAbJ;IAcQ,eCXO;EDYb;AACF;AAAI;EACI,aAAA;AAER;AADI;EACI,YAAA;EACA,gBCXY;ADcpB;AADI;EACI,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,UAAA;EACA,sBC/BA;ADkCR;AADI;EACI,eAAA;EACA,gBCpBU;EDqBV,kBAAA;EACA,mBChBK;ADmBb;AADQ;EANJ;IAOQ,eCjCG;EDqCb;AACF;AAHI;EACI,YAAA;EACA,mBCTe;EDUf,UAAA;EACA,eCxCO;EDyCP,gBAAA;EACA,sBChDA;EDiDA,mCC9CD;ADmDP;AAHQ;EACI,8CCEK;ADGjB;AAHQ;EACI,eAAA;AAKZ;;AAHA;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,sBAAA;AAMJ;;AAJA;EACI,aAAA;EACA,8BAAA;AAOJ;;AALA;EACI,oCAAA;AAQJ;AANI;EACI,kBAAA;EACA,QAAA;EACA,UAAA;EACA,sBCxEM;EDyEN,YAAA;AAQR;;AANA;EACI,aAAA;AASJ;;AALA;EACI;IACI,UAAA;IACA,wBAAA;EAQN;AACF;AAPA;EACI;IACI,UAAA;IACA,wBAAA;EASN;EAPE;IACI,UAAA;IACA,2BAAA;EASN;AACF;AARA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AAUJ;;AARA;EACI,0CAAA;AAWJ","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
+
+
+/***/ }),
+
+/***/ "./src/javascript/custom-components/score-display/dt-score-display.component.sass":
+/*!****************************************************************************************!*\
+  !*** ./src/javascript/custom-components/score-display/dt-score-display.component.sass ***!
+  \****************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -1623,6 +1790,24 @@ module.exports = function (item) {
 
 /***/ }),
 
+/***/ "./src/javascript/custom-components/back-button/dt-back-button.html":
+/*!**************************************************************************!*\
+  !*** ./src/javascript/custom-components/back-button/dt-back-button.html ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+// Module
+var code = `<button class="back-button"></button>
+`;
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
+
+/***/ }),
+
 /***/ "./src/javascript/custom-components/language-selector/dt-language-selector.html":
 /*!**************************************************************************************!*\
   !*** ./src/javascript/custom-components/language-selector/dt-language-selector.html ***!
@@ -1742,9 +1927,30 @@ var code = `<div class="name-input-container">
       />
     </svg>
     <input type="text" class="name-input" placeholder="Speler" />
-    <button class="name-input-confirm">Voeg toe</button>
+    <div class="button-container">
+      <dt-back-button></dt-back-button>
+      <button class="name-input-confirm">Voeg toe</button>
+    </div>
   </div>
 </div>
+`;
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
+
+/***/ }),
+
+/***/ "./src/javascript/custom-components/score-display/dt-score-display.html":
+/*!******************************************************************************!*\
+  !*** ./src/javascript/custom-components/score-display/dt-score-display.html ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+// Module
+var code = `<div>SCORE DISPLAY</div>
 `;
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
@@ -2204,11 +2410,13 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_reset_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/reset.css */ "./src/styles/reset.css");
 /* harmony import */ var _styles_main_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.sass */ "./src/styles/main.sass");
-/* harmony import */ var _javascript_custom_components_language_selector_dt_language_selector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./javascript/custom-components/language-selector/dt-language-selector.js */ "./src/javascript/custom-components/language-selector/dt-language-selector.js");
-/* harmony import */ var _javascript_custom_components_player_count_picker_dt_player_count_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./javascript/custom-components/player-count-picker/dt-player-count-picker.js */ "./src/javascript/custom-components/player-count-picker/dt-player-count-picker.js");
-/* harmony import */ var _javascript_custom_components_player_name_input_dt_player_name_input_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./javascript/custom-components/player-name-input/dt-player-name-input.js */ "./src/javascript/custom-components/player-name-input/dt-player-name-input.js");
-/* harmony import */ var _javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./javascript/modules/utils.js */ "./src/javascript/modules/utils.js");
-/* harmony import */ var _javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./javascript/modules/languages.js */ "./src/javascript/modules/languages.js");
+/* harmony import */ var _javascript_custom_components_back_button_dt_back_button_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./javascript/custom-components/back-button/dt-back-button.js */ "./src/javascript/custom-components/back-button/dt-back-button.js");
+/* harmony import */ var _javascript_custom_components_language_selector_dt_language_selector_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./javascript/custom-components/language-selector/dt-language-selector.js */ "./src/javascript/custom-components/language-selector/dt-language-selector.js");
+/* harmony import */ var _javascript_custom_components_player_count_picker_dt_player_count_picker_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./javascript/custom-components/player-count-picker/dt-player-count-picker.js */ "./src/javascript/custom-components/player-count-picker/dt-player-count-picker.js");
+/* harmony import */ var _javascript_custom_components_player_name_input_dt_player_name_input_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./javascript/custom-components/player-name-input/dt-player-name-input.js */ "./src/javascript/custom-components/player-name-input/dt-player-name-input.js");
+/* harmony import */ var _javascript_custom_components_score_display_dt_score_display_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./javascript/custom-components/score-display/dt-score-display.js */ "./src/javascript/custom-components/score-display/dt-score-display.js");
+/* harmony import */ var _javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./javascript/modules/utils.js */ "./src/javascript/modules/utils.js");
+/* harmony import */ var _javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./javascript/modules/languages.js */ "./src/javascript/modules/languages.js");
 
 
 
@@ -2216,12 +2424,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-(0,_javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_5__.fetchImage)('assets/onder_de_10_logo.png', document.querySelector('.logo-link'), 'logo-footer');
+
+
+(0,_javascript_modules_utils_js__WEBPACK_IMPORTED_MODULE_7__.fetchImage)('assets/onder_de_10_logo.png', document.querySelector('.logo-link'), 'logo-footer');
 document.addEventListener('language-changed', function (e) {
-  (0,_javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_6__.translate)(e.detail.title, document.querySelector('.header-title'));
+  (0,_javascript_modules_languages_js__WEBPACK_IMPORTED_MODULE_8__.translate)(e.detail.title, document.querySelector('.header-title'));
 });
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.489d5705aa6bcf3f66e6.js.map
+//# sourceMappingURL=bundle.f3c3f77e25c9dfb0957e.js.map
