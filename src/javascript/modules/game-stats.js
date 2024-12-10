@@ -1,4 +1,18 @@
-const players = {};
+const players = {
+    // player_1: { name: 'Nick', score: 0 },
+    // player_2: { name: 'Rafa', score: 0 },
+    // player_3: { name: 'Ana Carla', score: 0 },
+    // player_4: { name: 'Isabella', score: 0 },
+    // player_5: { name: 'Cara', score: 0 },
+    // player_6: { name: 'Test', score: 0 }
+
+};
+
+function setPlayerScore(scoreInput, currentPlayer) {
+    scoreInput = Number(scoreInput)
+
+    players[currentPlayer].score = scoreInput;
+}
 
 function setPlayerCount(count) {
     for (let i = 1; i <= count; i++) {
@@ -19,4 +33,4 @@ function resetPlayerCount() {
     }
 }
 
-export { setPlayerCount, resetPlayerCount, players }
+export { setPlayerCount, resetPlayerCount, setPlayerScore, players }

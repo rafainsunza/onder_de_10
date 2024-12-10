@@ -642,14 +642,21 @@ var DtScoreDisplay = /*#__PURE__*/function (_HTMLElement) {
       mode: 'open'
     });
     _this.shadowRoot.appendChild(template.content.cloneNode(true));
+    _this.mainWrapper = _this.shadowRoot.querySelector('.score-display-wrapper');
     _this.scoreInput = _this.shadowRoot.querySelector('.score-input');
     _this.playersWrapper = _this.shadowRoot.querySelector('.players-wrapper');
     _this.inputTitle = _this.shadowRoot.querySelector('.score-input-title');
     _this.scoreSubmitButton = _this.shadowRoot.querySelector('.add-button');
-    _this.appendPlayerData();
     var currentLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.getActiveLanguage)();
     (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(currentLanguage.score_input, _this.inputTitle);
     (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(currentLanguage.score_submit, _this.scoreSubmitButton);
+    _this.appendPlayerData();
+    _this.totalPlayers = _this.shadowRoot.querySelectorAll('.name').length;
+    _this.playerCount = 1;
+    _this.setPlaceholder();
+    _this.scoreSubmitButton.addEventListener('click', function () {
+      return _this.handleScoreSubmit();
+    });
     document.addEventListener('language-changed', function (e) {
       return _this.handleLanguageChange(e);
     });
@@ -657,6 +664,28 @@ var DtScoreDisplay = /*#__PURE__*/function (_HTMLElement) {
   }
   _inherits(DtScoreDisplay, _HTMLElement);
   return _createClass(DtScoreDisplay, [{
+    key: "setPlaceholder",
+    value: function setPlaceholder() {
+      var _players$currentPlaye;
+      var currentPlayer = "player_".concat(this.playerCount);
+      this.scoreInput.placeholder = "".concat(((_players$currentPlaye = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players[currentPlayer]) === null || _players$currentPlaye === void 0 ? void 0 : _players$currentPlaye.name) || '');
+    }
+  }, {
+    key: "handleScoreSubmit",
+    value: function handleScoreSubmit() {
+      var submittedScore = this.scoreInput.value;
+      if (this.playerCount <= this.totalPlayers) {
+        var currentPlayer = "player_".concat(this.playerCount);
+        (0,_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.setPlayerScore)(submittedScore, currentPlayer);
+        this.scoreInput.value = '';
+        this.playerCount++;
+        this.setPlaceholder();
+      }
+      if (this.playerCount > this.totalPlayers) {
+        console.log(_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players);
+      }
+    }
+  }, {
     key: "handleLanguageChange",
     value: function handleLanguageChange(e) {
       (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.score_input, this.inputTitle);
@@ -697,9 +726,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   players: () => (/* binding */ players),
 /* harmony export */   resetPlayerCount: () => (/* binding */ resetPlayerCount),
-/* harmony export */   setPlayerCount: () => (/* binding */ setPlayerCount)
+/* harmony export */   setPlayerCount: () => (/* binding */ setPlayerCount),
+/* harmony export */   setPlayerScore: () => (/* binding */ setPlayerScore)
 /* harmony export */ });
-var players = {};
+var players = {
+  // player_1: { name: 'Nick', score: 0 },
+  // player_2: { name: 'Rafa', score: 0 },
+  // player_3: { name: 'Ana Carla', score: 0 },
+  // player_4: { name: 'Isabella', score: 0 },
+  // player_5: { name: 'Cara', score: 0 },
+  // player_6: { name: 'Test', score: 0 }
+};
+function setPlayerScore(scoreInput, currentPlayer) {
+  scoreInput = Number(scoreInput);
+  players[currentPlayer].score = scoreInput;
+}
 function setPlayerCount(count) {
   for (var i = 1; i <= count; i++) {
     var playerKey = "player_".concat(i);
@@ -1743,6 +1784,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
   flex-direction: column;
   justify-content: center;
   position: relative;
+  z-index: 500;
 }
 
 .players-wrapper {
@@ -1760,11 +1802,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 @media (min-width: 768px) {
   .players-wrapper {
     column-gap: 15px;
-  }
-}
-@media (min-width: 1024px) {
-  .players-wrapper {
-    justify-content: space-evenly;
   }
 }
 
@@ -1833,8 +1870,13 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 
 .score-input {
   margin-bottom: 15px;
-  font-weight: 100;
+  font-weight: 400;
   background-color: rgb(255, 200, 0);
+}
+.score-input::placeholder {
+  color: black;
+  font-size: 24px;
+  font-weight: 100;
 }
 .score-input-container {
   display: flex;
@@ -1848,7 +1890,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
     bottom: -20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 500;
   }
 }
 .score-input-title {
@@ -1863,7 +1904,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 dt-back-button {
   width: 100%;
   margin-left: 15px;
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/score-display/dt-score-display.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,kBAAA;AAAJ;;AAEA;EACI,aAAA;EACA,uBAAA;EACA,eAAA;EACA,mBCMS;EDLT,eAAA;AACJ;AACI;EAPJ;IAQQ,gBCCQ;EDCd;AACF;AADI;EAVJ;IAWQ,gBCHK;EDOX;AACF;AAHI;EAbJ;IAcQ,6BAAA;EAMN;AACF;;AALA;EACI,0BAAA;EACA,mBCTY;EDUZ,2BAAA;AAQJ;AANI;EALJ;IAMQ,mBCZK;IDaL,4BAAA;IACA,6BAAA;EASN;AACF;AARI;EAVJ;IAWQ,gBAAA;EAWN;AACF;;AAVA;;;EAGI,mBCRmB;EDSnB,YAAA;EACA,WAAA;EACA,aAAA;EACA,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,eAAA;AAaJ;AAZI;;;EACI,0BAAA;AAgBR;;AAdA;EACI,mCCrDG;EDsDH,gBC1Cc;ED2Cd,kBAAA;AAiBJ;;AAfA;EACI,mCAAA;EACA,gBCjDgB;ADmEpB;;AAhBA;EACI,kCChEK;EDiEL,mBC/BmB;EDgCnB,YAAA;EACA,WAAA;EACA,sCCnCW;EDoCX,gBAAA;EACA,eCjEW;EDkEX,YAAA;AAmBJ;AAlBI;EACI,eAAA;EACA,8CCdS;ADkCjB;;AAlBA;EACI,mBC3DS;ED4DT,gBClEgB;EDmEhB,kCC/EK;ADoGT;AAnBI;EACI,aAAA;EACA,sBAAA;AAqBR;AAnBQ;EAJJ;IAKQ,YAAA;IACA,cAAA;IACA,kBAAA;IACA,aAAA;IACA,SAAA;IACA,2BAAA;IACA,YAAA;EAsBV;AACF;AArBI;EACI,kBAAA;EACA,kBAAA;AAuBR;;AArBA;EACI,aAAA;AAwBJ;;AAtBA;EACI,WAAA;EACA,iBCrFS;AD8Gb","sourceRoot":""}]);
+}
+
+@keyframes slide-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+.score-display-wrapper {
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: slide-in 0.75s ease-out forwards;
+}
+
+.slide-out {
+  animation: slide-out 0.5s ease-in forwards;
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/score-display/dt-score-display.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,kBAAA;EACA,YAAA;AAAJ;;AAEA;EACI,aAAA;EACA,uBAAA;EACA,eAAA;EACA,mBCKS;EDJT,eAAA;AACJ;AACI;EAPJ;IAQQ,gBAAA;EAEN;AACF;AADI;EAVJ;IAWQ,gBCJK;EDQX;AACF;;AAHA;EACI,0BAAA;EACA,mBCPY;EDQZ,2BAAA;AAMJ;AAJI;EALJ;IAMQ,mBCVK;IDWL,4BAAA;IACA,6BAAA;EAON;AACF;AANI;EAVJ;IAWQ,gBAAA;EASN;AACF;;AARA;;;EAGI,mBCNmB;EDOnB,YAAA;EACA,WAAA;EACA,aAAA;EACA,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,eAAA;AAWJ;AAVI;;;EACI,0BAAA;AAcR;;AAZA;EACI,mCCnDG;EDoDH,gBCxCc;EDyCd,kBAAA;AAeJ;;AAbA;EACI,mCAAA;EACA,gBC/CgB;AD+DpB;;AAdA;EACI,kCC9DK;ED+DL,mBC7BmB;ED8BnB,YAAA;EACA,WAAA;EACA,sCCjCW;EDkCX,gBAAA;EACA,eC/DW;EDgEX,YAAA;AAiBJ;AAhBI;EACI,eAAA;EACA,8CCZS;AD8BjB;;AAhBA;EACI,mBCzDS;ED0DT,gBC/DiB;EDgEjB,kCC7EK;ADgGT;AAjBI;EACI,YAAA;EACA,eC3EO;ED4EP,gBCtEY;ADyFpB;AAjBI;EACI,aAAA;EACA,sBAAA;AAmBR;AAjBQ;EAJJ;IAKQ,YAAA;IACA,cAAA;IACA,kBAAA;IACA,aAAA;IACA,SAAA;IACA,2BAAA;EAoBV;AACF;AAnBI;EACI,kBAAA;EACA,kBAAA;AAqBR;;AAnBA;EACI,aAAA;AAsBJ;;AApBA;EACI,WAAA;EACA,iBCvFS;AD8Gb;;AArBA;EACI;IACI,UAAA;IACA,wBAAA;EAwBN;AACF;AAvBA;EACI;IACI,UAAA;IACA,wBAAA;EAyBN;EAvBE;IACI,UAAA;IACA,2BAAA;EAyBN;AACF;AAxBA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AA0BJ;;AAxBA;EACI,0CAAA;AA2BJ","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -2644,4 +2711,4 @@ document.addEventListener('language-changed', function (e) {
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.1343b0b1dba431de9ffd.js.map
+//# sourceMappingURL=bundle.3129128f03b2a6747d96.js.map
