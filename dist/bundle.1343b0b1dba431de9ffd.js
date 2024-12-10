@@ -558,6 +558,12 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
         this.warningIcon.classList.remove('hidden');
         return;
       }
+      if (nameInput.length > 22) {
+        this.input.classList.add('warning');
+        this.warningIcon.classList.remove('hidden');
+        this.input.value = '';
+        return;
+      }
       nameInput = this.input.value.split(' ').map(function (name) {
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
       }).join(' ');
@@ -604,12 +610,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dt_score_display_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dt-score-display.html */ "./src/javascript/custom-components/score-display/dt-score-display.html");
 /* harmony import */ var _dt_score_display_component_sass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dt-score-display.component.sass */ "./src/javascript/custom-components/score-display/dt-score-display.component.sass");
 /* harmony import */ var _modules_languages_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../modules/languages.js */ "./src/javascript/modules/languages.js");
+/* harmony import */ var _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../modules/game-stats.js */ "./src/javascript/modules/game-stats.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
 function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
@@ -620,6 +627,7 @@ function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.
 function _isNativeFunction(t) { try { return -1 !== Function.toString.call(t).indexOf("[native code]"); } catch (n) { return "function" == typeof t; } }
 function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
 function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+
 
 
 
@@ -634,10 +642,45 @@ var DtScoreDisplay = /*#__PURE__*/function (_HTMLElement) {
       mode: 'open'
     });
     _this.shadowRoot.appendChild(template.content.cloneNode(true));
+    _this.scoreInput = _this.shadowRoot.querySelector('.score-input');
+    _this.playersWrapper = _this.shadowRoot.querySelector('.players-wrapper');
+    _this.inputTitle = _this.shadowRoot.querySelector('.score-input-title');
+    _this.scoreSubmitButton = _this.shadowRoot.querySelector('.add-button');
+    _this.appendPlayerData();
+    var currentLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.getActiveLanguage)();
+    (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(currentLanguage.score_input, _this.inputTitle);
+    (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(currentLanguage.score_submit, _this.scoreSubmitButton);
+    document.addEventListener('language-changed', function (e) {
+      return _this.handleLanguageChange(e);
+    });
     return _this;
   }
   _inherits(DtScoreDisplay, _HTMLElement);
-  return _createClass(DtScoreDisplay);
+  return _createClass(DtScoreDisplay, [{
+    key: "handleLanguageChange",
+    value: function handleLanguageChange(e) {
+      (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.score_input, this.inputTitle);
+      (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.score_submit, this.scoreSubmitButton);
+    }
+  }, {
+    key: "appendPlayerData",
+    value: function appendPlayerData() {
+      for (var player in _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players) {
+        var name = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players[player].name;
+        var score = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players[player].score;
+        var container = document.createElement('div');
+        var nameDiv = document.createElement('div');
+        var scoreDiv = document.createElement('div');
+        container.classList.add('player-container');
+        nameDiv.classList.add('name');
+        scoreDiv.classList.add('score');
+        nameDiv.textContent = name;
+        scoreDiv.textContent = score;
+        container.appendChild(nameDiv), container.appendChild(scoreDiv);
+        this.playersWrapper.appendChild(container);
+      }
+    }
+  }]);
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
 customElements.define('dt-score-display', DtScoreDisplay);
 
@@ -935,7 +978,22 @@ dt-player-count-picker {
 dt-player-name-input {
   display: flex;
   justify-content: center;
-}`, "",{"version":3,"sources":["webpack://./src/styles/main.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;;EAEI,sCCoCW;EDnCX,YAAA;AADJ;;AAGA;EACI,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,iBC+Bc;ED9Bd,oCCXc;ADWlB;AAEI;EAPJ;IAQQ,4BAAA;EACN;AACF;;AAAA;EACI,kBAAA;AAGJ;AADI;EAHJ;IAIQ,iBAAA;EAIN;AACF;;AAHA;EACI,gBCFgB;EDGhB,eCXW;EDYX,sBCpBI;EDqBJ,mBAAA;EAEA,4CAAA;EACA,UAAA;EACA,qBAAA;AAKJ;AAHI;EACI;IACI,2BAAA;IACA,UAAA;EAKV;EAHM;IACI,wBAAA;IACA,UAAA;EAKV;AACF;AAJI;EAnBJ;IAoBQ,eC5BO;EDmCb;AACF;AANI;EAtBJ;IAuBQ,eC9BO;EDuCb;AACF;AARI;EAzBJ;IA0BQ,eChCO;ED2Cb;AACF;;AAVA;EACI,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,YAAA;AAaJ;;AAXA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,kBAAA;EACA,eAAA;AAcJ;;AAXI;EACI,YAAA;AAcR;AAZI;EACI,YAAA;AAcR;;AAZA;EACQ,oBAAA;EACA,oBC9CK;AD6Db;;AAbA;EACQ,YAAA;AAgBR;;AAdA;EACQ,aAAA;EACA,uBAAA;AAiBR","sourceRoot":""}]);
+}
+
+dt-score-display {
+  height: 100%;
+  padding: 0 10px;
+}
+@media (min-width: 420px) {
+  dt-score-display {
+    padding: 0 50px;
+  }
+}
+@media (min-width: 768px) {
+  dt-score-display {
+    padding: 0;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/styles/main.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;;EAEI,sCCoCW;EDnCX,YAAA;AADJ;;AAGA;EACI,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,iBC+Bc;ED9Bd,oCCXc;ADWlB;AAEI;EAPJ;IAQQ,4BAAA;EACN;AACF;;AAAA;EACI,kBAAA;AAGJ;AADI;EAHJ;IAIQ,iBAAA;EAIN;AACF;;AAHA;EACI,gBCFgB;EDGhB,eCXW;EDYX,sBCpBI;EDqBJ,mBAAA;EAEA,4CAAA;EACA,UAAA;EACA,qBAAA;AAKJ;AAHI;EACI;IACI,2BAAA;IACA,UAAA;EAKV;EAHM;IACI,wBAAA;IACA,UAAA;EAKV;AACF;AAJI;EAnBJ;IAoBQ,eC5BO;EDmCb;AACF;AANI;EAtBJ;IAuBQ,eC9BO;EDuCb;AACF;AARI;EAzBJ;IA0BQ,eChCO;ED2Cb;AACF;;AAVA;EACI,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,YAAA;AAaJ;;AAXA;EACI,WAAA;EACA,aAAA;EACA,8BAAA;EACA,kBAAA;EACA,eAAA;AAcJ;;AAXI;EACI,YAAA;AAcR;AAZI;EACI,YAAA;AAcR;;AAZA;EACQ,oBAAA;EACA,oBC9CK;AD6Db;;AAbA;EACQ,YAAA;AAgBR;;AAdA;EACQ,aAAA;EACA,uBAAA;AAiBR;;AAfA;EACQ,YAAA;EACA,eAAA;AAkBR;AAhBQ;EAJR;IAKY,eAAA;EAmBV;AACF;AAlBQ;EAPR;IAQY,UAAA;EAqBV;AACF","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1134,12 +1192,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
   border-radius: 20px;
   background-color: rgb(255, 200, 0);
   height: 30px;
-  width: 135px;
+  width: 100%;
 }
 .back-button:hover {
   cursor: pointer;
   box-shadow: 3px 3px 3px 0px rgb(153, 153, 153);
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/back-button/dt-back-button.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,sCC6BW;ED5BX,gBAAA;EACA,eCDW;EDEX,YAAA;EACA,YAAA;EACA,mBCyBmB;EDxBnB,kCCVK;EDWL,YAAA;EACA,YAAA;AAAJ;AAEI;EACI,eAAA;EACA,8CCqCS;ADrCjB","sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/back-button/dt-back-button.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,sCC6BW;ED5BX,gBAAA;EACA,eCDW;EDEX,YAAA;EACA,YAAA;EACA,mBCyBmB;EDxBnB,kCCVK;EDWL,YAAA;EACA,WAAA;AAAJ;AAEI;EACI,eAAA;EACA,8CC4CS;AD5CjB","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -1236,6 +1294,7 @@ button {
 .dropdown-menu.show {
   transform: translateY(0);
   opacity: 1;
+  z-index: 1000;
 }
 
 .language-option {
@@ -1275,7 +1334,7 @@ button {
   letter-spacing: 1.5px;
   font-weight: 400;
   margin-left: 25%;
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/language-selector/dt-language-selector.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AACA;EACI,sCCsCW;EDrCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;AAAJ;;AAEA;EACI,sBAAA;EACA,YAAA;AACJ;;AACA;EACI,kBAAA;EACA,UAAA;EACA,QAAA;EACA,YAAA;EAEA,6BAAA;AACJ;AACI;EACI,sBCdC;EDeD,eAAA;AACR;AACI;EACI,kBAAA;EACA,UAAA;EACA,YAAA;AACR;AACQ;EALJ;IAMQ,YAAA;EAEV;AACF;;AADA;EACI,YAAA;EACA,6BAAA;EACA,UAAA;AAIJ;AAFI;EACI,WAAA;EACA,YAAA;EACA,mBAAA;AAIR;AAFQ;EACI,eAAA;EACA,mCAAA;AAIZ;;AADI;EACI,kBAAA;AAIR;AAFI;EACI,eAAA;EACA,MAAA;EACA,OAAA;EACA,2BAAA;EACA,UAAA;EACA,kDAAA;EAEA,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,uBAAA;EAEA,WAAA;EACA,YAAA;EAEA,0CC/DY;ADgEpB;AACQ;EACI,wBAAA;EACA,UAAA;AACZ;;AAEI;EACI,UAAA;EACA,mBClCe;EDmCf,mBClDQ;ADmDhB;AACQ;EALJ;IAMQ,YAAA;EAEV;AACF;AADI;EACI,aAAA;EACA,mBAAA;EACA,WAAA;EACA,YAAA;EACA,mBC7Ce;ED8Cf,sBCjFA;EDkFA,eC5EO;AD+Ef;AADQ;EACI,kCCpFH;EDqFG,eAAA;AAGZ;AADQ;EACI,QAAA;EACA,WAAA;EACA,YAAA;EACA,4BAAA;AAGZ;AADQ;EACI,aAAA;EACA,mBAAA;EACA,QAAA;EACA,yBAAA;EACA,qBAAA;EACA,gBCtFS;EDuFT,gBC5DW;AD+DvB","sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/language-selector/dt-language-selector.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AACA;EACI,sCCsCW;EDrCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;AAAJ;;AAEA;EACI,sBAAA;EACA,YAAA;AACJ;;AACA;EACI,kBAAA;EACA,UAAA;EACA,QAAA;EACA,YAAA;EAEA,6BAAA;AACJ;AACI;EACI,sBCdC;EDeD,eAAA;AACR;AACI;EACI,kBAAA;EACA,UAAA;EACA,YAAA;AACR;AACQ;EALJ;IAMQ,YAAA;EAEV;AACF;;AADA;EACI,YAAA;EACA,6BAAA;EACA,UAAA;AAIJ;AAFI;EACI,WAAA;EACA,YAAA;EACA,mBAAA;AAIR;AAFQ;EACI,eAAA;EACA,mCAAA;AAIZ;;AADI;EACI,kBAAA;AAIR;AAFI;EACI,eAAA;EACA,MAAA;EACA,OAAA;EACA,2BAAA;EACA,UAAA;EACA,kDAAA;EAEA,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,uBAAA;EAEA,WAAA;EACA,YAAA;EAEA,0CC/DY;ADgEpB;AACQ;EACI,wBAAA;EACA,UAAA;EACA,aAAA;AACZ;;AAEI;EACI,UAAA;EACA,mBCnCe;EDoCf,mBCnDQ;ADoDhB;AACQ;EALJ;IAMQ,YAAA;EAEV;AACF;AADI;EACI,aAAA;EACA,mBAAA;EACA,WAAA;EACA,YAAA;EACA,mBC9Ce;ED+Cf,sBClFA;EDmFA,eC7EO;ADgFf;AADQ;EACI,kCCrFH;EDsFG,eAAA;AAGZ;AADQ;EACI,QAAA;EACA,WAAA;EACA,YAAA;EACA,4BAAA;AAGZ;AADQ;EACI,aAAA;EACA,mBAAA;EACA,QAAA;EACA,yBAAA;EACA,qBAAA;EACA,gBCvFS;EDwFT,gBC7DW;ADgEvB","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -1529,7 +1588,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 }
 
 .name-input {
-  height: 35px;
+  height: 40px;
   width: 300px;
   border-radius: 20px;
   margin-bottom: 10px;
@@ -1574,7 +1633,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 .name-input-confirm {
   height: 30px;
   border-radius: 20px;
-  width: 45%;
+  width: 100%;
   font-size: 16px;
   font-weight: 300;
   color: rgb(44, 46, 53);
@@ -1597,6 +1656,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 .button-container {
   display: flex;
   justify-content: space-between;
+}
+
+dt-back-button {
+  width: 100%;
+  margin-right: 5px;
 }
 
 .warning {
@@ -1638,7 +1702,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 
 .slide-out {
   animation: slide-out 0.5s ease-in forwards;
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,YAAA;EACA,mBC4BmB;ED3BnB,mBAAA;EACA,eAAA;EACA,mCAAA;EACA,oCCbQ;EDcR,eAAA;EACA,sBCbI;EDcJ,kBAAA;EACA,8BCZG;ADYP;AAEI;EAbJ;IAcQ,eCXO;EDYb;AACF;AAAI;EACI,aAAA;AAER;AADI;EACI,YAAA;EACA,gBCXY;ADcpB;AADI;EACI,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,UAAA;EACA,sBC/BA;ADkCR;AADI;EACI,eAAA;EACA,gBCpBU;EDqBV,kBAAA;EACA,mBChBK;ADmBb;AADQ;EANJ;IAOQ,eCjCG;EDqCb;AACF;AAHI;EACI,YAAA;EACA,mBCTe;EDUf,UAAA;EACA,eCxCO;EDyCP,gBAAA;EACA,sBChDA;EDiDA,mCC9CD;ADmDP;AAHQ;EACI,8CCEK;ADGjB;AAHQ;EACI,eAAA;AAKZ;;AAHA;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,sBAAA;AAMJ;;AAJA;EACI,aAAA;EACA,8BAAA;AAOJ;;AALA;EACI,oCAAA;AAQJ;AANI;EACI,kBAAA;EACA,QAAA;EACA,UAAA;EACA,sBCxEM;EDyEN,YAAA;AAQR;;AANA;EACI,aAAA;AASJ;;AALA;EACI;IACI,UAAA;IACA,wBAAA;EAQN;AACF;AAPA;EACI;IACI,UAAA;IACA,wBAAA;EASN;EAPE;IACI,UAAA;IACA,2BAAA;EASN;AACF;AARA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AAUJ;;AARA;EACI,0CAAA;AAWJ","sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/player-name-input/dt-player-name-input.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,YAAA;EACA,mBC4BmB;ED3BnB,mBAAA;EACA,eAAA;EACA,mCAAA;EACA,oCCbQ;EDcR,eAAA;EACA,sBCbI;EDcJ,kBAAA;EACA,8BCZG;ADYP;AAEI;EAbJ;IAcQ,eCXO;EDYb;AACF;AAAI;EACI,aAAA;AAER;AADI;EACI,YAAA;EACA,gBCXY;ADcpB;AADI;EACI,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,UAAA;EACA,sBC/BA;ADkCR;AADI;EACI,eAAA;EACA,gBCpBU;EDqBV,kBAAA;EACA,mBChBK;ADmBb;AADQ;EANJ;IAOQ,eCjCG;EDqCb;AACF;AAHI;EACI,YAAA;EACA,mBCTe;EDUf,WAAA;EACA,eCxCO;EDyCP,gBAAA;EACA,sBChDA;EDiDA,mCC9CD;ADmDP;AAHQ;EACI,8CCSK;ADJjB;AAHQ;EACI,eAAA;AAKZ;;AAHA;EACI,kBAAA;EACA,YAAA;EACA,aAAA;EACA,sBAAA;AAMJ;;AAJA;EACI,aAAA;EACA,8BAAA;AAOJ;;AALA;EACI,WAAA;EACA,iBAAA;AAQJ;;AANA;EACI,oCAAA;AASJ;AAPI;EACI,kBAAA;EACA,QAAA;EACA,UAAA;EACA,sBC5EM;ED6EN,YAAA;AASR;;AAPA;EACI,aAAA;AAUJ;;AANA;EACI;IACI,UAAA;IACA,wBAAA;EASN;AACF;AARA;EACI;IACI,UAAA;IACA,wBAAA;EAUN;EARE;IACI,UAAA;IACA,2BAAA;EAUN;AACF;AATA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AAWJ;;AATA;EACI,0CAAA;AAYJ","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -1664,7 +1728,142 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, `* {
+  font-family: "Effra Trial", sans-serif;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box;
+  border: none;
+}
+
+.score-display-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.players-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  column-gap: 5px;
+}
+@media (min-width: 620px) {
+  .players-wrapper {
+    column-gap: 10px;
+  }
+}
+@media (min-width: 768px) {
+  .players-wrapper {
+    column-gap: 15px;
+  }
+}
+@media (min-width: 1024px) {
+  .players-wrapper {
+    justify-content: space-evenly;
+  }
+}
+
+.player-container {
+  flex: 1 1 calc(50% - 10px);
+  margin-bottom: 10px;
+  max-width: calc(50% - 10px);
+}
+@media (min-width: 620px) {
+  .player-container {
+    margin-bottom: 20px;
+    flex: 1 1 calc(33.3% - 10px);
+    max-width: calc(33.3% - 10px);
+  }
+}
+@media (min-width: 1024px) {
+  .player-container {
+    max-width: 300px;
+  }
+}
+
+.name,
+.score,
+.score-input {
+  border-radius: 20px;
+  height: 40px;
+  width: 100%;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 20px;
+}
+.name[type=number],
+.score[type=number],
+.score-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.name {
+  background-color: rgb(236, 49, 143);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.score {
+  border: 3px solid rgb(30, 191, 241);
+  font-weight: 100;
+}
+
+.add-button {
+  background-color: rgb(255, 200, 0);
+  border-radius: 20px;
+  height: 30px;
+  width: 100%;
+  font-family: "Effra Trial", sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: black;
+}
+.add-button:hover {
+  cursor: pointer;
+  box-shadow: 3px 3px 3px 0px rgb(153, 153, 153);
+}
+
+.score-input {
+  margin-bottom: 15px;
+  font-weight: 100;
+  background-color: rgb(255, 200, 0);
+}
+.score-input-container {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 620px) {
+  .score-input-container {
+    width: 300px;
+    margin: 0 auto;
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 500;
+  }
+}
+.score-input-title {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.button-container {
+  display: flex;
+}
+
+dt-back-button {
+  width: 100%;
+  margin-left: 15px;
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/score-display/dt-score-display.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,kBAAA;AAAJ;;AAEA;EACI,aAAA;EACA,uBAAA;EACA,eAAA;EACA,mBCMS;EDLT,eAAA;AACJ;AACI;EAPJ;IAQQ,gBCCQ;EDCd;AACF;AADI;EAVJ;IAWQ,gBCHK;EDOX;AACF;AAHI;EAbJ;IAcQ,6BAAA;EAMN;AACF;;AALA;EACI,0BAAA;EACA,mBCTY;EDUZ,2BAAA;AAQJ;AANI;EALJ;IAMQ,mBCZK;IDaL,4BAAA;IACA,6BAAA;EASN;AACF;AARI;EAVJ;IAWQ,gBAAA;EAWN;AACF;;AAVA;;;EAGI,mBCRmB;EDSnB,YAAA;EACA,WAAA;EACA,aAAA;EACA,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,eAAA;AAaJ;AAZI;;;EACI,0BAAA;AAgBR;;AAdA;EACI,mCCrDG;EDsDH,gBC1Cc;ED2Cd,kBAAA;AAiBJ;;AAfA;EACI,mCAAA;EACA,gBCjDgB;ADmEpB;;AAhBA;EACI,kCChEK;EDiEL,mBC/BmB;EDgCnB,YAAA;EACA,WAAA;EACA,sCCnCW;EDoCX,gBAAA;EACA,eCjEW;EDkEX,YAAA;AAmBJ;AAlBI;EACI,eAAA;EACA,8CCdS;ADkCjB;;AAlBA;EACI,mBC3DS;ED4DT,gBClEgB;EDmEhB,kCC/EK;ADoGT;AAnBI;EACI,aAAA;EACA,sBAAA;AAqBR;AAnBQ;EAJJ;IAKQ,YAAA;IACA,cAAA;IACA,kBAAA;IACA,aAAA;IACA,SAAA;IACA,2BAAA;IACA,YAAA;EAsBV;AACF;AArBI;EACI,kBAAA;EACA,kBAAA;AAuBR;;AArBA;EACI,aAAA;AAwBJ;;AAtBA;EACI,WAAA;EACA,iBCrFS;AD8Gb","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -1950,7 +2149,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // Module
-var code = `<div>SCORE DISPLAY</div>
+var code = `<div class="score-display-wrapper">
+  <div class="players-wrapper"></div>
+
+  <div class="score-input-container">
+    <h2 class="score-input-title">Voer score in:</h2>
+    <input type="number" class="score-input" />
+    <div class="button-container">
+      <button class="add-button">voeg toe</button>
+      <dt-back-button></dt-back-button>
+    </div>
+  </div>
+</div>
 `;
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
@@ -2434,4 +2644,4 @@ document.addEventListener('language-changed', function (e) {
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.f3c3f77e25c9dfb0957e.js.map
+//# sourceMappingURL=bundle.1343b0b1dba431de9ffd.js.map

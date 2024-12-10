@@ -1,0 +1,111 @@
+@use '../../../styles/_variables'
+
+*
+    font-family: variables.$font-primary
+    padding: 0
+    margin: 0
+    list-style: none
+    box-sizing: border-box
+    border: none
+
+.score-display-wrapper
+    height: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    position: relative
+
+.players-wrapper
+    display: flex
+    justify-content: center
+    flex-wrap: wrap
+    margin-bottom: variables.$spacing-md
+    column-gap: 5px
+
+    @media (min-width: variables.$breakpoint-sm-md)
+        column-gap: variables.$spacing-sm-md
+
+    @media (min-width: variables.$breakpoint-md)
+        column-gap: variables.$spacing-sm
+
+    @media (min-width: variables.$breakpoint-lg)
+        justify-content: space-evenly
+
+.player-container
+    flex: 1 1 calc(50% - variables.$spacing-sm-md)
+    margin-bottom: variables.$spacing-sm-md
+    max-width: calc(50% - variables.$spacing-sm-md)
+
+    @media (min-width: variables.$breakpoint-sm-md)
+        margin-bottom: variables.$spacing-md
+        flex: 1 1 calc(33.3% - variables.$spacing-sm-md)
+        max-width: calc(33.3% - variables.$spacing-sm-md)
+
+    @media (min-width: variables.$breakpoint-lg)
+        max-width: 300px
+
+.name,
+.score,
+.score-input
+    border-radius: variables.$button-border-radius
+    height: 40px
+    width: 100%
+    outline: none
+    display: flex
+    justify-content: center
+    align-items: center
+    text-align: center
+    font-size: 20px
+    &[type="number"]
+        -moz-appearance: textfield
+
+.name
+    background-color: variables.$name-background-color
+    font-weight: variables.$font-weight-mid
+    margin-bottom: 5px
+
+.score
+    border: 3px solid variables.$score-border-color
+    font-weight: variables.$font-weight-light
+
+.add-button
+    background-color: variables.$score-input-add-background
+    border-radius: variables.$button-border-radius
+    height: 30px
+    width: 100%
+    font-family: variables.$font-primary
+    font-weight: 300
+    font-size: variables.$font-size-xs
+    color: black
+    &:hover
+        cursor: pointer
+        box-shadow: variables.$shadow-default
+
+.score-input
+    margin-bottom: variables.$spacing-sm
+    font-weight: variables.$font-weight-light
+    background-color: variables.$score-input-background
+
+    &-container
+        display: flex
+        flex-direction: column
+
+        @media (min-width: variables.$breakpoint-sm-md)
+            width: 300px
+            margin: 0 auto
+            position: absolute
+            bottom: -20px
+            left: 50%
+            transform: translateX(-50%)
+            z-index: 500
+
+    &-title
+        text-align: center
+        margin-bottom: 5px
+
+.button-container
+    display: flex
+
+dt-back-button
+    width: 100%
+    margin-left: variables.$spacing-sm

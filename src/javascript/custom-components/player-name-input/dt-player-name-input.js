@@ -75,6 +75,13 @@ class DtPlayerNameInput extends HTMLElement {
             return
         }
 
+        if (nameInput.length > 22) {
+            this.input.classList.add('warning');
+            this.warningIcon.classList.remove('hidden');
+            this.input.value = '';
+            return
+        }
+
         nameInput = this.input.value
             .split(' ')
             .map(name => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
@@ -93,9 +100,9 @@ class DtPlayerNameInput extends HTMLElement {
 
             setTimeout(() => {
                 const scoreDisplay = document.createElement('dt-score-display');
+
                 if (document.querySelector('main').querySelector('dt-score-display') === null) {
                     document.querySelector('main').appendChild(scoreDisplay);
-
                 };
 
                 this.remove();
