@@ -1,36 +1,82 @@
 const players = {
-    // player_1: { name: 'Nick', score: 0 },
-    // player_2: { name: 'Rafa', score: 0 },
-    // player_3: { name: 'Ana Carla', score: 0 },
-    // player_4: { name: 'Isabella', score: 0 },
-    // player_5: { name: 'Cara', score: 0 },
-    // player_6: { name: 'Test', score: 0 }
-
+    player_1: {
+        name: 'Nick',
+        score_per_round: [],
+        halved: false,
+        get total_score() {
+            return this.score_per_round.reduce((total, score) => total + score, 0)
+        }
+    },
+    player_2: {
+        name: 'Rafa',
+        score_per_round: [],
+        halved: false,
+        get total_score() {
+            return this.score_per_round.reduce((total, score) => total + score, 0)
+        }
+    },
+    player_3: {
+        name: 'Ana',
+        score_per_round: [],
+        halved: false,
+        get total_score() {
+            return this.score_per_round.reduce((total, score) => total + score, 0)
+        }
+    },
 };
 
-function setPlayerScore(scoreInput, currentPlayer) {
-    scoreInput = Number(scoreInput)
+function createObservable(obj) {
+    return new Proxy(obj, {
+        set(target, property, value) {
+            target[property] = value;
 
-    players[currentPlayer].score = scoreInput;
+            if (property === 'total_score') {
+                const event = new CustomEvent('score-changed', {
+                    detail: {
+                        name: target.name,
+                        total_score: value
+                    }
+                });
+
+                document.dispatchEvent(event)
+            }
+            return true;
+        },
+        get(target, property) {
+            const value = target[property];
+            // Wrap nested objects in their own Proxy
+            if (value && typeof value === 'object' && !value.__isProxy) {
+                target[property] = createObservable(value);
+                target[property].__isProxy = true; // Avoid re-wrapping
+            }
+            return target[property];
+        }
+    });
 }
+
+const observablePlayers = createObservable(players)
 
 function setPlayerCount(count) {
     for (let i = 1; i <= count; i++) {
         const playerKey = `player_${i}`;
 
-        players[playerKey] = {
+        observablePlayers[playerKey] = {
             name: null,
-            score: 0
+            score_per_round: [],
+            halved: false,
+            get total_score() {
+                return this.score_per_round.reduce((total, score) => total + score, 0)
+            }
         };
     }
 }
 
 function resetPlayerCount() {
-    for (let key in players) {
-        if (players.hasOwnProperty(key)) {
-            delete players[key];
+    for (let key in observablePlayers) {
+        if (observablePlayers.hasOwnProperty(key)) {
+            delete observablePlayers[key];
         }
     }
 }
 
-export { setPlayerCount, resetPlayerCount, setPlayerScore, players }
+export { setPlayerCount, resetPlayerCount, players, observablePlayers }

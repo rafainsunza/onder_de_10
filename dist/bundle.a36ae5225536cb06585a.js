@@ -58,6 +58,16 @@ var DtBackButton = /*#__PURE__*/function (_HTMLElement) {
   }
   _inherits(DtBackButton, _HTMLElement);
   return _createClass(DtBackButton, [{
+    key: "enableButton",
+    value: function enableButton() {
+      this.backButton.classList.remove('disabled');
+    }
+  }, {
+    key: "disableButton",
+    value: function disableButton() {
+      this.backButton.classList.add('disabled');
+    }
+  }, {
     key: "handleLanguageChange",
     value: function handleLanguageChange(e) {
       (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(e.detail.step_back, this.backButton);
@@ -503,6 +513,9 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
     _this.input.placeholder = activeLanguage.placeholder;
     _this.playerCount = 0;
     _this.startNameInput();
+    setTimeout(function () {
+      _this.input.focus();
+    }, 200);
     _this.input.addEventListener('input', function () {
       return _this.resetWarning();
     });
@@ -510,6 +523,7 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
       if (e.key === 'Enter') {
         _this.submitButton.click();
       }
+      _this.input.focus();
     });
     _this.submitButton.addEventListener('click', function () {
       return _this.handleNameInput();
@@ -584,6 +598,7 @@ var DtPlayerNameInput = /*#__PURE__*/function (_HTMLElement) {
           _this2.remove();
         }, 500);
       }
+      this.input.focus();
     }
   }, {
     key: "setPlaceholder",
@@ -647,43 +662,123 @@ var DtScoreDisplay = /*#__PURE__*/function (_HTMLElement) {
     _this.playersWrapper = _this.shadowRoot.querySelector('.players-wrapper');
     _this.inputTitle = _this.shadowRoot.querySelector('.score-input-title');
     _this.scoreSubmitButton = _this.shadowRoot.querySelector('.add-button');
+    _this.backButton = _this.shadowRoot.querySelector('dt-back-button');
+    _this.warningIcon = _this.shadowRoot.querySelector('.warning-icon');
     var currentLanguage = (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.getActiveLanguage)();
     (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(currentLanguage.score_input, _this.inputTitle);
     (0,_modules_languages_js__WEBPACK_IMPORTED_MODULE_2__.translate)(currentLanguage.score_submit, _this.scoreSubmitButton);
     _this.appendPlayerData();
     _this.totalPlayers = _this.shadowRoot.querySelectorAll('.name').length;
-    _this.playerCount = 1;
+    _this.scores = _this.shadowRoot.querySelectorAll('.score');
+    _this.currentRound = 1;
+    _this.playerTurn = 1;
     _this.setPlaceholder();
+    setTimeout(function () {
+      _this.backButton.disableButton();
+      _this.scoreInput.focus();
+    }, 200);
+    _this.scoreInput.addEventListener('input', function () {
+      _this.removeWarning();
+    });
+    _this.scoreInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        _this.scoreSubmitButton.click();
+      }
+      ;
+      _this.scoreInput.focus();
+    });
+    _this.backButton.addEventListener('click', function (e) {
+      return _this.undoScore();
+    });
     _this.scoreSubmitButton.addEventListener('click', function () {
-      return _this.handleScoreSubmit();
+      return _this.submitScore();
     });
     document.addEventListener('language-changed', function (e) {
       return _this.handleLanguageChange(e);
+    });
+    document.addEventListener('score-changed', function (e) {
+      return console.log('a player total score changed...');
     });
     return _this;
   }
   _inherits(DtScoreDisplay, _HTMLElement);
   return _createClass(DtScoreDisplay, [{
-    key: "setPlaceholder",
-    value: function setPlaceholder() {
-      var _players$currentPlaye;
-      var currentPlayer = "player_".concat(this.playerCount);
-      this.scoreInput.placeholder = "".concat(((_players$currentPlaye = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players[currentPlayer]) === null || _players$currentPlaye === void 0 ? void 0 : _players$currentPlaye.name) || '');
+    key: "undoScore",
+    value: function undoScore() {
+      if (this.currentRound === 1) {
+        if (this.playerTurn === 1) {
+          return;
+        }
+        this.playerTurn--;
+      } else if (this.currentRound > 1) {
+        if (this.playerTurn === 1) {
+          this.currentRound--;
+          this.playerTurn = this.totalPlayers;
+        } else {
+          this.playerTurn--;
+        }
+      }
+      var currentPlayer = "player_".concat(this.playerTurn);
+      var playerData = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.observablePlayers[currentPlayer];
+      playerData.score_per_round.pop();
+      if (this.playerTurn === 1 && this.currentRound === 1) {
+        this.backButton.disableButton();
+      }
+      this.setPlaceholder();
+      this.displayScore(playerData);
+      this.scoreInput.focus();
+      this.removeWarning();
     }
   }, {
-    key: "handleScoreSubmit",
-    value: function handleScoreSubmit() {
-      var submittedScore = this.scoreInput.value;
-      if (this.playerCount <= this.totalPlayers) {
-        var currentPlayer = "player_".concat(this.playerCount);
-        (0,_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.setPlayerScore)(submittedScore, currentPlayer);
-        this.scoreInput.value = '';
-        this.playerCount++;
+    key: "submitScore",
+    value: function submitScore() {
+      var inputIsValid = this.scoreInput.validity.valid;
+      var score = Number(this.scoreInput.value);
+      var currentPlayer = "player_".concat(this.playerTurn);
+      var playerData = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.observablePlayers[currentPlayer];
+      if (!inputIsValid) {
+        this.addWarning();
+        return;
+      }
+      if (this.playerTurn <= this.totalPlayers) {
+        this.backButton.enableButton();
+        playerData.score_per_round.push(score);
+        this.displayScore(playerData);
+        this.playerTurn++;
         this.setPlaceholder();
       }
-      if (this.playerCount > this.totalPlayers) {
-        console.log(_modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players);
+      if (this.playerTurn > this.totalPlayers) {
+        this.playerTurn = 1;
+        this.currentRound++;
+        this.setPlaceholder();
       }
+      this.scoreInput.focus();
+    }
+  }, {
+    key: "displayScore",
+    value: function displayScore(playerData) {
+      this.scores[this.playerTurn - 1].innerText = playerData.total_score;
+    }
+  }, {
+    key: "setPlaceholder",
+    value: function setPlaceholder() {
+      var _observablePlayers$cu;
+      var currentPlayer = "player_".concat(this.playerTurn);
+      this.scoreInput.placeholder = "".concat(((_observablePlayers$cu = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.observablePlayers[currentPlayer]) === null || _observablePlayers$cu === void 0 ? void 0 : _observablePlayers$cu.name) || '');
+      this.scoreInput.value = '';
+    }
+  }, {
+    key: "addWarning",
+    value: function addWarning() {
+      this.scoreInput.classList.add('warning');
+      this.warningIcon.classList.remove('hidden');
+      this.scoreInput.focus();
+    }
+  }, {
+    key: "removeWarning",
+    value: function removeWarning() {
+      this.scoreInput.classList.remove('warning');
+      this.warningIcon.classList.add('hidden');
     }
   }, {
     key: "handleLanguageChange",
@@ -694,9 +789,9 @@ var DtScoreDisplay = /*#__PURE__*/function (_HTMLElement) {
   }, {
     key: "appendPlayerData",
     value: function appendPlayerData() {
-      for (var player in _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players) {
-        var name = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players[player].name;
-        var score = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.players[player].score;
+      for (var player in _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.observablePlayers) {
+        var name = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.observablePlayers[player].name;
+        var score = _modules_game_stats_js__WEBPACK_IMPORTED_MODULE_3__.observablePlayers[player].total_score;
         var container = document.createElement('div');
         var nameDiv = document.createElement('div');
         var scoreDiv = document.createElement('div');
@@ -724,36 +819,90 @@ customElements.define('dt-score-display', DtScoreDisplay);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   observablePlayers: () => (/* binding */ observablePlayers),
 /* harmony export */   players: () => (/* binding */ players),
 /* harmony export */   resetPlayerCount: () => (/* binding */ resetPlayerCount),
-/* harmony export */   setPlayerCount: () => (/* binding */ setPlayerCount),
-/* harmony export */   setPlayerScore: () => (/* binding */ setPlayerScore)
+/* harmony export */   setPlayerCount: () => (/* binding */ setPlayerCount)
 /* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var players = {
-  // player_1: { name: 'Nick', score: 0 },
-  // player_2: { name: 'Rafa', score: 0 },
-  // player_3: { name: 'Ana Carla', score: 0 },
-  // player_4: { name: 'Isabella', score: 0 },
-  // player_5: { name: 'Cara', score: 0 },
-  // player_6: { name: 'Test', score: 0 }
+  player_1: {
+    name: 'Nick',
+    score_per_round: [],
+    halved: false,
+    get total_score() {
+      return this.score_per_round.reduce(function (total, score) {
+        return total + score;
+      }, 0);
+    }
+  },
+  player_2: {
+    name: 'Rafa',
+    score_per_round: [],
+    halved: false,
+    get total_score() {
+      return this.score_per_round.reduce(function (total, score) {
+        return total + score;
+      }, 0);
+    }
+  },
+  player_3: {
+    name: 'Ana',
+    score_per_round: [],
+    halved: false,
+    get total_score() {
+      return this.score_per_round.reduce(function (total, score) {
+        return total + score;
+      }, 0);
+    }
+  }
 };
-function setPlayerScore(scoreInput, currentPlayer) {
-  scoreInput = Number(scoreInput);
-  players[currentPlayer].score = scoreInput;
+function createObservable(obj) {
+  return new Proxy(obj, {
+    set: function set(target, property, value) {
+      target[property] = value;
+      if (property === 'total_score') {
+        var event = new CustomEvent('score-changed', {
+          detail: {
+            name: target.name,
+            total_score: value
+          }
+        });
+        document.dispatchEvent(event);
+      }
+      return true;
+    },
+    get: function get(target, property) {
+      var value = target[property];
+      // Wrap nested objects in their own Proxy
+      if (value && _typeof(value) === 'object' && !value.__isProxy) {
+        target[property] = createObservable(value);
+        target[property].__isProxy = true; // Avoid re-wrapping
+      }
+      return target[property];
+    }
+  });
 }
+var observablePlayers = createObservable(players);
 function setPlayerCount(count) {
   for (var i = 1; i <= count; i++) {
     var playerKey = "player_".concat(i);
-    players[playerKey] = {
+    observablePlayers[playerKey] = {
       name: null,
-      score: 0
+      score_per_round: [],
+      halved: false,
+      get total_score() {
+        return this.score_per_round.reduce(function (total, score) {
+          return total + score;
+        }, 0);
+      }
     };
   }
 }
 function resetPlayerCount() {
-  for (var key in players) {
-    if (players.hasOwnProperty(key)) {
-      delete players[key];
+  for (var key in observablePlayers) {
+    if (observablePlayers.hasOwnProperty(key)) {
+      delete observablePlayers[key];
     }
   }
 }
@@ -784,7 +933,8 @@ var languages = {
     placeholder: 'Speler',
     score_input: 'Voer score in voor:',
     score_submit: 'voeg toe',
-    step_back: 'terug'
+    step_back: 'terug',
+    round_announcement: 'ronde'
   },
   german: {
     name: "Deutsch",
@@ -795,7 +945,8 @@ var languages = {
     placeholder: 'Spieler',
     score_input: 'Geben Sie die Punktzahl ein für:',
     score_submit: 'hinzufügen',
-    step_back: 'zurück'
+    step_back: 'zurück',
+    round_announcement: 'runde'
   },
   spanish: {
     name: "Español",
@@ -806,7 +957,8 @@ var languages = {
     placeholder: 'Jugador',
     score_input: 'Ingrese la puntuación para:',
     score_submit: 'agregar',
-    step_back: 'atrás'
+    step_back: 'atrás',
+    round_announcement: 'ronda'
   },
   english: {
     name: "English",
@@ -817,7 +969,8 @@ var languages = {
     placeholder: 'Player',
     score_input: 'Enter score for:',
     score_submit: 'add',
-    step_back: 'back'
+    step_back: 'back',
+    round_announcement: 'round'
   },
   french: {
     name: "Français",
@@ -828,7 +981,8 @@ var languages = {
     placeholder: 'Joueur',
     score_input: 'Entrez le score pour :',
     score_submit: 'ajouter',
-    step_back: 'retour'
+    step_back: 'retour',
+    round_announcement: 'manche'
   }
 };
 var activeLanguage = languages.dutch;
@@ -1238,7 +1392,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 .back-button:hover {
   cursor: pointer;
   box-shadow: 3px 3px 3px 0px rgb(153, 153, 153);
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/back-button/dt-back-button.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,sCC6BW;ED5BX,gBAAA;EACA,eCDW;EDEX,YAAA;EACA,YAAA;EACA,mBCyBmB;EDxBnB,kCCVK;EDWL,YAAA;EACA,WAAA;AAAJ;AAEI;EACI,eAAA;EACA,8CC4CS;AD5CjB","sourceRoot":""}]);
+}
+
+.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/back-button/dt-back-button.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,sCC6BW;ED5BX,gBAAA;EACA,eCDW;EDEX,YAAA;EACA,YAAA;EACA,mBCyBmB;EDxBnB,kCCVK;EDWL,YAAA;EACA,WAAA;AAAJ;AAEI;EACI,eAAA;EACA,8CC4CS;AD5CjB;;AAEA;EACI,YAAA;EACA,oBAAA;AACJ","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -1804,6 +1963,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
     column-gap: 15px;
   }
 }
+@media (min-width: 1024px) {
+  .players-wrapper {
+    width: 930px;
+    align-self: center;
+  }
+}
 
 .player-container {
   flex: 1 1 calc(50% - 10px);
@@ -1903,9 +2068,42 @@ ___CSS_LOADER_EXPORT___.push([module.id, `* {
 
 dt-back-button {
   width: 100%;
-  margin-left: 15px;
+  margin-right: 15px;
 }
 
+.input-wrapper {
+  position: relative;
+}
+
+.warning {
+  border: 3.5px solid red;
+}
+.warning-icon {
+  position: absolute;
+  top: 9px;
+  left: 50px;
+  fill: red;
+  height: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes slide-by {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
 @keyframes slide-in {
   to {
     opacity: 1;
@@ -1930,7 +2128,7 @@ dt-back-button {
 
 .slide-out {
   animation: slide-out 0.5s ease-in forwards;
-}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/score-display/dt-score-display.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,kBAAA;EACA,YAAA;AAAJ;;AAEA;EACI,aAAA;EACA,uBAAA;EACA,eAAA;EACA,mBCKS;EDJT,eAAA;AACJ;AACI;EAPJ;IAQQ,gBAAA;EAEN;AACF;AADI;EAVJ;IAWQ,gBCJK;EDQX;AACF;;AAHA;EACI,0BAAA;EACA,mBCPY;EDQZ,2BAAA;AAMJ;AAJI;EALJ;IAMQ,mBCVK;IDWL,4BAAA;IACA,6BAAA;EAON;AACF;AANI;EAVJ;IAWQ,gBAAA;EASN;AACF;;AARA;;;EAGI,mBCNmB;EDOnB,YAAA;EACA,WAAA;EACA,aAAA;EACA,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,eAAA;AAWJ;AAVI;;;EACI,0BAAA;AAcR;;AAZA;EACI,mCCnDG;EDoDH,gBCxCc;EDyCd,kBAAA;AAeJ;;AAbA;EACI,mCAAA;EACA,gBC/CgB;AD+DpB;;AAdA;EACI,kCC9DK;ED+DL,mBC7BmB;ED8BnB,YAAA;EACA,WAAA;EACA,sCCjCW;EDkCX,gBAAA;EACA,eC/DW;EDgEX,YAAA;AAiBJ;AAhBI;EACI,eAAA;EACA,8CCZS;AD8BjB;;AAhBA;EACI,mBCzDS;ED0DT,gBC/DiB;EDgEjB,kCC7EK;ADgGT;AAjBI;EACI,YAAA;EACA,eC3EO;ED4EP,gBCtEY;ADyFpB;AAjBI;EACI,aAAA;EACA,sBAAA;AAmBR;AAjBQ;EAJJ;IAKQ,YAAA;IACA,cAAA;IACA,kBAAA;IACA,aAAA;IACA,SAAA;IACA,2BAAA;EAoBV;AACF;AAnBI;EACI,kBAAA;EACA,kBAAA;AAqBR;;AAnBA;EACI,aAAA;AAsBJ;;AApBA;EACI,WAAA;EACA,iBCvFS;AD8Gb;;AArBA;EACI;IACI,UAAA;IACA,wBAAA;EAwBN;AACF;AAvBA;EACI;IACI,UAAA;IACA,wBAAA;EAyBN;EAvBE;IACI,UAAA;IACA,2BAAA;EAyBN;AACF;AAxBA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AA0BJ;;AAxBA;EACI,0CAAA;AA2BJ","sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/javascript/custom-components/score-display/dt-score-display.component.sass","webpack://./src/styles/_variables.sass"],"names":[],"mappings":"AAEA;EACI,sCCqCW;EDpCX,UAAA;EACA,SAAA;EACA,gBAAA;EACA,sBAAA;EACA,YAAA;AADJ;;AAGA;EACI,YAAA;EACA,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,kBAAA;EACA,YAAA;AAAJ;;AAEA;EACI,aAAA;EACA,uBAAA;EACA,eAAA;EACA,mBCKS;EDJT,eAAA;AACJ;AACI;EAPJ;IAQQ,gBAAA;EAEN;AACF;AADI;EAVJ;IAWQ,gBCJK;EDQX;AACF;AAHI;EAbJ;IAcQ,YAAA;IACA,kBAAA;EAMN;AACF;;AALA;EACI,0BAAA;EACA,mBCXY;EDYZ,2BAAA;AAQJ;AANI;EALJ;IAMQ,mBCdK;IDeL,4BAAA;IACA,6BAAA;EASN;AACF;AARI;EAVJ;IAWQ,gBAAA;EAWN;AACF;;AAVA;;;EAGI,mBCVmB;EDWnB,YAAA;EACA,WAAA;EACA,aAAA;EACA,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,eAAA;AAaJ;AAZI;;;EACI,0BAAA;AAgBR;;AAdA;EACI,mCCvDG;EDwDH,gBC5Cc;ED6Cd,kBAAA;AAiBJ;;AAfA;EACI,mCAAA;EACA,gBCnDgB;ADqEpB;;AAhBA;EACI,kCClEK;EDmEL,mBCjCmB;EDkCnB,YAAA;EACA,WAAA;EACA,sCCrCW;EDsCX,gBAAA;EACA,eCnEW;EDoEX,YAAA;AAmBJ;AAlBI;EACI,eAAA;EACA,8CChBS;ADoCjB;;AAlBA;EACI,mBC7DS;ED8DT,gBCnEiB;EDoEjB,kCCjFK;ADsGT;AAnBI;EACI,YAAA;EACA,eC/EO;EDgFP,gBC1EY;AD+FpB;AAnBI;EACI,aAAA;EACA,sBAAA;AAqBR;AAnBQ;EAJJ;IAKQ,YAAA;IACA,cAAA;IACA,kBAAA;IACA,aAAA;IACA,SAAA;IACA,2BAAA;EAsBV;AACF;AArBI;EACI,kBAAA;EACA,kBAAA;AAuBR;;AArBA;EACI,aAAA;AAwBJ;;AAtBA;EACI,WAAA;EACA,kBC3FS;ADoHb;;AAvBA;EACI,kBAAA;AA0BJ;;AAxBA;EACI,uBAAA;AA2BJ;AAzBI;EACI,kBAAA;EACA,QAAA;EACA,UAAA;EACA,SAAA;EACA,YAAA;AA2BR;;AAzBA;EACI,aAAA;AA4BJ;;AAzBA;EACI;IACI,UAAA;IACA,4BAAA;EA4BN;EA3BE;IACI,UAAA;IACA,wBAAA;EA6BN;EA5BE;IACI,UAAA;IACA,2BAAA;EA8BN;AACF;AA7BA;EACI;IACI,UAAA;IACA,wBAAA;EA+BN;AACF;AA9BA;EACI;IACI,UAAA;IACA,wBAAA;EAgCN;EA9BE;IACI,UAAA;IACA,2BAAA;EAgCN;AACF;AA/BA;EACI,UAAA;EACA,4BAAA;EACA,2CAAA;AAiCJ;;AA/BA;EACI,0CAAA;AAkCJ","sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___.toString());
 
@@ -2221,10 +2419,29 @@ var code = `<div class="score-display-wrapper">
 
   <div class="score-input-container">
     <h2 class="score-input-title">Voer score in:</h2>
-    <input type="number" class="score-input" />
+    <div class="input-wrapper">
+      <svg
+        class="warning-icon hidden"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+      >
+        <!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+        <path
+          d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
+        />
+      </svg>
+      <input
+        type="number"
+        class="score-input"
+        required
+        min="0"
+        inputmode="numeric"
+      />
+    </div>
+
     <div class="button-container">
-      <button class="add-button">voeg toe</button>
       <dt-back-button></dt-back-button>
+      <button class="add-button">voeg toe</button>
     </div>
   </div>
 </div>
@@ -2711,4 +2928,4 @@ document.addEventListener('language-changed', function (e) {
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.3129128f03b2a6747d96.js.map
+//# sourceMappingURL=bundle.a36ae5225536cb06585a.js.map

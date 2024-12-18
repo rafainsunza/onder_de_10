@@ -29,6 +29,10 @@
     @media (min-width: variables.$breakpoint-md)
         column-gap: variables.$spacing-sm
 
+    @media (min-width: variables.$breakpoint-lg)
+        width: 930px
+        align-self: center
+
 .player-container
     flex: 1 1 calc(50% - variables.$spacing-sm-md)
     margin-bottom: variables.$spacing-sm-md
@@ -110,7 +114,35 @@
 
 dt-back-button
     width: 100%
-    margin-left: variables.$spacing-sm
+    margin-right: variables.$spacing-sm
+
+.input-wrapper
+    position: relative
+
+.warning
+    border: 3.5px solid red
+
+    &-icon
+        position: absolute
+        top: 9px
+        left: 50px
+        fill: red
+        height: 20px
+
+.hidden
+    display: none
+
+// ANIMATIONS
+@keyframes slide-by
+    0%
+        opacity: 0
+        transform: translateX(-100%)
+    50%
+        opacity: 1
+        transform: translateX(0)
+    100%
+        opacity: 0
+        transform: translateX(100%)
 
 @keyframes slide-in
     to
