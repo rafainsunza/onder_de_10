@@ -27,6 +27,14 @@ class DtBackButton extends HTMLElement {
         document.addEventListener('language-changed', (e) => this.handleLanguageChange(e));
     }
 
+    enableButton() {
+        this.backButton.classList.remove('disabled');
+    }
+
+    disableButton() {
+        this.backButton.classList.add('disabled');
+    }
+
     handleLanguageChange(e) {
         translate(e.detail.step_back, this.backButton);
     }

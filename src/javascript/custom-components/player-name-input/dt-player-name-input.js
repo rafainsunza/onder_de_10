@@ -32,9 +32,15 @@ class DtPlayerNameInput extends HTMLElement {
 
         this.playerCount = 0;
         this.startNameInput();
+        setTimeout(() => {
+            this.input.focus();
+        }, 200)
 
         this.input.addEventListener('input', () => this.resetWarning());
-        this.input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { this.submitButton.click() } });
+        this.input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { this.submitButton.click() }
+            this.input.focus();
+        });
         this.submitButton.addEventListener('click', () => this.handleNameInput());
         this.addEventListener('back-button-clicked', (e) => this.handleBackButtonClick(e));
         document.addEventListener('language-changed', (e) => {
@@ -108,6 +114,9 @@ class DtPlayerNameInput extends HTMLElement {
                 this.remove();
             }, 500);
         }
+
+        this.input.focus();
+
     }
 
     setPlaceholder() {

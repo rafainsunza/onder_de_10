@@ -8,7 +8,8 @@ const languages = {
         placeholder: 'Speler',
         score_input: 'Voer score in voor:',
         score_submit: 'voeg toe',
-        step_back: 'terug'
+        step_back: 'terug',
+        round_announcement: 'ronde'
     },
     german: {
         name: "Deutsch",
@@ -19,7 +20,8 @@ const languages = {
         placeholder: 'Spieler',
         score_input: 'Geben Sie die Punktzahl ein für:',
         score_submit: 'hinzufügen',
-        step_back: 'zurück'
+        step_back: 'zurück',
+        round_announcement: 'runde'
     },
     spanish: {
         name: "Español",
@@ -30,7 +32,8 @@ const languages = {
         placeholder: 'Jugador',
         score_input: 'Ingrese la puntuación para:',
         score_submit: 'agregar',
-        step_back: 'atrás'
+        step_back: 'atrás',
+        round_announcement: 'ronda'
 
     },
     english: {
@@ -42,7 +45,8 @@ const languages = {
         placeholder: 'Player',
         score_input: 'Enter score for:',
         score_submit: 'add',
-        step_back: 'back'
+        step_back: 'back',
+        round_announcement: 'round'
     },
     french: {
         name: "Français",
@@ -53,7 +57,8 @@ const languages = {
         placeholder: 'Joueur',
         score_input: 'Entrez le score pour :',
         score_submit: 'ajouter',
-        step_back: 'retour'
+        step_back: 'retour',
+        round_announcement: 'manche'
     }
 };
 
