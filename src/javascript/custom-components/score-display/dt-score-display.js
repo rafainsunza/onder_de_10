@@ -2,7 +2,7 @@ import html from './dt-score-display.html';
 import style from './dt-score-display.component.sass';
 
 import { translate, getActiveLanguage } from '../../modules/languages.js';
-import { observablePlayers, increasePlayerScore } from '../../modules/game-stats.js';
+import { players } from '../../modules/game-stats.js';
 
 const template = document.createElement('template');
 
@@ -25,100 +25,301 @@ class DtScoreDisplay extends HTMLElement {
         this.inputTitle = this.shadowRoot.querySelector('.score-input-title');
         this.scoreSubmitButton = this.shadowRoot.querySelector('.add-button');
         this.backButton = this.shadowRoot.querySelector('dt-back-button');
+        this.newGameButton = this.shadowRoot.querySelector('.new-game-button');
+        this.messageDialog = this.shadowRoot.querySelector('.message-dialog');
+        this.newGameDialog = this.shadowRoot.querySelector('.new-game-dialog');
         this.warningIcon = this.shadowRoot.querySelector('.warning-icon');
 
         const currentLanguage = getActiveLanguage();
         translate(currentLanguage.score_input, this.inputTitle);
         translate(currentLanguage.score_submit, this.scoreSubmitButton);
+        translate(currentLanguage.new_game_button, this.newGameButton);
 
         this.appendPlayerData();
         this.totalPlayers = this.shadowRoot.querySelectorAll('.name').length;
+        this.names = this.shadowRoot.querySelectorAll('.name');
         this.scores = this.shadowRoot.querySelectorAll('.score');
 
         this.currentRound = 1;
-        this.playerTurn = 1;
+        this.playerNumber = 1;
+        this.eliminatedPlayerNumbers = [];
+        this.gameOver = false;
+        this.activePlayerData = players[`player_${this.playerNumber}`]
+
         this.setPlaceholder();
         setTimeout(() => {
             this.backButton.disableButton();
             this.scoreInput.focus();
-
         }, 200)
 
         this.scoreInput.addEventListener('input', () => { this.removeWarning() });
         this.scoreInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { this.scoreSubmitButton.click() };
-            this.scoreInput.focus();
+            if (e.key === 'Enter' && !this.gameOver) {
+                e.preventDefault();
+                this.scoreSubmitButton.click()
+                this.scoreInput.focus();
+            };
         });
         this.backButton.addEventListener('click', (e) => this.undoScore());
         this.scoreSubmitButton.addEventListener('click', () => this.submitScore());
+        this.newGameButton.addEventListener('click', () => this.handleNewGameClick());
         document.addEventListener('language-changed', (e) => this.handleLanguageChange(e));
-        document.addEventListener('score-changed', (e) => console.log('a player total score changed...'))
+    }
+
+    handleNewGameClick() {
+        const closeButton = this.newGameDialog.querySelector('.new-game-dialog-close-button');
+        closeButton.addEventListener('click', () => {
+            this.newGameDialog.close();
+            this.newGameDialog.classList.remove('new-game-dialog-open');
+        });
+
+        const messageDiv = this.newGameDialog.querySelector('.new-game-dialog-text');
+        const noButton = this.newGameDialog.querySelector('.new-game-dialog-no-button');
+        const yesButton = this.newGameDialog.querySelector('.new-game-dialog-yes-button');
+
+        const message = getActiveLanguage().new_game_text;
+        const yes = getActiveLanguage().new_game_confirm;
+        const no = getActiveLanguage().new_game_cancel;
+
+        noButton.innerText = no;
+        yesButton.innerText = yes;
+        messageDiv.innerText = message;
+
+        this.newGameDialog.showModal();
+        this.newGameDialog.classList.add('new-game-dialog-open');
+
+        noButton.addEventListener('click', () => { this.newGame() });
+        yesButton.addEventListener('click', () => { this.newGameSamePlayers() });
+    }
+
+    newGameSamePlayers() {
+        const scoreDisplay = this.shadowRoot.querySelector('.score-display-wrapper');
+        scoreDisplay.classList.add('slide-out');
+        this.newGameDialog.close();
+        this.newGameDialog.classList.remove('new-game-dialog-open');
+
+        setTimeout(() => {
+            scoreDisplay.classList.remove('slide-out');
+        }, 500);
+
+        scoreDisplay.classList.add('slide-in');
+        this.resetGameState();
+
+        this.scores.forEach((score) => {
+            score.innerText = 0;
+            score.classList.remove('eliminated');
+        });
+
+        this.names.forEach((name) => {
+            name.classList.remove('eliminated');
+        });
+
+        this.backButton.disableButton();
+        this.scoreSubmitButton.classList.remove('disabled');
+        this.setPlaceholder();
+    }
+
+    newGame() {
+        this.newGameDialog.close();
+        this.shadowRoot.querySelector('.score-display-wrapper').classList.add('slide-out');
+        setTimeout(() => {
+            this.remove();
+
+            const playerCountElement = document.createElement('dt-player-count-picker');
+            if (document.querySelector('main').querySelector('dt-player-count-picker') === null) {
+                document.querySelector('main').appendChild(playerCountElement);
+            }
+
+        }, 500);
+
+    }
+
+    resetGameState() {
+        this.currentRound = 1;
+        this.playerNumber = 1;
+        this.eliminatedPlayerNumbers = [];
+        this.gameOver = false;
+        this.activePlayerData = players[`player_${this.playerNumber}`];
+
+        for (const playerKey in players) {
+            const player = players[playerKey];
+            player.score_per_round = [];
+            player.isEliminated = false;
+            player.eliminatedRound = null;
+        }
     }
 
     undoScore() {
-        if (this.currentRound === 1) {
-            if (this.playerTurn === 1) {
-                return
-            }
-
-            this.playerTurn--;
-        } else if (this.currentRound > 1) {
-            if (this.playerTurn === 1) {
-                this.currentRound--;
-                this.playerTurn = this.totalPlayers;
-            } else {
-                this.playerTurn--
-            }
+        if (this.gameOver) {
+            this.gameOver = false;
         }
 
-        const currentPlayer = `player_${this.playerTurn}`;
-        const playerData = observablePlayers[currentPlayer];
-        playerData.score_per_round.pop();
+        if (this.playerNumber === 1 && this.currentRound === 1) {
+            this.backButton.disableButton();
+            return;
+        }
 
-        if (this.playerTurn === 1 && this.currentRound === 1) { this.backButton.disableButton() }
+        do {
+            this.playerNumber--;
 
+            if (this.playerNumber < 1) {
+                this.playerNumber = this.totalPlayers;
+                this.currentRound--;
+            }
+
+            const player = players[`player_${this.playerNumber}`];
+
+            if (player.isEliminated && player.eliminatedRound === this.currentRound) {
+                this.undoElimination(player);
+                break;
+            }
+        } while (players[`player_${this.playerNumber}`].isEliminated);
+
+        this.activePlayerData = players[`player_${this.playerNumber}`];
+        this.activePlayerData.score_per_round.pop();
+
+        this.displayScore();
         this.setPlaceholder();
-        this.displayScore(playerData);
-        this.scoreInput.focus();
-        this.removeWarning();
+
+        if (this.playerNumber === 1 && this.currentRound === 1) {
+            this.backButton.disableButton();
+            return;
+        }
+        this.scoreSubmitButton.classList.remove('disabled');
+    }
+
+    undoElimination(player) {
+        const score = this.scores[player.player_index]
+        const name = this.names[player.player_index]
+
+        score.classList.remove('eliminated');
+        name.classList.remove('eliminated');
+
+        player.isEliminated = false
+        player.eliminatedRound = null;
+    }
+
+    eliminatePlayer() {
+        const scoreDiv = this.scores[this.activePlayerData.player_index]
+        const nameDiv = this.names[this.activePlayerData.player_index]
+
+        scoreDiv.classList.add('eliminated');
+        nameDiv.classList.add('eliminated');
+
+        this.activePlayerData.isEliminated = true
+        this.activePlayerData.eliminatedRound = this.currentRound;
+
+        this.alertEliminationOrWin();
+
+        if (this.gameOver) {
+            this.handlePlayerWin();
+        }
+    }
+
+    handlePlayerWin() {
+        this.scoreSubmitButton.classList.add('disabled');
+        return
+    }
+
+    alertEliminationOrWin() {
+        const activePlayers = Object.values(players).filter(player => !player.isEliminated);
+        const name = this.activePlayerData.name;
+        const dialogText = this.messageDialog.querySelector('.message-dialog-text');
+
+        if (activePlayers.length > 1) {
+            const eliminationMessage = getActiveLanguage().elimination_message;
+            const insertionPoint = eliminationMessage.indexOf(',') + 1;
+            const personalizedMessage = `${eliminationMessage.slice(0, insertionPoint)}\n ${name} ${eliminationMessage.slice(insertionPoint)}`;
+            dialogText.innerText = personalizedMessage;
+        } else {
+            const winnerName = activePlayers[0].name;
+            const winnerMessage = getActiveLanguage().winner_message;
+            const insertionPoint = winnerMessage.indexOf('!') + 1;
+            const personalizedMessage = `${winnerMessage.slice(0, insertionPoint)}\n ${winnerName} ${winnerMessage.slice(insertionPoint)}`;
+            dialogText.innerText = personalizedMessage;
+            this.gameOver = true;
+        }
+
+        const closeButton = this.messageDialog.querySelector('.message-dialog-button');
+        closeButton.addEventListener('click', () => {
+            this.messageDialog.classList.remove('message-dialog-open');
+            this.messageDialog.close();
+        });
+
+        this.messageDialog.showModal();
+        this.messageDialog.classList.add('message-dialog-open');
+    }
+
+    alertScoreHalving() {
+        const dialogText = this.messageDialog.querySelector('.message-dialog-text');
+        const points = this.activePlayerData.total_score
+        const name = this.activePlayerData.name;
+        const message = getActiveLanguage().score_halving_message;
+        const nameInsertionPoint = message.indexOf('!') + 1;
+        const pointsInsertionPoint = message.lastIndexOf(' ');
+        const personalizedMessage =
+            `${message.slice(0, nameInsertionPoint)}\n ${name} ${message.slice(nameInsertionPoint, pointsInsertionPoint)} ${points} ${message.slice(pointsInsertionPoint)}`;
+
+        dialogText.innerText = personalizedMessage;
+
+        const closeButton = this.messageDialog.querySelector('.message-dialog-button');
+        closeButton.addEventListener('click', () => {
+            this.messageDialog.classList.remove('message-dialog-open');
+            this.messageDialog.close();
+        });
+
+        this.messageDialog.showModal();
+        this.messageDialog.classList.add('message-dialog-open');
     }
 
     submitScore() {
-        const inputIsValid = this.scoreInput.validity.valid;
-        const score = Number(this.scoreInput.value);
-        const currentPlayer = `player_${this.playerTurn}`;
-        const playerData = observablePlayers[currentPlayer];
-
-        if (!inputIsValid) {
+        if (!this.scoreInput.validity.valid) {
             this.addWarning();
             return
         }
 
-        if (this.playerTurn <= this.totalPlayers) {
-            this.backButton.enableButton()
-            playerData.score_per_round.push(score);
-            this.displayScore(playerData);
+        this.backButton.enableButton();
 
-            this.playerTurn++;
-            this.setPlaceholder();
+        const submittedScore = Number(this.scoreInput.value);
+        this.activePlayerData.score_per_round.push(submittedScore);
+
+        if (this.activePlayerData.total_score > 150) {
+            this.eliminatePlayer();
         }
 
-        if (this.playerTurn > this.totalPlayers) {
-            this.playerTurn = 1;
-            this.currentRound++;
-            this.setPlaceholder();
+        if ([100, 150].includes(this.activePlayerData.total_score)) {
+            const totalScore = this.activePlayerData.total_score;
+            const halvedScore = totalScore / 2;
+            const oldRoundScore = this.activePlayerData.score_per_round.pop();
+            const newRoundScore = halvedScore - (totalScore - oldRoundScore);
+
+            this.activePlayerData.score_per_round.push(newRoundScore);
+            this.alertScoreHalving()
         }
 
-        this.scoreInput.focus();
+        this.displayScore();
+
+        do {
+            this.playerNumber++;
+            if (this.playerNumber > this.totalPlayers) {
+                this.playerNumber = 1;
+                this.currentRound++
+            }
+
+
+        } while (players[`player_${this.playerNumber}`].isEliminated);
+
+
+        this.activePlayerData = players[`player_${this.playerNumber}`];
+        this.setPlaceholder();
     }
 
-    displayScore(playerData) {
-        this.scores[this.playerTurn - 1].innerText = playerData.total_score;
+    displayScore() {
+        this.scores[this.activePlayerData.player_index].innerText = this.activePlayerData.total_score;
     }
 
     setPlaceholder() {
-        const currentPlayer = `player_${this.playerTurn}`;
-        this.scoreInput.placeholder = `${observablePlayers[currentPlayer]?.name || ''}`;
+        this.scoreInput.placeholder = this.activePlayerData.name
         this.scoreInput.value = '';
     }
 
@@ -136,12 +337,13 @@ class DtScoreDisplay extends HTMLElement {
     handleLanguageChange(e) {
         translate(e.detail.score_input, this.inputTitle);
         translate(e.detail.score_submit, this.scoreSubmitButton);
+        translate(e.detail.new_game_button, this.newGameButton);
     }
 
     appendPlayerData() {
-        for (const player in observablePlayers) {
-            const name = observablePlayers[player].name;
-            const score = observablePlayers[player].total_score
+        for (const player in players) {
+            const name = players[player].name;
+            const score = players[player].total_score
 
             const container = document.createElement('div');
             const nameDiv = document.createElement('div');
@@ -166,4 +368,3 @@ class DtScoreDisplay extends HTMLElement {
 customElements.define('dt-score-display', DtScoreDisplay);
 
 export { DtScoreDisplay }
-

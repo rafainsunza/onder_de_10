@@ -70,26 +70,14 @@
     border: 3px solid variables.$score-border-color
     font-weight: variables.$font-weight-light
 
-.add-button
-    background-color: variables.$score-input-add-background
-    border-radius: variables.$button-border-radius
-    height: 30px
-    width: 100%
-    font-family: variables.$font-primary
-    font-weight: 300
-    font-size: variables.$font-size-xs
-    color: black
-    &:hover
-        cursor: pointer
-        box-shadow: variables.$shadow-default
-
 .score-input
     margin-bottom: variables.$spacing-sm
     font-weight: variables.$font-weight-normal
     background-color: variables.$score-input-background
+    border: 3px solid variables.$dark-yellow
 
     &::placeholder
-        color: black
+        color: variables.$black
         font-size: variables.$font-size-sm
         font-weight: variables.$font-weight-light
 
@@ -105,22 +93,221 @@
             left: 50%
             transform: translateX(-50%)
 
+        @media (min-width: variables.$breakpoint-lg)
+            width: 450px
+
     &-title
         text-align: center
         margin-bottom: 5px
 
-.button-container
-    display: flex
-
-dt-back-button
-    width: 100%
-    margin-right: variables.$spacing-sm
-
 .input-wrapper
     position: relative
 
+.button-container
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+
+dt-back-button
+    width: 49%
+
+.add-button
+    background-color: variables.$score-input-add-background
+    border-radius: variables.$button-border-radius
+    height: 30px
+    width: 49%
+    font-family: variables.$font-primary
+    font-size: variables.$font-size-xs
+    color: variables.$black
+    position: relative
+    overflow: hidden
+    z-index: 1
+    transition: font-weight 0.5s, box-shadow 0.5s ease
+
+    &:hover
+        cursor: pointer
+        box-shadow: variables.$shadow-default
+        font-weight: bolder
+
+    &::before
+        cursor: pointer
+        content: ""
+        position: absolute
+        bottom: -100%
+        left: 0
+        width: 100%
+        height: 100%
+        background-color: variables.$button-hover
+        z-index: -1
+        transition: bottom 0.5s ease
+
+    &:hover::before
+        bottom: 0
+
+.new-game-button
+    background-color: variables.$new-game-background
+    border-radius: variables.$button-border-radius
+    height: 40px
+    width: 100%
+    margin-top: variables.$spacing-sm-md
+    font-family: variables.$font-primary
+    font-size: variables.$font-size-xs
+    color: variables.$black
+    position: relative
+    overflow: hidden
+    z-index: 1
+    transition: font-weight 0.5s ease, box-shadow 0.5s ease
+
+    &:hover
+        cursor: pointer
+        box-shadow: variables.$shadow-default
+        font-weight: bolder
+
+    &::before
+        content: ""
+        position: absolute
+        bottom: -100%
+        left: 0
+        width: 100%
+        height: 100%
+        background-color: variables.$button-hover
+        z-index: -1
+        transition: bottom 0.5s ease
+
+    &:hover::before
+        bottom: 0
+
+.message-dialog
+    &-open
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        width: 100%
+        height: 220px
+        padding: variables.$spacing-sm variables.$spacing-sm-md
+        font-size: variables.$font-size-sm
+        border-radius: 10px
+
+        @media (min-width: variables.$breakpoint-sm-md)
+            width: 480px
+
+    &-text
+        text-align: center
+        word-wrap: break-word
+        word-break: break-word
+        white-space: normal
+        width: 75%
+        margin-bottom: variables.$spacing-lg
+
+    &-button
+        height: 40px
+        width: 240px
+        border-radius: variables.$button-border-radius
+        background-color: variables.$yellow
+        font-size: variables.$font-size-xs
+        color: variables.$black
+        border: none
+        outline: none
+        position: relative
+        overflow: hidden
+        z-index: 1
+        transition: font-weight 0.5s ease, box-shadow 0.5s ease
+
+        &:hover
+            cursor: pointer
+            box-shadow: variables.$shadow-default
+            font-weight: bolder
+        &::before
+            content: ""
+            position: absolute
+            bottom: -100%
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: variables.$button-hover
+            z-index: -1
+            transition: bottom 0.5s ease
+
+        &:hover::before
+            bottom: 0
+
+.new-game-dialog
+    &-open
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        width: 100%
+        height: 230px
+        border-radius: 10px
+        padding: 35px variables.$spacing-sm-md variables.$spacing-sm variables.$spacing-sm-md
+
+        @media (min-width: variables.$breakpoint-sm-md)
+            width: 480px
+
+    &-text
+        text-align: center
+        font-size: variables.$font-size-sm
+        padding: variables.$spacing-sm 35px
+
+    &-close-button
+        position: absolute
+        right: 5px
+        top: 5px
+        background-color: transparent
+        height: 35px
+        width: 35px
+        svg:hover
+            fill: variables.$yellow
+            cursor: pointer
+
+    &-button-container
+        display: flex
+        justify-content: space-between
+
+    &-yes-button,
+    &-no-button
+        width: 49%
+        height: 40px
+        border-radius: variables.$button-border-radius
+        background-color: variables.$yellow
+        color: variables.$black
+        font-size: variables.$font-size-xs
+        position: relative
+        overflow: hidden
+        z-index: 1
+        transition: font-weight 0.5s ease, box-shadow 0.5s ease
+
+        &:hover
+            box-shadow: variables.$shadow-default
+            cursor: pointer
+            font-weight: bolder
+
+        &::before
+            content: ""
+            position: absolute
+            bottom: -100%
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: variables.$button-hover
+            z-index: -1
+            transition: bottom 0.5s ease
+
+        &:hover::before
+            bottom: 0
+
+dialog[open]::backdrop
+    background-color: variables.$light-grey-opaque
+
 .warning
-    border: 3.5px solid red
+    border: 2px solid red
 
     &-icon
         position: absolute
@@ -131,6 +318,13 @@ dt-back-button
 
 .hidden
     display: none
+
+.eliminated
+    opacity: 0.5
+
+.disabled
+    opacity: 0.4
+    pointer-events: none
 
 // ANIMATIONS
 @keyframes slide-by

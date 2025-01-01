@@ -14,12 +14,11 @@
     border-radius: variables.$button-border-radius
     margin-bottom: 10px
     padding: 0 variables.$spacing-sm
-    border: 3px solid variables.$pink
-    background-color: variables.$dark-grey
-    font-size: 20px
+    border: 2px solid variables.$dark-yellow
+    background-color: rgba(255, 200, 0, 0.4)
     color: variables.$black
+    font-size: 20px
     text-align: center
-    caret-color: variables.$pink
 
     @media (min-width: variables.$breakpoint-lg)
         font-size: variables.$font-size-sm
@@ -27,7 +26,7 @@
     &:focus
         outline: none
     &::placeholder
-        color: black
+        color: variables.$black
         font-weight: variables.$font-weight-light
 
     &-container
@@ -51,15 +50,31 @@
         border-radius: variables.$button-border-radius
         width: 100%
         font-size: variables.$font-size-xs
-        font-weight: 300
         color: variables.$black
-        background-color: variables.$pink
+        background-color: variables.$yellow
+        position: relative
+        overflow: hidden
+        z-index: 1
+        transition: font-weight 0.5s ease, box-shadow 0.5s ease
 
         &:hover
             box-shadow: variables.$shadow-default
-
-        &:hover
             cursor: pointer
+            font-weight: bolder
+
+        &::before
+            content: ""
+            position: absolute
+            bottom: -100%
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: variables.$button-hover
+            z-index: -1
+            transition: bottom 0.5s ease
+
+        &:hover::before
+            bottom: 0
 
 .input-wrapper
     position: relative
@@ -76,11 +91,11 @@ dt-back-button
     margin-right: 5px
 
 .warning
-    border: 3.5px solid variables.$warning-color
+    border: 2px solid variables.$warning-color
 
     &-icon
         position: absolute
-        top: 7px
+        top: 8px
         left: 50px
         fill: variables.$warning-color
         height: 20px

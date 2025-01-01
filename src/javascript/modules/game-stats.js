@@ -1,82 +1,89 @@
 const players = {
     player_1: {
+        player_index: 0,
         name: 'Nick',
         score_per_round: [],
-        halved: false,
         get total_score() {
             return this.score_per_round.reduce((total, score) => total + score, 0)
-        }
+        },
+        isEliminated: false,
+        eliminatedRound: null
     },
     player_2: {
+        player_index: 1,
         name: 'Rafa',
         score_per_round: [],
-        halved: false,
         get total_score() {
             return this.score_per_round.reduce((total, score) => total + score, 0)
-        }
+        },
+        isEliminated: false,
+        eliminatedRound: null
     },
     player_3: {
+        player_index: 2,
         name: 'Ana',
         score_per_round: [],
-        halved: false,
         get total_score() {
             return this.score_per_round.reduce((total, score) => total + score, 0)
-        }
-    },
-};
-
-function createObservable(obj) {
-    return new Proxy(obj, {
-        set(target, property, value) {
-            target[property] = value;
-
-            if (property === 'total_score') {
-                const event = new CustomEvent('score-changed', {
-                    detail: {
-                        name: target.name,
-                        total_score: value
-                    }
-                });
-
-                document.dispatchEvent(event)
-            }
-            return true;
         },
-        get(target, property) {
-            const value = target[property];
-            // Wrap nested objects in their own Proxy
-            if (value && typeof value === 'object' && !value.__isProxy) {
-                target[property] = createObservable(value);
-                target[property].__isProxy = true; // Avoid re-wrapping
-            }
-            return target[property];
-        }
-    });
-}
-
-const observablePlayers = createObservable(players)
+        isEliminated: false,
+        eliminatedRound: null
+    },
+    // player_4: {
+    //     player_index: 3,
+    //     name: 'Isabella',
+    //     score_per_round: [],
+    //     get total_score() {
+    //         return this.score_per_round.reduce((total, score) => total + score, 0)
+    //     },
+    //     isEliminated: false,
+    //     eliminatedRound: null
+    // },
+    // player_5: {
+    //     player_index: 4,
+    //     name: 'Cara',
+    //     score_per_round: [],
+    //     get total_score() {
+    //         return this.score_per_round.reduce((total, score) => total + score, 0)
+    //     },
+    //     isEliminated: false,
+    //     eliminatedRound: null
+    // },
+    // player_6: {
+    //     player_index: 5,
+    //     name: 'Robi',
+    //     score_per_round: [],
+    //     get total_score() {
+    //         return this.score_per_round.reduce((total, score) => total + score, 0)
+    //     },
+    //     isEliminated: false,
+    //     eliminatedRound: null
+    // },
+};
 
 function setPlayerCount(count) {
     for (let i = 1; i <= count; i++) {
         const playerKey = `player_${i}`;
 
-        observablePlayers[playerKey] = {
+        players[playerKey] = {
+            player_index: i - 1,
             name: null,
             score_per_round: [],
-            halved: false,
             get total_score() {
                 return this.score_per_round.reduce((total, score) => total + score, 0)
-            }
+            },
+            isEliminated: false,
+            eliminatedRound: null
         };
     }
 }
 
 function resetPlayerCount() {
-    for (let key in observablePlayers) {
-        if (observablePlayers.hasOwnProperty(key)) {
-            delete observablePlayers[key];
+    for (let key in players) {
+        if (players.hasOwnProperty(key)) {
+            delete players[key];
         }
     }
 }
 
-export { setPlayerCount, resetPlayerCount, players, observablePlayers }
+export { setPlayerCount, resetPlayerCount, players }
