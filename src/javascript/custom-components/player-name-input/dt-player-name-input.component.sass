@@ -10,7 +10,7 @@
 
 .name-input
     height: 40px
-    width: 300px
+    width: 100%
     border-radius: variables.$button-border-radius
     margin-bottom: 10px
     padding: 0 variables.$spacing-sm
@@ -81,6 +81,9 @@
     width: 300px
     display: flex
     flex-direction: column
+
+    @media (min-width: variables.$breakpoint-sm-md)
+        width: 450px
 
 .button-container
     display: flex

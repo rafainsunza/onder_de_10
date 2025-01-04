@@ -19,16 +19,16 @@ const players = {
         isEliminated: false,
         eliminatedRound: null
     },
-    player_3: {
-        player_index: 2,
-        name: 'Ana',
-        score_per_round: [],
-        get total_score() {
-            return this.score_per_round.reduce((total, score) => total + score, 0)
-        },
-        isEliminated: false,
-        eliminatedRound: null
-    },
+    // player_3: {
+    //     player_index: 2,
+    //     name: 'Ana',
+    //     score_per_round: [],
+    //     get total_score() {
+    //         return this.score_per_round.reduce((total, score) => total + score, 0)
+    //     },
+    //     isEliminated: false,
+    //     eliminatedRound: null
+    // },
     // player_4: {
     //     player_index: 3,
     //     name: 'Isabella',

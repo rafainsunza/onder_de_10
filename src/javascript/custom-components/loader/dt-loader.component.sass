@@ -1,0 +1,39 @@
+@use '../../../styles/_variables'
+
+.loader
+    width: 100px
+    animation: spin 1.5s ease-in-out infinite
+    transform-origin: center
+
+    &-background
+        position: fixed
+        height: 100%
+        width: 100%
+        backdrop-filter: blur(7.5px)
+
+@keyframes spin
+    0%
+        transform: rotate(0deg)
+
+    100%
+        transform: rotate(360deg)
+
+.dot-1
+    fill: variables.$blue
+.dot-2
+    fill: variables.$yellow
+.dot-3
+    fill: variables.$pink
+.dot-4
+    fill: variables.$green
+.dot-5
+    fill: variables.$blue
+.dot-6
+    fill: variables.$yellow
+.dot-7
+    fill: variables.$pink
+.dot-8
+    fill: variables.$yellow
+
+.hidden
+    display: none

@@ -7,6 +7,7 @@ import { DtLanguageSelector } from './javascript/custom-components/language-sele
 import { DtPlayerCountPicker } from './javascript/custom-components/player-count-picker/dt-player-count-picker.js';
 import { DtPlayerNameInput } from './javascript/custom-components/player-name-input/dt-player-name-input.js';
 import { DtScoreDisplay } from './javascript/custom-components/score-display/dt-score-display.js';
+import { DtLoader } from './javascript/custom-components/loader/dt-loader.js';
 
 import { fetchImage } from './javascript/modules/utils.js';
 import { translate } from './javascript/modules/languages.js';

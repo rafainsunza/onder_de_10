@@ -3,6 +3,7 @@ import style from './dt-score-display.component.sass';
 
 import { translate, getActiveLanguage } from '../../modules/languages.js';
 import { players } from '../../modules/game-stats.js';
+import confetti from 'canvas-confetti';
 
 const template = document.createElement('template');
 
@@ -152,6 +153,7 @@ class DtScoreDisplay extends HTMLElement {
     undoScore() {
         if (this.gameOver) {
             this.gameOver = false;
+            this.scoreSubmitButton.classList.remove('disabled');
         }
 
         if (this.playerNumber === 1 && this.currentRound === 1) {
@@ -212,13 +214,8 @@ class DtScoreDisplay extends HTMLElement {
         this.alertEliminationOrWin();
 
         if (this.gameOver) {
-            this.handlePlayerWin();
+            this.scoreSubmitButton.classList.add('disabled');
         }
-    }
-
-    handlePlayerWin() {
-        this.scoreSubmitButton.classList.add('disabled');
-        return
     }
 
     alertEliminationOrWin() {
@@ -242,13 +239,40 @@ class DtScoreDisplay extends HTMLElement {
 
         const closeButton = this.messageDialog.querySelector('.message-dialog-button');
         closeButton.addEventListener('click', () => {
+            const canvas = this.shadowRoot.querySelector('canvas');
+            if (canvas) {
+                canvas.remove();
+            }
+
             this.messageDialog.classList.remove('message-dialog-open');
             this.messageDialog.close();
         });
 
         this.messageDialog.showModal();
         this.messageDialog.classList.add('message-dialog-open');
+
+        if (this.gameOver) {
+            this.runConfettiAnimation();
+        }
     }
+
+    runConfettiAnimation() {
+        const canvas = document.createElement('canvas');
+        this.messageDialog.appendChild(canvas)
+
+        const confettiAnimation = confetti.create(canvas, {
+            resize: true,
+            useWorker: true,
+        });
+
+        confettiAnimation({
+            particleCount: 500,
+            spread: 60,
+            origin: { x: 0.5, y: 0.5 },
+            colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#FF69B4'],
+        });
+    }
+
 
     alertScoreHalving() {
         const dialogText = this.messageDialog.querySelector('.message-dialog-text');
