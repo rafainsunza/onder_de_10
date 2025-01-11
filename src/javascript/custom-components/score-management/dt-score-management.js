@@ -1,5 +1,5 @@
-import html from './dt-score-display.html';
-import style from './dt-score-display.component.sass';
+import html from './dt-score-management.html';
+import style from './dt-score-management.component.sass';
 
 import { translate, getActiveLanguage } from '../../modules/languages.js';
 import { players } from '../../modules/game-stats.js';
@@ -14,7 +14,7 @@ template.innerHTML = `
     ${html}
 `;
 
-class DtScoreDisplay extends HTMLElement {
+class DtScoreManagement extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -389,6 +389,6 @@ class DtScoreDisplay extends HTMLElement {
 
 }
 
-customElements.define('dt-score-display', DtScoreDisplay);
+customElements.define('dt-score-management', DtScoreManagement);
 
-export { DtScoreDisplay }
+export { DtScoreManagement }
