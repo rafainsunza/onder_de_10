@@ -1,3 +1,4 @@
+// Copyright 2025 The Devtender. All rights reserved.
 
 import './styles/reset.css';
 import './styles/main.sass';
