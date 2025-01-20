@@ -1,0 +1,131 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+html,body{font-family:"Roc Grotesk W05 Wide";height:100%}body{display:flex;flex-direction:column;justify-content:space-between;padding:20px 2px;background-color:#ececec}@media(min-width: 768px){body{padding:15px 50px 15px 50px}}header{text-align:center;margin-bottom:20px}@media(min-width: 620px){header{margin-bottom:50px}}@media(min-width: 768px){header{text-align:start}}.header-title{font-weight:700;font-size:32px;color:#2c2e35;letter-spacing:5px;animation:slide-in-from-right 1.5s ease-out;opacity:1;display:inline-block}@keyframes slide-in-from-right{0%{transform:translateX(100%);opacity:0}100%{transform:translateX(0);opacity:1}}@media(min-width: 420px){.header-title{font-size:48px}}@media(min-width: 768px){.header-title{font-size:64px}}@media(min-width: 1024px){.header-title{font-size:80px}}main{display:flex;flex-direction:column;justify-content:center}footer{display:flex;justify-content:space-between;position:relative;padding:0 20px}.logo-container{height:100%}.logo-footer{width:100px}dt-loader{position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);height:100%;width:100%;display:flex;justify-content:center;z-index:1}dt-language-selector{align-self:flex-end;padding-bottom:20px}dt-player-count-picker{height:100%}dt-player-name-input{display:flex;justify-content:center}dt-score-management{padding:0 10px}@media(min-width: 420px){dt-score-management{padding:0 50px}}@media(min-width: 420px)and (min-width: 768px){dt-score-management{padding:0}}
