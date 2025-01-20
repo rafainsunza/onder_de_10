@@ -7,9 +7,15 @@ const languages = {
         name_input: 'Voer de naam in van:',
         placeholder: 'Speler',
         score_input: 'Voer score in voor:',
-        score_submit: 'voeg toe',
-        step_back: 'terug',
-        round_announcement: 'ronde'
+        score_submit: 'Voeg toe',
+        step_back: 'Terug',
+        elimination_message: 'Helaas, is af en ligt uit het spel!',
+        winner_message: 'Gefeliciteerd! heeft het spel gewonnen!',
+        score_halving_message: 'Goed gedaan! gaat terug naar punten',
+        new_game_button: 'Nieuw spel',
+        new_game_text: 'Wil je een nieuw spel starten met dezelfde spelers?',
+        new_game_confirm: 'Ja',
+        new_game_cancel: 'Nee',
     },
     german: {
         name: "Deutsch",
@@ -19,9 +25,16 @@ const languages = {
         name_input: 'Geben Sie den Namen ein von:',
         placeholder: 'Spieler',
         score_input: 'Geben Sie die Punktzahl ein für:',
-        score_submit: 'hinzufügen',
-        step_back: 'zurück',
-        round_announcement: 'runde'
+        score_submit: 'Hinzufügen',
+        step_back: 'Zurück',
+        elimination_message: 'Leider, ist ausgeschieden und aus dem Spiel!',
+        winner_message: 'Herzlichen Glückwunsch! hat das Spiel gewonnen!',
+        score_halving_message: 'Gut gemacht! Geht zurück zu den Punkten',
+        new_game_button: 'Neues spiel',
+        new_game_text: 'Möchtest du ein neues Spiel mit den gleichen Spielern starten?',
+        new_game_confirm: 'Ja',
+        new_game_cancel: 'Nein'
+
     },
     spanish: {
         name: "Español",
@@ -31,9 +44,15 @@ const languages = {
         name_input: 'Ingrese el nombre de:',
         placeholder: 'Jugador',
         score_input: 'Ingrese la puntuación para:',
-        score_submit: 'agregar',
-        step_back: 'atrás',
-        round_announcement: 'ronda'
+        score_submit: 'Agregar',
+        step_back: 'Atrás',
+        elimination_message: 'Desafortunadamente, está fuera y eliminado del juego!',
+        winner_message: '¡Felicidades! ha ganado el juego!',
+        score_halving_message: '¡Bien hecho! Vuelve a los puntos',
+        new_game_button: 'Nuevo juego',
+        new_game_text: '¿Quieres empezar un nuevo juego con los mismos jugadores?',
+        new_game_confirm: 'Sí',
+        new_game_cancel: 'No'
 
     },
     english: {
@@ -44,9 +63,16 @@ const languages = {
         name_input: 'Enter the name of:',
         placeholder: 'Player',
         score_input: 'Enter score for:',
-        score_submit: 'add',
-        step_back: 'back',
-        round_announcement: 'round'
+        score_submit: 'Add',
+        step_back: 'Back',
+        elimination_message: 'Unfortunately, is out and eliminated from the game!',
+        winner_message: 'Congratulations! has won the game!',
+        score_halving_message: 'Well done! Goes back to points',
+        new_game_button: 'New game',
+        new_game_text: 'Do you want to start a new game with the same players?',
+        new_game_confirm: 'Yes',
+        new_game_cancel: 'No'
+
     },
     french: {
         name: "Français",
@@ -56,9 +82,15 @@ const languages = {
         name_input: 'Entrez le nom de:',
         placeholder: 'Joueur',
         score_input: 'Entrez le score pour :',
-        score_submit: 'ajouter',
-        step_back: 'retour',
-        round_announcement: 'manche'
+        score_submit: 'Ajouter',
+        step_back: 'Retour',
+        elimination_message: 'Désolé, est éliminé et hors du jeu!',
+        winner_message: 'Félicitations ! a gagné le jeu !',
+        score_halving_message: 'Bien joué ! Retourne aux points',
+        new_game_button: 'Nouveau jeu',
+        new_game_text: 'Voulez-vous commencer une nouvelle partie avec les mêmes joueurs ?',
+        new_game_confirm: 'Oui',
+        new_game_cancel: 'Non'
     }
 };
 

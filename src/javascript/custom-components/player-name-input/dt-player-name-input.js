@@ -105,9 +105,9 @@ class DtPlayerNameInput extends HTMLElement {
             this.inputContainer.classList.add('slide-out');
 
             setTimeout(() => {
-                const scoreDisplay = document.createElement('dt-score-display');
+                const scoreDisplay = document.createElement('dt-score-management');
 
-                if (document.querySelector('main').querySelector('dt-score-display') === null) {
+                if (document.querySelector('main').querySelector('dt-score-management') === null) {
                     document.querySelector('main').appendChild(scoreDisplay);
                 };
 

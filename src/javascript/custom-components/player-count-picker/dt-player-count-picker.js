@@ -2,7 +2,7 @@ import html from './dt-player-count-picker.html';
 import style from './dt-player-count-picker.component.sass';
 
 import { fetchImage } from '../../modules/utils.js';
-import { translate } from '../../modules/languages.js';
+import { translate, getActiveLanguage } from '../../modules/languages.js';
 import { resetPlayerCount, setPlayerCount } from '../../modules/game-stats.js';
 
 const template = document.createElement('template');
@@ -38,6 +38,7 @@ class DtPlayerCountPicker extends HTMLElement {
         this.renderCards();
         const firstCard = this.cards.querySelector('.card-button:first-child');
         const lastCard = this.cards.querySelector('.card-button:last-child');
+        translate(getActiveLanguage().player_count, this.cardTitle);
 
         this.toggleNavButtons(lastCard, this.nextButton);
         this.toggleNavButtons(firstCard, this.previousButton);
