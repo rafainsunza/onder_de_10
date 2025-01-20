@@ -9,7 +9,6 @@
     border: none
 
 .score-display-wrapper
-    height: 100%
     display: flex
     flex-direction: column
     justify-content: center
@@ -31,6 +30,7 @@
 
     @media (min-width: variables.$breakpoint-lg)
         width: 930px
+        margin-bottom: variables.$spacing-lg
         align-self: center
 
 .player-container
@@ -88,10 +88,10 @@
         @media (min-width: variables.$breakpoint-sm-md)
             width: 300px
             margin: 0 auto
-            position: absolute
-            bottom: -20px
-            left: 50%
-            transform: translateX(-50%)
+            // position: absolute
+            // bottom: -20px
+            // left: 50%
+            // transform: translateX(-50%)
 
         @media (min-width: variables.$breakpoint-lg)
             width: 450px

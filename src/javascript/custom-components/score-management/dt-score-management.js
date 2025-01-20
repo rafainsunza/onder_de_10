@@ -273,7 +273,6 @@ class DtScoreManagement extends HTMLElement {
         });
     }
 
-
     alertScoreHalving() {
         const dialogText = this.messageDialog.querySelector('.message-dialog-text');
         const points = this.activePlayerData.total_score

@@ -17,6 +17,10 @@ body
 
 header
     text-align: center
+    margin-bottom: variables.$spacing-md
+
+    @media (min-width: variables.$breakpoint-sm-md)
+        margin-bottom: variables.$spacing-lg
 
     @media (min-width: variables.$breakpoint-md)
         text-align: start
@@ -53,10 +57,8 @@ main
     display: flex
     flex-direction: column
     justify-content: center
-    height: 100%
 
 footer
-    width: 100%
     display: flex
     justify-content: space-between
     position: relative
@@ -92,7 +94,6 @@ dt-player-name-input
     justify-content: center
 
 dt-score-management
-    height: 100%
     padding: 0 variables.$spacing-sm-md
 
     @media (min-width: variables.$breakpoint-sm)
