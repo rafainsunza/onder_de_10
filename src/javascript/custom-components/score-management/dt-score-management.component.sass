@@ -88,10 +88,6 @@
         @media (min-width: variables.$breakpoint-sm-md)
             width: 300px
             margin: 0 auto
-            // position: absolute
-            // bottom: -20px
-            // left: 50%
-            // transform: translateX(-50%)
 
         @media (min-width: variables.$breakpoint-lg)
             width: 450px
@@ -114,20 +110,20 @@ dt-back-button
 .add-button
     background-color: variables.$score-input-add-background
     border-radius: variables.$button-border-radius
-    height: 30px
-    width: 49%
+    height: 40px
+    width: 100%
+    margin-top: variables.$spacing-sm-md
     font-family: variables.$font-primary
     font-size: variables.$font-size-xs
     color: variables.$black
     position: relative
     overflow: hidden
     z-index: 1
-    transition: font-weight 0.5s, box-shadow 0.5s ease
+    transition: box-shadow 0.5s ease
 
     &:hover
         cursor: pointer
         box-shadow: variables.$shadow-default
-        font-weight: bolder
 
     &::before
         cursor: pointer
@@ -147,21 +143,19 @@ dt-back-button
 .new-game-button
     background-color: variables.$new-game-background
     border-radius: variables.$button-border-radius
-    height: 40px
-    width: 100%
-    margin-top: variables.$spacing-sm-md
+    height: 30px
+    width: 49%
     font-family: variables.$font-primary
     font-size: variables.$font-size-xs
     color: variables.$black
     position: relative
     overflow: hidden
     z-index: 1
-    transition: font-weight 0.5s ease, box-shadow 0.5s ease
+    transition: box-shadow 0.5s ease
 
     &:hover
         cursor: pointer
         box-shadow: variables.$shadow-default
-        font-weight: bolder
 
     &::before
         content: ""
@@ -215,7 +209,7 @@ dt-back-button
         position: relative
         overflow: hidden
         z-index: 2
-        transition: font-weight 0.5s ease, box-shadow 0.5s ease
+        transition: box-shadow 0.5s ease
 
         @media (min-width: variables.$breakpoint-sm)
             width: 380px
@@ -223,7 +217,7 @@ dt-back-button
         &:hover
             cursor: pointer
             box-shadow: variables.$shadow-default
-            font-weight: bolder
+
         &::before
             content: ""
             position: absolute
@@ -286,12 +280,11 @@ dt-back-button
         position: relative
         overflow: hidden
         z-index: 1
-        transition: font-weight 0.5s ease, box-shadow 0.5s ease
+        transition: box-shadow 0.5s ease
 
         &:hover
             box-shadow: variables.$shadow-default
             cursor: pointer
-            font-weight: bolder
 
         &::before
             content: ""

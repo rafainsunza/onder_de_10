@@ -27,7 +27,7 @@ header
 
 .header-title
     font-weight: variables.$font-weight-heavy
-    font-size: variables.$font-size-md
+    font-size: variables.$font-size-sm
     color: variables.$text-primary
     letter-spacing: 5px
 
@@ -45,6 +45,9 @@ header
             opacity: 1
 
     @media (min-width: variables.$breakpoint-sm)
+        font-size: variables.$font-size-md
+
+    @media (min-width: variables.$breakpoint-sm-md)
         font-size: variables.$font-size-xm
 
     @media (min-width: variables.$breakpoint-md)
