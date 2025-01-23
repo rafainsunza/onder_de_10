@@ -335,6 +335,8 @@ class DtScoreManagement extends HTMLElement {
 
         this.activePlayerData = players[`player_${this.playerNumber}`];
         this.setPlaceholder();
+        this.scoreInput.focus()
+
     }
 
     displayScore() {
