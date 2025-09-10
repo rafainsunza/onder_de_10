@@ -20,7 +20,7 @@ const languages = {
     german: {
         name: "Deutsch",
         flag: 'https://flagcdn.com/h40/de.png',
-        title: 'ANZEIGETAFEL',
+        title: 'PUNKTETAFEL',
         player_count: 'WÄHLEN SIE DIE ANZAHL DER SPIELER:',
         name_input: 'Geben Sie den Namen ein von:',
         placeholder: 'Spieler',
